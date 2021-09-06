@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta type="viewport" content="width=device-width, initial-scale=1" />
+    
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <link href="css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    
+    <script src="bootstrap/angular.min.js"></script>
+    <script src="bootstrap/jquery.min.js"></script>
+    <script src="bootstrap/angular-sanitize.min.js"></script>
+    <script src="bootstrap/bootstrap.min.js"></script>
+    <script src="bootstrap/ui-bootstrap-tpls-0.6.0.js"></script>
+    <script src="bootstrap/angular-cookies.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+	
+	
+    <title>Grossing Station, NeuroPathology Lab, NIMHANS</title>
+    
+<style>
+
+.jumbotron {
+padding: 0.3em 0.6em;
+
+h1 {
+font-size: 2em;
+}
+p {
+font-size: 1.2em;
+.btn {
+padding: 0.5em;
+}
+}
+}
+    
+.row {
+margin-left: 0px;
+margin-right: 0px;
+}
+
+
+.form-horizontal .form-group{
+margin-left: 0px;
+margin-right: 0px;
+}
+    
+table {
+border-collapse:collapse;
+table-layout:fixed; width:100%;
+}
+
+table td {
+border:solid 1px #fab;
+width:100px; word-wrap:break-word;
+}
+
+/* begin css code for notification bell*/
+
+.notification {
+
+display: inline-block;
+position: relative;
+padding: 0.6em;
+/*background: #3498db;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+border-radius: 0.2em;*/
+background:#FFA726;
+font-size: 1.3em; 
+    
+}
+
+.notification::before, 
+.notification::after {
+color: blue;
+text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+   
+}
+
+.notification::before {
+display: block;
+content: "\f0f3";
+font-family: "FontAwesome";
+transform-origin: top center;
+}
+
+.notification::after {
+font-family: Arial;
+font-size: 0.7em;
+font-weight: 700;
+color:black;
+position: absolute;
+top: 5px;
+right: -9px;
+padding: 5px 8px;
+line-height: 100%;
+border: 2px black solid;
+border-radius: 60px;
+background: red;
+opacity: 0;
+content: attr(data-count);
+opacity: 0;
+-webkit-transform: scale(0.5);
+transform: scale(0.5);
+transition: transform, opacity;
+transition-duration: 0.3s;
+transition-timing-function: ease-out;
+}
+
+.notification.notify::before {
+-webkit-animation: ring 1.5s ease;
+animation: ring 1.5s ease;
+}
+
+.notification.show-count::after {
+-webkit-transform: scale(1);
+transform: scale(1);
+opacity: 1;
+}
+
+@-webkit-keyframes ring {
+0% {
+    -webkit-transform: rotate(35deg);
+}
+12.5% {
+    -webkit-transform: rotate(-30deg);
+}
+25% {
+    -webkit-transform: rotate(25deg);
+}
+37.5% {
+    -webkit-transform: rotate(-20deg);
+}
+50% {
+    -webkit-transform: rotate(15deg);
+}
+62.5% {
+    -webkit-transform: rotate(-10deg);
+}
+75% {
+    -webkit-transform: rotate(5deg);
+}
+100% {
+    -webkit-transform: rotate(0deg);
+}
+}
+
+
+
+@keyframes ring {
+0% {
+    -webkit-transform: rotate(35deg);
+    transform: rotate(35deg);
+}
+12.5% {
+    -webkit-transform: rotate(-30deg);
+    transform: rotate(-30deg);
+}
+25% {
+    -webkit-transform: rotate(25deg);
+    transform: rotate(25deg);
+}
+37.5% {
+    -webkit-transform: rotate(-20deg);
+    transform: rotate(-20deg);
+}
+50% {
+    -webkit-transform: rotate(15deg);
+    transform: rotate(15deg);
+}
+62.5% {
+    -webkit-transform: rotate(-10deg);
+    transform: rotate(-10deg);
+}
+75% {
+    -webkit-transform: rotate(5deg);
+    transform: rotate(5deg);
+}
+100% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+}
+} 
+
+
+.disabledbutton {
+pointer-events: none;
+}
+
+
+.invisible{
+display:none;
+}
+/* end of code for bell*/
+
+
+.thclass1{
+border:1px solid black;
+/* background-color: #337ab7; */
+color:black;
+padding-top:5px;
+padding-bottom:5px;
+text-align:center;
+
+}
+
+.tdclass1{
+border:1px solid black;
+word-break: break-all;
+padding-top:5px;
+padding-bottom:5px;
+
+
+}
+
+.tdclass2{
+
+border:1px solid black;
+text-align:center;
+}
+
+
+#messageModal{
+/* margin-left:300px; */
+ 
+}
+
+#displayMessageModal{
+margin-left:250px;
+}
+
+</style>
+    
+    <script type="text/javascript">
+    
+    $(function() {
+
+    	  $("#barcodeText").focus();
+    	  $('#barcodeText').keypress(function(e){
+    	      if(e.keyCode==13)
+    	      $('#sendBarcode').click();
+    	    });
+    	  $("#addQueue").click(function(){
+              $("input").focus();
+          });
+    	  $("#clear").click(function(){
+              $("input").focus();
+          });
+	
+    	});
+   		
+    	/* function LaunchApp() {
+
+    	var ws = new ActiveXObject("WScript.Shell");
+    	ws.Exec("C:\\Windows\\notepad.exe");
+    	}*/
+    	
+   </script>
+    
+</head>
+
+
+
+<body ng-app="grossingStation" ng-controller="GrossController">
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+            <p class="navbar-brand"> Grossing Station, NeuroPathology Lab, NIMHANS</p>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+             <li style="padding:10px 5px;" ><button type="button" id="ncs_button" ng-disabled="ncs" class="btn btn-default" ng-model="np_ncs" ng-click="getNCS(np_ncs)" title="NCS">NCS</button></li>
+            <li style="padding:10px 5px;" ><button type="button" id="specialTask" ng-disabled="specialTask" class="btn btn-default"  ng-click="getSpecialTasks()" title="Special Tasks">Special Tasks: {{noOfSpecialtasks}}</button></li>
+      		<li style="padding:10px 5px;" ><button type="button" ng-disabled="pendingTissue" class="btn btn-default "  ng-click="getPendingTasks()" title="Pending Tasks">Pending Tasks: {{pendingTasks}}</button></li>
+     		<li class="active" style="padding:10px 5px;"><button ng-disabled="scanTissue" type="button" class="btn btn-default" ng-click="scanScreen()">Scan Tissue</button></li>
+     		<li style="padding:10px 5px;"><button type="button" ng-disabled="processedTissue" class="btn btn-default btn-warning" ng-click="getProcessedTasks()" title="Processed Tasks">In Process</button></li>
+      		<!-- <li style="padding:10px 5px;"><button type="button" ng-disabled="true" class="btn btn-default " ng-click="getCompletedTasks()" title="Completed Tasks">Completed Tasks</button></li> -->
+      		<li><div align="right" style="padding-right:5px;">
+                <p> <b>Logged in as </b>{{username}} </p><p>
+                 <b>Resident : </b>{{residentname}}</p>
+                 <button type="button" class="btn btn-info btn-small" onClick="pageRefresh()">Refresh</button>
+                 <button id="notify_div" title="click here to see the Notifications"  class="notification" style="background-color:#fff;border:beige;margin-right:7px;" ng-click="getMessages()"></button>
+      	
+                 <button type="button" class="btn btn-primary btn-small" onclick="home()">Home</button>
+                 <button type="button" class="btn btn-default btn-small" ng-click="getResident();"> Add Resident</button>
+                <button type="button" class="btn btn-success btn-small"  ng-click="getAllUsers()" ng-hide="showLogout" >Login</button>
+                <button type="button" class="btn btn-success btn-small" ng-click="logout()" ng-show="showLogout">Logout</button>
+  			</div></li>
+    		</ul>
+            
+        </div>
+    </nav>
+    
+    <!-- *************************************************************************************************************************************
+    loginModel Code
+    
+    
+    <!-- ************* Login Modal **********-->
+
+    <div class="modal fade" id="loginModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">User Login</h4>
+        </div>
+        <div class="modal-body">
+           
+               
+                       <!--  <label for="uname"><b>Users :</b></label>
+                        <select ng-model="users" class="form-control" id="uname" >
+                            <option ng-repeat="tech in techTable"><b>{{tech.technicianName}}</b></option>
+        
+                      </select> -->
+                      
+                        <label for="uname"><b>Faculty :</b></label>
+                        <select ng-model="users" class="form-control" id="uname" >
+                            <option ng-repeat="tech in faculty_Array"><b>{{tech.technicianName}}</b></option>
+                      </select>
+                      <label for="uname"><b>Resident :</b></label>
+                        <select ng-model="users" class="form-control" id="uname" >
+                            <option ng-repeat="tech in residentArray"><b>{{tech.technicianName}}</b></option>
+                      </select>
+                      <label for="uname"><b>Technician :</b></label>
+                        <select ng-model="users" class="form-control" id="uname" >
+                            <option ng-repeat="tech in technicianArray"><b>{{tech.technicianName}}</b></option>
+                      </select>
+                       <label for="pass"><b>Password</b></label>
+                       <input type="password" ng-model="password" class="form-control" placeholder= "Enter Password" id="pass">
+                        <div ng-show="invalidPassword"> <font color="red"> Invalid password</font></div>
+             <br>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <input type="submit" class="btn btn-success pull-right" ng-click="setUsername()" value="Login"/>
+                    </div>
+          
+                <div class="clearfix"></div>
+                <div class="modal-footer"></div>
+           
+        </div>
+        </div>
+        </div>
+    </div>
+    
+    
+    <!-- Adding Resident Modal -->
+    
+    <div class="modal fade" id="residentModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">Add Resident</h4>
+        </div>
+        <div class="modal-body">
+           
+               
+                        <label for="rname"><b>Users :</b></label>
+                        <select ng-model="residentname" class="form-control" id="rname" >
+                            <option ng-repeat="tech in resTable"><b>{{tech.technicianName}}</b></option>
+        
+                      </select>
+                      
+                   
+                 <br>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                       
+                        <input type="submit" class="btn btn-success pull-right" ng-click="setResident()" value="Save" data-dismiss="modal"/>
+                    </div>
+          
+                <div class="clearfix"></div>
+                <div class="modal-footer"></div>
+           
+        </div>
+        </div>
+        </div>
+    </div>
+    
+    
+      <!--  file upload modal -->
+     <div class="modal fade" id="uploadModal" role="dialog">
+    	<div class="modal-dialog modal-lg">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+       <div class="modal-header">
+            
+            <h4 class="modal-title">Upload File</h4>
+        </div>
+        <div class="modal-body">
+         
+               
+             <div class="" id="mydiv1" ng-show="myImage1"  style="text-align:center;">
+    		<img src="img/loader.gif" class="ajax-loader" style="margin-left: auto;margin-right: auto;display: block;"/>
+			</div>
+                 <iframe id="myFrame" style="display:none" width="100%" height="100%" ></iframe>
+                <form name="assetForm" class="form-horizontal" novalidate >
+                <div class="col-md-12" style="text-align:center;">
+                <table style="border:1px solid black;margin-bottom:20px;width:100%;text-align:center;background-color:white;">
+                <thead style="border:1px solid black;">
+                <tr >
+                <th style="border:1px solid black;text-align:center;">List of Files</th>
+                <th style="text-align:center;">Actions</th>
+                </tr>
+                </thead>
+                <tbody style="border:1px solid black;">
+                <tr ng-repeat="f in file_array ">
+                <td style="border:1px solid black;"> {{f.upload_path}}</td>
+                <td style="border:1px solid black;">
+                 <button type="button"  class="btn btn-sm btn-primary" ng-click="viewFile(f.upload_path)" title="view" id="button_view">
+   				<i class="glyphicon glyphicon-eye-open"></i> View 
+				</button>
+				 <button type="button"  class="btn btn-sm btn-success" ng-click="deleteFile(f.np_upload_id)" title="Delete" id="button_delete">
+	   				<i class="glyphicon glyphicon-remove"></i> Delete 
+				</button>
+				</td>
+				</tr>
+				
+				
+				
+				</tbody>
+				</table>
+				</div>
+				
+				
+                    <!-- <input type="file" ng-file-model="files" multiple /> -->
+                    <div style="text-align:center;">
+                    <input id="fileid" type="file" name="upload_file"  />
+    				<button type="button" ng-click="upload()" id="upload_button1">Upload</button>
+    				</div>
+
+    <!-- <p ng-repeat="file in files">
+      {{file.name}}
+    </p> -->
+                    
+                    
+                   
+                    
+                    <div class="form-group" style="text-align:center;margin-top:30px;">
+                        <button type="button" class="btn btn-default" ng-click="close()" >Close</button>
+                        
+                    </div>
+                </form>
+           
+        </div>
+        
+        </div>
+        </div>
+    </div>
+    
+    
+    
+    <!--****************************************************EDIT MODAL****************************************************************************8-->
+    <div class="modal fade" id="editModal" role="dialog">
+    
+    <div class="modal-dialog">
+     <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">Edit Asset</h4>
+        </div>
+        <div class="modal-body" style="padding :32px;">
+          
+                <form name="assetForm" class="form-horizontal" novalidate >
+                    <h3>NP Number :: {{edit.npNumber}}</h3>
+                    <h3>Type :: {{edit.specimen}}</h3>
+                    <div class="form-group" >
+                        <label for="3"><b>Biopsy :</b></label>
+                        <select ng-model="edit.biopsy" class="form-control" id="3" >
+                            <option><b>Tumor</b></option>
+                            <option><b>Muscle</b></option>
+                            <option><b>Epilepsy</b></option>
+                            <option><b>Brain Biopsy</b></option>
+                            <option><strong>Lip</strong></option>
+                            <option><b>Liver</b></option>
+                            <option><b>Lymph Node</b></option>
+                            <option><b>Hair</b></option>
+                            <option><b>Thymus</b></option>
+                            <option><b>Nerve</b></option>
+                            <option><b>Skin</b></option>
+                            <option><b>Other</b></option>
+                            
+                            <!-- new options like in Receiving station biopsy options-->
+			  <option><b>Tumor (routine)</b></option>
+              <option><b>Tumor with IHC</b></option>
+              <option><b>Tumor+intraoperative squash/frozen</b></option>
+              <option><b>Pituitary tumor with IHC</b></option>
+              <option><b>Epilepsy (routine) with immunohistochemistry</b></option>
+              <option><b>Fresh Muscle for enzyme histochemistry (EHC)</b></option>
+              <option><b>Fresh Muscle for enzyme histochemistry (EHC) + electron microscopy</b></option>
+              <option><strong>Fixed muscle (routine)</strong></option>
+              <option><b>Fixed muscle (routine) with electron microscopy</b></option>
+              <option><b>Nerve biopsy (routine)</b></option>
+              <option><b>Nerve biopsy (routine) with semithin/electron microscopy</b></option>
+              <option><b>Skin biopsy (routine)</b></option>                           
+              <option><b>Skin biopsy (routine) with electron microscopy</b></option>
+              <option><b>Muscle+Nerve</b></option>
+              <option><b>Muscle+Nerve+Skin</b></option>
+              <option><b>Muscle+Skin</b></option>
+              <option><b>Nerve+Skin</b></option>
+              <option><b>Fluid</b></option>
+              <option><b>conjunctiva</b></option>                           
+              <option><b>Others</b></option>
+                        </select>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="2"><b>Fixative: </b></label>
+                        <select ng-model="edit.fixative" class="form-control" id="2" >
+                            <option>10% Formalin</option>
+                            <option>2.5% Cidex</option>
+                            <option>2% Glutaraldehyde</option>
+                            <!-- <option>Saline</option> -->
+                            <option>Fresh</option>
+                            <option>Alcohol</option>
+                            <option>Other</option>
+                            <option>None</option>
+                        </select>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <input type="submit" class="btn btn-success pull-right" data-dismiss="modal" ng-click="update(asset)" onclick="$('#3').val(null),$('#1').val(null),$('#2').val(null)" value="Save" />
+                    </div>
+                </form>
+                <div class="clearfix"></div>
+                <div class="modal-footer"></div>
+          
+        </div>
+        <div class="clearfix"></div>
+        </div>
+        </div>
+    </div>
+    
+    
+    <!-- unread message modal -->
+    <div class="modal fade" id="messageModal" role="dialog" >
+		<div class="modal-dialog modal-lg">
+    
+      <!-- Modal content-->
+     <div class="modal-content">
+       <div class="modal-header">
+           <!--  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button> -->
+            <h4 class="modal-title">Unread Messages</h4>
+        </div>
+        <div class="modal-body" style="overflow-y: auto;">
+         
+             <table style="border-collapse:collapse; table-layout:fixed; width:100%;">
+             <thead>
+             <tr>
+             
+             <th class="thclass1" height="10" width="5%">Sl No</th>
+             <th class="thclass1" height="10" width="10%" >Block Number</th>
+             <th class="thclass1" height="10" width="45%">Message</th>
+             <th class="thclass1" height="10" width="20%">Sender</th>
+             <th class="thclass1" height="10" width="10%">Date</th>
+             <th class="thclass1" height="10" width="10%">Action</th>
+             </tr>
+             </thead>
+             <tbody>
+             <tr ng-repeat="msg in messages" ng-style="{'backgroundColor':  msg.read_flag==0 ? '#f59790' : '#fff' }">
+             <td class="tdclass1" height="10" style="text-align:center;">{{$index + 1}}</td>
+             <td class="tdclass1" height="10" style="text-align:center;">{{msg.asset_number}}</td>
+             <td class="tdclass1" height="10">{{msg.message}}</td>
+             <td class="tdclass1" height="10" style="text-align:center;">{{msg.tech}}</td>
+             <td class="tdclass1" height="10" style="text-align:center;">{{msg.createdAt}}</td>
+             <td class="tdclass1" height="10" style="text-align:center;"><button type="button" class="btn btn-warning" ng-click="viewunreadMessageforNp1(msg.asset_number,msg.np_message_id)">View</button></td>
+             </tr>
+             </tbody>
+             </table>  
+             
+             
+             
+           
+        </div>
+        <div class="form-group" style="text-align:center;margin-top:10px;">
+           <button type="button" class="btn btn-default" ng-click="close1()" >Close</button>
+                        
+        </div>
+        </div>
+        
+       
+        </div>
+    </div>
+    
+    
+    <!-- display Message modal -->
+     <div class="modal fade modal-lg" id="displayMessageModal" role="dialog">
+    	<div class="modal-dialog modal-lg">
+    
+      <!-- Modal content-->
+     <div class="modal-content">
+       <div class="modal-header">
+           <!--  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button> -->
+            <h4 class="modal-title">View And Reply Message For Tissue No: <span>{{np}}</span></h4>
+        </div>
+        <div class="modal-body">
+         
+             <table style="border-collapse:collapse; table-layout:fixed; width:100%;">
+             <thead>
+             <tr>
+             <th class="thclass1" height="10" width="5%" style="text-align:center;">Sl.No</th>
+             <th class="thclass1" height="10" width="55%" style="text-align:center;">Message</th>
+            <!--  <th class="thclass1" height="10" width="20%" style="text-align:center;">Sender</th> -->
+             <th class="thclass1" height="10" width="20%" style="text-align:center;">Date</th>
+             </tr>
+             </thead>
+             
+             <tbody>
+             <tr ng-repeat="msg in messages2">
+             <td class="tdclass1" height="10" style="text-align:center;">{{$index+1}}</td>
+             <td class="tdclass1" height="10">{{msg.message}}</td>
+             <!-- <td class="tdclass1" height="10" style="text-align:center;">Dr Anita</td> -->
+             <td class="tdclass1" height="10" style="text-align:center;">{{msg.createdAt}}</td>
+             </tr>
+             </tbody>
+             </table>  
+             <div style="text-align:center;padding-top:20px;">
+             <form>
+             
+        <textarea id="messagebox" rows="4" cols="50">
+        </textarea>
+        <div style="text-align:center;">
+         <button type="button" class="btn btn-success" ng-click="sendReply(np)">Send Reply</button>
+          <button type="button" class="btn btn-default" ng-click="close2()" >Close</button>
+        </div>
+        </form>
+        </div>
+           
+        </div>
+        </div>
+        <div class="form-group" style="text-align:center;margin-top:30px;">
+                        <!-- <button type="button" class="btn btn-default" ng-click="close1()" >Close</button> -->
+                        
+                    </div>
+       
+        </div>
+    </div>
+    
+    
+    <div id="mydiv" ng-show="myVar">
+	<img src="img/loader.gif" class="ajax-loader" />
+	</div>
+    	
+        <div ng-show="task">
+        <div ng-show="label=='Processed Assets'" style="text-align: center;">
+        <button ng-click="processPrev()">Prev</button>
+        <span align="center">{{ processDate | date : 'EEEE, dd-MM-yyyy'}}</span>
+        <button ng-click="processNext()">Next</button>
+        </div>
+        <br>
+        <div class="col-md-12 hidden" id="block_date" >
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+        <table style="border:1px solid black;">
+        <thead>
+        <tr>
+        <th style="border:1px solid black;text-align:center;">Selected Block With Date</th>
+        
+        <th style="border:1px solid black;text-align:center;">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="date2 in block_date_array">
+        <td style="border:1px solid black;text-align:center;">{{date2}}</td>
+       
+        <td style="border:1px solid black;text-align:center;"><button type="button" style="border-radius:50%;" title="Remove This Test"  class="btn btn-primary" ng-click="remove_block_date(n)"><i class="glyphicon glyphicon-minus"></i>
+                    </button></td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+            <div class="col-md-1"></div>
+        
+        </div>
+        <br> <br>
+            <form class="form-horizontal" >
+            <div class="clearfix" style="padding-bottom: 5px"></div>
+            <div class="form-group" >
+             <div class="col-sm-1"></div>
+                <div class="col-sm-10" >
+                    <div class="panel panel-primary" id="asset-list1"><!-- asset List Start-->
+                        <div class="panel-heading">{{label}}</div>
+                        <div class="panel-body" style="padding:0px">
+                            <table class="table table-striped table-bordered" style="margin:0">
+                                <thead>
+                                <tr>
+                                    <th>NP Number </th>
+                                    <th ng-show="label=='Pending Assets'" ng-hide="label=='Processed Assets' || label=='Special Tasks'">Remarks </th>
+                                    
+                                    <th ng-show="label=='Pending Assets'" ng-hide="label=='Processed Assets' || label=='Special Tasks'">Specimen</th>
+                                    <th>Biopsy Type</th>
+                                    <th ng-show="label=='Pending Assets'" ng-hide="label=='Processed Assets' || label=='Special Tasks'">Fixative</th>
+                                    
+                                    <!-- <th ng-show="label=='Special Tasks'">Special Stain</th> -->
+                                    <th ng-show="label=='Special Tasks'">PROCESS ALL</th>
+                                    <th ng-show="label=='Special Tasks'">PROCESS MORE</th>
+                                    
+                                    <!-- <th ng-show="label=='Special Tasks'">IHC</th> -->
+                                    <th ng-show="label=='Special Tasks'">EM</th>
+                                    <th ng-show="label=='Special Tasks'">Notes</th>
+                                     <th ng-show="label=='Special Tasks'"></th>
+                                     <th ng-show="label=='Special Tasks'">Message</th>
+                                    <th ng-show="label=='Processed Assets'">No. of Blocks</th>
+                                    <th ng-show="label=='Processed Assets'">AP/RK/KFF</th>
+                                    <th ng-show="label=='Processed Assets'">Decal</th>
+                                    <th ng-show="false">Discard/Preserve/Date</th>
+                                   <!--  <th ng-show="label=='Processed Assets'">Date</th> -->
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="asset in assetTasksTable" >
+                                    <td>{{asset.npNumber}}</td>
+                                    <td  ng-hide="label=='Processed Assets' || label=='Special Tasks'">{{asset.review}}</td>
+                                    <td  ng-hide="label=='Processed Assets' || label=='Special Tasks'">{{asset.specimen}}</td>
+                                    <td>{{asset.biopsy}}</td>
+                                    <td  ng-hide="label=='Processed Assets' || label=='Special Tasks'">{{asset.fixative}}</td>
+                                    <!-- <td ng-show="label=='Special Tasks'">{{asset.special_stain}}</td> -->
+                                    <td ng-show="label=='Special Tasks'"><input type="checkbox" ng-checked="asset.process_all == 1" disabled=true /></td>
+                                    <td ng-show="label=='Special Tasks'"><input type="checkbox" ng-checked="asset.process_more == 1" disabled=true /></td>
+                                    <!-- <td ng-show="label=='Special Tasks'">{{asset.ihc}}</td> -->
+                                     <td ng-show="label=='Special Tasks'"><input type="checkbox" ng-checked="asset.em == 1" disabled=true /></td>
+                                    <td ng-show="label=='Special Tasks'">{{asset.notes}}</td>
+                                     <td ng-show="label=='Special Tasks'"><button type="button" class="btn btn-success" ng-click="scanScreen1(asset.npNumber)">Scan Tissue</button></td>
+                                     <td ng-show="label=='Special Tasks'"><button
+												type="button" class="btn btn-primary"
+												ng-click="viewreplyMessage(asset.npNumber)">Message</button></td>
+                                     
+                                    <td ng-show="label=='Processed Assets'">{{asset.noOfBlocks}}</td>
+                                    <td ng-show="label=='Processed Assets'">
+	                                    <label class="radio-inline"><input type="radio" ng-model="asset.pStatus" id="ap_radio" value="AP">AP</label>
+										<label class="radio-inline"><input type="checkbox" ng-model="asset.pStatus"  ng-true-value="RK" ng-false-value="">RK</label>
+										<label class="radio-inline"><input type="checkbox" class="kf" ng-model="asset.pStatus2" id="kff_checkbox" ng-change="enableDatePicker(asset.pStatus2)" ng-true-value="KFF" ng-false-value="">KFF</label>
+										<input ng-show="asset.pStatus2" id="{{$index}}_kffDate" ng-model="asset.kffDate" type="datetime" placeholder="Expected Date" class="form-control datepicker"/>
+                                    </td>
+                                    <td ng-show="label=='Processed Assets'">
+	                                    <select size="3" multiple="multiple" ng-model="asset.decal" ng-click="enableDatePicker()" class="form-control">
+	                                    <option value=undefined>None</option>
+	                            		<option ng-repeat="block in asset.blocks"><b>{{block.npNumber}}</b></option>
+	        							</select>
+	        							<input ng-show="asset.decal!=undefined && asset.decal[0]!='undefined'" id="{{$index}}_decalDate" ng-model="asset.decalDate" type="datetime" placeholder="Expected Date" class="form-control datepicker"/>
+	        							<input type="submit" class="btn btn-warning pull-right" ng-show="(label=='Processed Assets')" ng-click="addBlockWithDate()" value="Add"/>
+                                    </td>
+                                    <td ng-show="false">
+                                    	<label class="radio-inline"><input type="radio" ng-model="asset.status" value="Discard" >Discard</label>
+										<label class="radio-inline"><input type="radio" ng-model="asset.status" value="Preserve">Preserve</label>
+										<input ng-show="asset.status=='Preserve'" ng-model="asset.preserveDate" type="datetime" class="form-control datepicker"/>
+										
+                                    </td>
+                                    <!--  <td ng-show="label=='Processed Assets'" width="200">
+	                                    <select size="3" multiple="multiple" ng-model="asset.date_new"  class="form-control">
+	                                   
+	                            		<option ng-repeat="date1 in decalArray"><b>{{date1}}</b></option>
+	        							</select>
+	        							
+                                    </td> -->
+                                    <td width="150" ng-hide="label=='Processed Assets' || label=='Special Tasks'">
+                                        <!-- <button type="button" ng-click="printAsset(asset.npNumber)" class="btn btn-sm btn-primary" title="Print" >
+                                            <i class="glyphicon glyphicon-print"></i>
+                                        </button>  -->
+                                        <button type="button" class="btn btn-sm btn-danger" title="Delete"  ng-click="delete(asset)">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                            <!--ng-click=";hideRow = true""-->
+                                        </button>
+                                        <button class="btn btn-sm btn-warning " title="Edit" ng-click="edit(asset)" data-toggle="modal" data-target="#editModal">
+                                            <i class="glyphicon glyphicon-pencil"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div><!-- asset List End -->
+                    <input type="submit" class="btn btn-primary pull-left" ng-show="(label=='Processed Assets')" ng-click="dailyLog()" value="View Daily Log-Grossing"/>
+                    <!-- <input type="submit" class="btn btn-warning pull-right" ng-show="(label=='Processed Assets')" ng-click="addBlockWithDate()" value="Add Block with Date"/> -->
+                    <input type="submit" class="btn btn-success pull-right" ng-show="(label=='Processed Assets')" ng-click="saveDailyLog()" value="Save"/>
+                </div>
+                <div class="col-sm-1"></div>
+            </div>
+        </form>
+    </div>
+    
+     
+    
+    <!-- THE BELOW DIV IS SCAN BARCODE SCREEN DETAILS-->
+    <div ng-hide="task">
+        <br>
+        <div align="center" value="Read Barcode :">
+            <input type="text" ng-model="npNumberValue" ng-disabled="!step1" ng-blur="npNumberValue=npNumberValue.toUpperCase();" id="barcodeText" placeholder="Scan/Enter NP Number">
+            <!--*************************************************************ATTENTION*******************************************************************************
+             SO , the person scans the barcode after putting the cursor on the input above and clicks button to populate patient data******
+            ***************************************************************************************************************-->
+            </input>
+            <button type="button" id="sendBarcode" class="btn btn-default"ng-click="getAssetDetails()" title="Get Patient Details by Scanning Barcode"><i class="glyphicon glyphicon-barcode"></i> Submit</button>
+
+        </div>
+        
+        <div class="container" style="padding-top:10px;">
+        <div class="jumbotron" >
+            <div class="container">
+                <h3 align="center"><b>Asset Details :</b></h3>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h5 align="center">
+                            Patient UHID :: <b>{{patient.UHID}}</b>
+                        </h5>
+                        <h5 align="center">
+                            Patient Name :: <b>{{patient.patientName}}</b>
+                        </h5>
+                        <h5 align="center">
+                            Age :: <b>{{patient.patientAge}}</b>
+                        </h5><!--
+                        <h5 align="center">
+                            Sex :: <b>{{sex}}</b>
+                        </h5>-->
+                        <h5 align="center">
+                            Referring Doctor :: <b>{{patient.surgeon}}</b>
+                        </h5>
+
+                    </div>
+                    <div class="col-sm-6">
+                        <h5 align="center">
+                            Asset NP Number :: <b>{{asset.npNumber}}</b>
+                        </h5>
+                        <h5 align="center">
+                            Type :: <b>{{asset.specimen}}</b>
+                        </h5>
+                        <h5 align="center">
+                            Biopsy :: <b>{{asset.biopsy}}</b>
+                        </h5>
+                        <h5 align="center">
+                            Fixative :: <b>{{asset.fixative}}</b>
+                        </h5></div>
+                        <div class="col-md-12" style="text-align:center;">
+                        <div class="col-md-4">
+                        <h5>Unit:{{patient.unit_name}}</h5>
+                        </div>
+                         <div class="col-md-4">
+                          <h5>Department:{{patient.department_name}}</h5>
+                        </div>
+                         <div class="col-md-4">
+                          <h5>Hospital:{{hosp_name}}</h5>
+                        </div>
+                        </div>
+                        <br> 
+                        <h5 align="center">
+                            Remarks :: <b>{{asset.review}}</b>
+                        </h5>
+                </div>
+            </div>
+
+
+         <!--   <form align= "center" class="form-inline" role="form1">
+                <div class="form-group"><br>
+                    <button type="button" class="btn btn-info" ng-click="startTransaction()" ng-disabled="asset.nextState!=2">Proceed...</button>
+                    <button type="button" class="btn btn-info" onClick="window.location.reload();">Done</button>
+                </div >
+            </form> --> 
+        </div>
+        
+        <!-- commented -->
+        <!-- begin code for displaying the template to enter remarks about a specimen display the same is reporting station -->
+        						<div class="row">
+								 <div class="col-md-12" style="margin-top:10px;margin-bottom:10px;">
+								
+								<div class="col-md-4" style="text-align:right;">
+								<label id="select_label" class="hidden"><b>Select Template::</b></label>
+								</div>
+								
+								<div class="col-md-4" style="text-align:center;">
+								
+								<select id="template_dropdown"  class="hidden">
+								 <option value="" selected>Select</option>
+								  <option value="epileptic">Epileptic</option>
+								  <option value="general">General</option>
+								  <option value="muscle">Muscle</option>
+								 
+								</select>
+								</div>
+								
+								<div class="col-md-4" style="float:left;">
+								<!-- <button type="button" id="select_button" class="btn btn-warning hidden" ng-click="openTemplate()">Edit</button></div>
+								 -->
+								</div>
+								</div>
+								
+								<div class="row">
+								<!-- general biopsy -->
+							<div id="div1"  class="hidden">
+							<form>
+							
+							<textarea name="editor1"  id="editor1" style="background-color:white;width: 1000px;">
+  							<p>
+  							 <u><strong>Nature Of Specimen:</strong></u>
+   							<br /> 
+    						<br />
+						  	<u><strong>Frozen Section Report:</strong></u>
+						  	<br /><br />
+						  	<u><strong>Histopathology Report:</strong></u>
+						  	<br /><br /> 
+						  	<u> <strong>Final Impression:</strong></u>
+						  	<br /> <br />
+						  	<u>  <strong>Reported By:</strong></u>
+						  	<br /> <br /><br />
+   							</p>
+   							
+						<table  cellpadding= 0  cellspacing= 0  >
+
+							<tbody>
+							<tr>
+							<td style= width:500px;height:41px;border:white; colspan="4" >
+							<p>
+
+							<strong>Level1 Entered By:</strong>
+							</p>
+
+							</td>
+							<td style= width:500px;text-align:right;height:41px;border:white; colspan="4" >
+							<p>
+
+							<strong>Level2 Verified By:</strong>
+							</p>
+
+							</td>
+
+							</tr>
+							</tbody>
+							</table>
+							</textarea><br />
+							</form>
+							</div>
+							
+							
+							<!-- muscle biopsy -->
+							<div id="div2"  class="hidden">
+							<form>
+							
+							<textarea name="editor2"  id="editor2" style="background-color:white;width: 1000px;">
+  							<p>
+<span><u><strong>Muscle biopsy report</strong></u></span>
+</p>
+<table border= 1  cellpadding= 0  cellspacing= 0 >
+
+<tbody>
+<tr>
+<td style= width:310px;height:41px; colspan="4" >
+<p>
+
+<strong>Gross details</strong>
+</p>
+
+</td>
+
+</tr>
+
+<tr>
+<td >
+<p><strong>Biopsy (Frozen)</strong></p>
+</td>
+<td >
+<p><strong>Enzyme histochemistry (Yes/No)</strong></p></td>
+<td ><p><strong>Tissue preserved (EM) (Yes/No)</strong></p></td>
+<td ><p><strong>Unstained slides (Yes/No)</strong></p>
+</td>
+</tr>
+
+<tr>
+<td colspan="2"><p><strong>Clinical diagnosis:&nbsp; </strong></p></td>
+<td colspan="2"><p><strong>Site of biopsy: </strong><strong>&nbsp; </strong></p></td>
+</tr>
+</tbody>
+
+</table>
+
+<p><span style= font-size:16px; ><strong><u>Microscopic findings</u></strong></span></p>
+
+<table border= 1  cellpadding= 0  cellspacing= 0 >
+
+<tbody>
+<tr>
+<td style= width:310px;height:41px; colspan="2"><p style="text-align:center;"><strong>Paraffin Sections</strong></p></td>
+
+</tr>
+<tr>
+<td style= width:310px;height:41px; ><p><strong>Quality of fixation</strong></p>
+</td>
+<td style= width:378px;height:41px; ><p></p></td>
+</tr>
+<tr><td style= width:310px;height:41px; ><p><strong>Haematoxylin & Eosin (HE)</strong>:</p></td>
+<td style= width:378px;height:41px; ><p></p>
+</td>
+</tr>
+<tr>
+<td style= width:310px;height:41px; ><p><strong>Masson’s trichrome (MAT)</strong>:</p></td>
+<td style= width:378px;height:41px; ><p></p></td>
+</tr>
+
+<tr>
+<td style= width:310px;height:41px; colspan="2"><p style="text-align:center;"><strong>CRYOSECTIONS</strong></p></td>
+</tr>
+
+<tr>
+<td ><p><strong>Quality of tissue</strong></p>
+</td>
+<td ><p></p></td>
+</tr>
+<tr><td ><p><strong>Haematoxylin & Eosin (HE)</strong>:</p></td>
+<td ><p></p>
+</td>
+</tr>
+<tr>
+<td  ><p><strong>Modified Gomori trichrome (MGT)</strong>:</p></td>
+<td ><p></p></td>
+</tr>
+<tr>
+<td ><p><strong>Oxidative enzymes (NADH/SDH)</strong>:</p></td>
+<td  ><p></p></td>
+</tr>
+<tr>
+<td ><p><strong>ATPase (pH 9.4, 4.6)</strong>:</p></td>
+<td  ><p></p></td>
+</tr>
+<tr>
+<td  ><p><strong>Other stains </strong>:</p></td>
+<td ><p></p></td>
+</tr>
+</tbody>
+
+</table>
+<p><u><strong>Impression:</u></strong></p>
+<p><strong>Comments:</strong></p>
+<p><strong>Immunohistochemistry -  Required /Not Required  ;   Electron Microscopy –Required /Not Required</strong></p>
+<br /><br />
+<table  cellpadding= 0  cellspacing= 0  >
+
+							<tbody>
+							<tr>
+							<td style= width:500px;height:41px;border:white; colspan="4" >
+							<p>
+
+							<strong>Level1 Entered By:</strong>
+							</p>
+
+							</td>
+							<td style= width:500px;text-align:right;height:41px;border:white; colspan="4" >
+							<p>
+
+							<strong>Level2 Verified By:</strong>
+							</p>
+
+							</td>
+
+							</tr>
+							</tbody>
+							</table>
+
+</textarea>
+						</form>
+							</div>
+							
+							
+							<!-- epileptic biopsy -->
+							<div id="div3"  class="hidden">
+							<form>
+							
+							<textarea name="editor3"  id="editor3" style="background-color:white;width: 1000px;">
+  							<p>
+<span><u><strong>TEMPORAL LOBE EPILEPSY CASES - SYNOPTIC REPORTING</strong></u></span>
+</p>
+<table border= 1  cellpadding= 0  cellspacing= 0 >
+
+<tbody>
+<tr>
+<td style= width:168px;height:39px; colspan="2" >
+<p>
+<span style= font-size:16px;>
+<strong>HIPPOCAMPUS</strong>
+</span></p>
+
+</td>
+<!-- <td colspan= 4  style= width:539px;height:39px; >
+</td> -->
+</tr>
+
+<tr>
+<td style= width:168px;height:36px; >
+<p><span><strong>DENTATE GYRUS CHANGES (NeuN)
+Thinning/gaps (type 1)
+Dispersion/Ectopic neurons/ duplication (type 2)
+</strong></span></p>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td style= width:310px;height:41px;  ><p><span style= font-size:16px; ><strong>AMMON’S HORN 
+(Neu N, NF) </strong></span></p></td>
+<td style= width:310px;height:41px;  ><p><span style= font-size:16px; ><strong>NEURONAL LOSS (NeuN stain):  </strong></span></p>
+</td>
+</tr>
+
+<tr>
+<td style= width:310px;height:41px; ><span style= font-size:16px; ><strong>AMYGDALA(loss/gliosis/satellitosis/hamartia)</strong></span></td>
+<td></td>
+</tr>
+<tr>
+<td style= width:310px;height:41px; ><p><span style= font-size:16px; ><strong>TEMPORAL CORTEX</strong></span></p>
+</td>
+<td style= width:378px;height:41px; ><p><span style= font-size:16px; ></span></p></td>
+</tr>
+<tr><td style= width:310px;height:41px; ><p><span style= font-size:16px; ><strong>LAMINAR ARCHITECTURE
+(Neu N)
+</strong>:</span></p></td>
+<td style= width:378px;height:41px; ><p><span style= font-size:16px; ></span></p>
+</td>
+</tr>
+<tr>
+<td style= width:310px;height:41px; ><p><span style= font-size:16px; ><strong>DYSMORPHIC NEURONS (NF)/ BALOON NEURONS
+(GFAP, Vimentin)
+</strong>:</span></p></td>
+<td style= width:378px;height:41px; ><p><span style= font-size:16px; ></span></p></td>
+</tr>
+
+<tr>
+<td style= width:310px;height:41px; ><span style= font-size:16px; ><strong>OTHERS</strong></span></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+
+<p><strong>FINAL IMPRESSION</strong></p>
+<table border= 1  cellpadding= 0  cellspacing= 0>
+<tbody>
+
+<tr>
+<td style= width:168px;height:39px;>SITE</td>
+<td>PATHOLOGY</td>
+<td>GRADE/TYPE</td>
+</tr>
+
+<tr>
+<td style= width:168px;height:39px;></td>
+<td>AMMON’S HORN - </td>
+<td>AH TYPE (Blumcke)</td>
+</tr>
+
+
+<tr>
+<td>AMYGDALA</td>
+<td></td>
+<td></td>
+</tr>
+
+
+<tr>
+<td>TEMPORAL CORTEX</td>
+<td></td>
+<td>FCD</td>
+</tr>
+
+<tr>
+<td  colspan="2"><span><u>ILAE CONSENSUS CLASSIFICATION (NEW  ILAE, 2011):</u></span></td>
+<td></td>
+
+</tr>
+
+
+</tbody>
+
+</table>
+<br /><br />
+<table  cellpadding= 0  cellspacing= 0  >
+
+							<tbody>
+							<tr>
+							<td style= width:500px;height:41px;border:white; colspan="4" >
+							<p>
+
+							<strong>Level1 Entered By:</strong>
+							</p>
+
+							</td>
+							<td style= width:500px;text-align:right;height:41px;border:white; colspan="4" >
+							<p>
+
+							<strong>Level2 Verified By:</strong>
+							</p>
+
+							</td>
+
+							</tr>
+							</tbody>
+							</table>
+</textarea>
+						</form>
+							</div>
+							<div align="center">
+							 <button type="button" class="btn btn-success hidden" id="report_button1" ng-click="submitReport()">Save Data
+                    <i class="glyphicon glyphicon-plus"></i></button>
+                    </div>
+							</div>
+								
+    </div>
+    <!-- end of code for remarks template -->
+    
+    
+   
+
+    <!--THIS DIV IS TO DISPLAY TISSUE OBJECT , PUT TISSUE ATTRIBUTES LIKE IN JSON .
+    CHANGE THE BELOW , FOR REFERENCE , RecievingStation.html jumbotron
+    IF json is {"employee_name":"name","employee_id":"id"} , in HTML display {{employee.employee_id}}
+    to get value after assigning to var employee={} in the js page
+    LIKEWISE HERE , AFTER ASSIGNING THE DATA OBJECT IN SUCCESS TO $scope.tissue , access tissue attributes defined in json-->
+
+<!-- display the reply message from the reporting station for a tissue  -->
+<div class="col-sm-12" style="padding-bottom:20px;" id="container4">
+		<div class="hidden panel panel-primary" id="messageDiv1" style="margin-bottom:20px;">
+         
+         
+         <div class="panel-heading" style="padding: 24px 15px;">
+                         <div class="panel-title pull-left">Messages</div> 
+                        
+                        </div>
+             <table style="border-collapse:collapse; table-layout:fixed; width:100%;">
+             <thead>
+             <tr>
+             <th class="thclass1" width="5%">Sl No</th>
+             <th class="thclass1" width="10%">Block Number</th>
+             <th class="thclass1" width="45%">Message</th>
+             <th class="thclass1" width="10%">Sender</th>
+             <th class="thclass1" width="20%">Date</th>
+             <!-- <th class="thclass1" width="10%">Action</th> -->
+             </tr>
+             </thead>
+             <tbody>
+             <tr ng-repeat="msg in messages3">
+             <td class="tdclass1" height="10" style="text-align:center;">{{$index + 1}}</td>
+             <td class="tdclass1" height="10" style="text-align:center;">{{msg.asset_number}}</td>
+             <td class="tdclass1" height="10">{{msg.message}}</td>
+             <td class="tdclass1" height="10" style="text-align:center;">{{msg.tech}}</td>
+              <td class="tdclass1" height="10" style="text-align:center;">{{msg.createdAt}}</td>
+             <!-- <td class="tdclass1" style="text-align:center;"><button type="button" class="btn btn-success" ng-click="viewreplyMessage(msg.asset_number)">View & Reply</button></td> -->
+             <tr class="hidden" style="text-align: center;border:1px solid black;" id="tr2"><td colspan="5" class="tdclass2"><button type="button" ng-model="asset_no" class="btn btn-success" ng-click="viewreplyMessage(messages3[0].asset_number)">View & Reply</button></td></tr>
+            
+             </tr>
+             </tbody>
+             </table>  
+             
+             
+             
+           
+        </div>
+        </div>
+        <!-- end of reply message display code -->
+   
+    <div class="form-group">
+        <div class="col-sm-12" >
+            <div class="panel panel-primary" id="asset-list"><!-- asset List Start-->
+                <div class="panel-heading">Assets</div>
+                <div class="panel-body" style="padding:0px">
+                    <table class="table table-striped table-bordered" style="margin:0">
+                        <thead>
+                        <tr>
+                            <th>NP Number</th>
+                            <th>Process_All</th>
+                            <th>Process_More</th>
+                            <th>EM</th>
+                            <th width="200">
+                            <button type="button" class="btn btn-info" ng-click="generateBlocks()" ng-disabled="step1" title="Click here to Add Blocks">Add Block</button>
+                            <button type="button" id="clear" ng-click="clearAll()" class="btn btn-info" title="Clear the page without clearing Queue" >
+            				Clear <i class="glyphicon glyphicon-refresh"></i>
+      						</button>
+      						</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="asset in assetTable">
+                            <td><b>{{asset.npNumber}}</b></td>
+                             <td><input type="checkbox" ng-checked="asset.process_all == 1" disabled=true /></td>
+                              <td><input type="checkbox" ng-checked="asset.process_more == 1" disabled=true /></td>
+                               <td><input type="checkbox" ng-checked="asset.em == 1" disabled=true /></td>
+                            
+                            <td width="200">
+                                <button type="button" ng-click="printAsset(asset.npNumber)" class="btn btn-sm btn-primary" title="Add this to Queue" >
+                                  Print <i class="glyphicon glyphicon-print"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-danger" title="Delete" ng-click="delete(asset)">
+                                    <i class="glyphicon glyphicon-trash"></i>
+                                </button><!--
+                                <button class="btn btn-sm btn-warning" title="Edit" >
+                                    <i class="glyphicon glyphicon-pencil"></i>
+                                </button>-->
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div><!-- asset List End -->
+        </div>
+    </div>
+    </form>
+
+	<!-- div for buttons -->
+    <div align="center" id="container6">
+    
+        <!-- <button type="button" class="btn btn-md btn-warning" id="addQueue" ng-click="addQueue()" >Add All to Queue</button> -->
+       <!--  <button type="button" class="btn btn-md btn-primary" ng-click="printQueue()">Print Queue({{queue.length}}) <i class="glyphicon glyphicon-print"></i></button> -->
+        <button type="button" class="btn btn-md btn-success" onClick="window.location.reload();" title="Clear page and Queue">
+            <!-- <i class="glyphicon glyphicon-save"></i>
+            Save form and -->Clear All
+            <i class="glyphicon glyphicon-refresh"></i>
+        </button>
+        <button type="button" data-toggle="modal" data-target="#uploadModal" ng-click="getFiles(npNumber)" class="btn btn-sm btn-warning" ng-disabled="checknp"  title="Upload" >
+		<i class="glyphicon glyphicon-upload"></i> Upload File
+      	</button>
+    </div>
+    
+    
+    </div>
+    
+    
+        <!--AFTER SELECTING THE NUMBER OF BLOCKS HERE YOU MUST MAKE A REST GET CALL TO SEND NUMBER OF TISSUES
+		AND RECEIVE A NUMBER OF SUGGESTED BLOCK NP NUMBERS . ON PRESSING PRINT , REST CALL TO MAKE NEW BLOCKS-->
+    <script src="js/values.js"></script>
+    <script src="js/grossing.js"></script>
+    <script src="js/alasql.min.js"></script>
+    <script src="js/xlsx.core.min.js"></script>
+     <script src="js/ckeditor/ckeditor.js"></script>
+     
+      <script>
+      
+     /* ckeditor is for the template for entering remarks*/
+        CKEDITOR.replace( 'editor1'
+        		  , {
+        	toolbar: [
+        		{ name: 'document', items: [ 'Save', '-', 'NewPage', 'Preview','Print','Table','Maximize' ] },	// Defines toolbar group with name (used to create voice label) and items in 3 subgroups.
+        		[ 'Cut', 'Copy', 'Paste', 'PasteText', 'Undo', 'Redo' ],			// Defines toolbar group without name.
+        																							// Line break - next group will be placed in new line.
+        		{ name: 'basicstyles', items: [ 'Bold', 'Italic','Underline','Font','FontSize','SelectAll' ] }																				// Line break - next group will be placed in new line.
+        		
+        	] 
+        }  
+        );
+        //extraPlugins : 'htmlwriter'
+                        
+     </script>
+</body>
+</html>

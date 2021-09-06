@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://getbootstrap.com/examples/dashboard/ -->
+
+<html lang="en" hola_ext_inject="disabled">
+
+	<head>
+	
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>Sample Tracker</title>
+		
+		<link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+		<link href="bootstrap/bootstrap-combined.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="css/notification.css">
+		
+		<!-- Bootstrap core CSS -->
+		<link href="./search_files/bootstrap.min.css" rel="stylesheet">
+		<link href="css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+		<!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"> -->
+
+		<!-- Custom styles for this template -->
+		<link href="./search_files/search.css" rel="stylesheet">
+
+		<script src="./search_files/ie-emulation-modes-warning.js"></script><style type="text/css"></style>
+		<!-- <script src="http://cdn.jsdelivr.net/alasql/0.2/alasql.min.js"></script>-->
+		<script src="js/alasql.min.js"></script>
+		<script src="bootstrap/angular.js"></script>
+	   	<script src="bootstrap/angular-animate.js"></script>
+	  	    <script src="bootstrap/ui-bootstrap-tpls.min.js"></script>
+	    <!-- <script src="bootstrap/angular.min.js"></script>-->
+	    <script src="bootstrap/jquery.min.js"></script>
+	    <script src="bootstrap/angular-sanitize.min.js"></script>
+	    <script src="bootstrap/ui-bootstrap-tpls-0.6.0.js"></script>
+	    <script src="bootstrap/angular-cookies.js"></script>
+	    
+      	<script>
+     function sampleList(){
+    	window.location.href = "notificationDisplay.html";
+    	 
+     }
+      </script>
+      
+<style>
+
+.jumbotron {
+
+padding: 0.5em 0.6em;
+h1 {
+font-size: 2em;
+}
+
+p {
+font-size: 1.2em;
+.btn {
+padding: 0.5em;
+}
+}
+
+}
+
+
+.modal
+{
+height:550px;
+}
+
+
+#editHospitalModal,#createHospitalModal,#reviewHospitalModal{
+/*height:440px;
+border: 3px solid #73AD21;*/
+margin: auto;
+width: 60%;
+height:730px;
+
+padding: 10px;
+
+}
+
+
+#oldNpModal{
+height:300px;
+}
+		
+		
+#confirmNp{
+height:200px;
+}
+
+
+#mydiv {  
+position:absolute;
+width:10%;
+height:20%;
+left:46%;
+top:40%;
+z-index:1000;
+opacity: .8;
+}
+
+.ajax-loader {
+position: absolute;
+display: block;     
+}
+
+#snackbar {
+visibility: hidden;
+min-width: 250px;
+margin-left: -125px;
+color: #fff;
+text-align: center;
+border-radius: 2px;
+padding: 16px;
+position: fixed;
+z-index: 1;
+left: 50%;
+bottom: 30px;
+font-size: 17px;
+
+}
+
+
+#snackbar.show {
+visibility: visible;
+-webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+
+@-webkit-keyframes fadein {
+from {bottom: 0; opacity: 0;} 
+to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+from {bottom: 0; opacity: 0;}
+to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+from {bottom: 30px; opacity: 1;} 
+to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+</style>
+
+  
+</head>
+
+<!--this page is for external hospitals list display , add new  /edit existing external hospitals from the superadmin login  -->
+
+    <body ng-app="myApp2" class="ng-cloak" style="padding-top:0px;" ng-controller="ExternalHospitalController as ctrl">
+    
+  <div class="navbar navbar-inverse">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">Lab Sample Tracker</a>
+                    
+    <button class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="mynavbar">
+      <ul class="nav navbar-nav navbar-right">
+      	<li><button type="button" class="btn btn-info btn-small" onClick="pageRefresh()">Refresh</button></li>
+        <li><button type="button" ng-click="back()" class="btn btn-sm btn-success" style="margin-right:5px;"><i class="glyphicon glyphicon-home "></i>Home
+      	</button></li>
+      	
+      	<!-- <li><button type="button" ng-click="pendingHospital()" class="btn btn-sm btn-default" title="Pending Hospitals" >
+             <i class="glyphicon  glyphicon-inbox"></i>Pending Requests
+      		 </button></li> -->
+      	<li><button type="button" ng-click="createHospital()" class="btn btn-sm btn-warning" title="Create New Hospital" >
+        <i class="glyphicon  glyphicon-plus-sign"></i>External Hospital
+        </button></li>
+      
+        <li> <a id="notify_div" title="click here to see the Notifications" class="notification" style="background-color:black; "href="notificationDisplay.html" ></a>
+      	</li>
+      	
+        <li><button type="button"  ng-click="logOutUser()" class="btn btn-sm btn-danger"> <i class="glyphicon glyphicon-off"></i>Logout</button>
+        </li>
+        
+      </ul>
+    </div>
+    
+  </div>
+</div>
+		
+        <div class="container-fluid" ng-controller="ExternalHospitalController">
+        
+            		<div class="row">
+               		<div class="col-md-12">
+               		<div class="col-md-1"></div>
+                	<div class="col-md-9" style="margin-top:10px;margin-left:10px;">
+                    <h1 class="page-header" style="margin-top:20px;">EXTERNAL HOSPITALS</h1>
+                    </div>
+                     <div class="col-md-2"></div>
+                    </div>
+                    </div>
+                   
+                    <div class="row">
+                    <div class="col-md-12">
+                    <div class="col-md-9"></div>
+                    <div class="col-md-1" style="text-align:right;padding-top:0px;">
+      				</div>
+      				<div class="col-md-1" style="text-align:right;padding-top:0px;">
+      				</div> 
+      				<div class="col-md-1" style="padding-top:0px;">		
+      				</div>
+      				</div>
+      				</div>
+      				
+                    <br>
+				<div class="col-md-12">
+                	<div ng-show = ctrl.results></div>
+                	
+                    <div ng-show = "ctrl.buttonstate">
+                    <!-- <div> --> 
+                    	<table align="center" class="table table-striped" border="1" style="border:1px solid black;">
+                    	
+                    		 <thead>
+                    		 
+                                <tr>  
+                                	
+                                	<th>S.No</th>
+                                    <th>Hospital Name:</th>
+                                    <th>Hospital Type:</th>
+                                     <th>Hospital Address:</th>
+                                    <th>UserName:</th>
+                                    <th>Contact:</th>
+                                    <th>Email_ID:</th>
+                                    <th>Date of Creation</th>
+                                    <th>Edit</th>
+                                     <th>Review</th>
+                                </tr>
+                                
+                            </thead>
+                            
+                            <tbody>
+                            
+                            	 <tr ng-repeat-start="output in ctrl.outputlist1 | limitTo:100">
+                            	 
+                            	    <td>{{$index +1}}</td>
+									<td ng-bind="output.nameofhospital"></td>
+									<!-- <td ng-bind="output.hospitalType"></td> -->
+									<td ng-bind="output.hospitalType"></td>
+									<td ng-bind="output.hospital_address"></td>
+									<td ng-bind="output.username"></td>
+									<td ng-bind="output.contact"></td>
+									<td ng-bind="output.email"></td>
+									<td ng-bind="output.createdAt"></td>
+									
+							<td>
+							<button type="button" ng-model="edit" data-toggle="modal"  ng-click="editUser(output.hospitalid,output.nameofhospital,output.username,output.contact,output.email,output.hospitalType,output.hospital_address)" class="btn btn-sm btn-info " title="edit" >
+            				<i class="glyphicon  glyphicon-pencil"></i> Edit
+      						</button>
+      						
+      						<!-- <button type="button" ng-if="(output.roles == 'office_inactive') || (output.roles == 'technician_inactive') ||(output.roles == 'resident_inactive')||(output.roles == 'faculty_inactive')||(output.roles == 'techguru_inactive')||(output.roles == 'admin_inactive')"  ng-click ="deleteUser(output.technician_id,output.roles)"  class="btn btn-sm btn-success" title="delete" >
+            				<i class="glyphicon glyphicon-off"></i> Active
+      						</button>
+      						<button type="button"  ng-if="(output.roles == 'office') || (output.roles == 'technician') ||(output.roles == 'resident')||(output.roles == 'faculty')||(output.roles == 'techguru')||(output.roles == 'admin')"  ng-click ="deleteUser(output.technician_id,output.roles)"  class="btn btn-sm btn-warning" title="delete" >
+            				<i class="glyphicon glyphicon-off"></i> InActive
+      						</button> -->
+      						</td> 
+      						<td style="border:none;">
+      						<button type="button" ng-model="review" data-toggle="modal"  ng-style="{ 'display' : (output.review_flag == 0) ? 'block' : 'none' }" ng-click="reviewUser(output.hospitalid,output.nameofhospital,output.username,output.contact,output.email,output.hospitalType,output.hospital_address,output.verify_email_flag)" class="btn btn-sm btn-warning " title="edit" >
+            				<i class="glyphicon  glyphicon-pencil"></i> Review
+      						</button></td>
+            					</tr>
+            					
+                    			<tr ng-repeat-end>
+									<td></td>
+									<td colspan="9">
+										
+									</td>
+								</tr>
+								
+							</tbody>
+						</table>
+						</div>
+							
+						
+                </div>
+            </div>
+        <!-- </div> -->
+        
+
+<!-- ************* Create Hospital Modal **********-->
+    <div class="modal"  id="createHospitalModal"  role="dialog">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">Create New External Hospital</h4>
+        </div>
+        <div class="modal-body" style="max-height:700px;">
+            <div class="col-md-12">
+                <form name="editUser" class="form-horizontal" novalidate autocomplete="off" >
+                    <div class="form-group" >
+                   
+                        <label for="uname"><b>Hospital Name:</b></label>
+                        <input type="text" style=" height:120%;" class="form-control"  name="hosp_name" id="create_hosp_name">
+                      <br>
+                      <br>
+                      <!-- <label for="uname"><b>Hospital Type:</b></label>
+                        <input type="text" style=" height:120%;" class="form-control"  name="hosp_type" id="create_hosp_type"> -->
+                        <label for="uname"><b>Hospital Type:</b></label>
+                         <select ng-model="hosType" class="form-control">
+                            <option ng-repeat="hos1 in hos_type"><b>{{hos1.value}}</b></option>
+        
+                      </select>
+                      <br>
+                      <br>
+                      
+                      <label for="pass"><b>Hospital Address:</b></label>
+                       <input type="text" style=" height:120%;"  class="form-control" autocomplete="false" id="hosp_address" placeholder="">
+                       <br>
+                      <br>
+                      
+                       
+                       <label for="pass"><b>Phone Number:</b></label>
+                       <input type="number" style=" height:120%;"  class="form-control" id="contact_create" placeholder="">
+                       <br>
+                       <br>
+                       <label for="pass"><b>Email Id:</b></label>
+                      <input type="email" style=" height:120%;"  class="form-control" id="email_create" placeholder="">
+                       <br>
+                       <br>
+                       <label for="pass"><b>User Name:</b></label>
+                       <input type="text" style=" height:120%;"  class="form-control" autocomplete="false" id="username_create" placeholder="">
+                       <br>
+                      <br>
+                       
+                      
+                      <label for="pass"><b>Password:</b></label>
+                       <input type="password" style=" height:120%;" ng-model="passwordT" class="form-control" autocomplete="false" id="password_create" placeholder=" enter Password">
+                       <br>
+                      <br>
+                       <label for="pass"><b>Confirm Password:</b></label>
+                       <input type="password" style=" height:120%;" ng-model="passwordC" class="form-control" autocomplete="false" id="password_create_confirm" placeholder=" Confirm Password">
+                       
+                      
+                      
+                </div >
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <input type="submit" class="btn btn-success pull-right" ng-click="createHospitalSave()" value="Create" />
+                    </div>
+                </form>
+                <!-- <div class="clearfix"></div>
+                <div class="modal-footer"></div> -->
+            </div>
+        </div>
+    </div>
+    <!-- *************************Create Hospital model end************************ --> 
+    
+    
+    
+     <!-- ************* Edit Hospital Modal **********-->
+    <div class="modal"  id="editHospitalModal"  role="dialog">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title" >Edit External Hospital<span><p id="hospid"></p></span></h4>
+            
+           
+        </div>
+        <div class="modal-body" style="max-height:700px;>
+            <div class="col-md-12">
+                <form name="editUser1" class="form-horizontal" novalidate autocomplete="off" >
+                    <div class="form-group" >
+                   
+                        <label for="uname"><b>Hospital Name:</b></label>
+                        <input type="text" style=" height:120%;" class="form-control"  name="edit_hosp_name" id="edit_hosp_name">
+                      <br>
+                      <br>
+                     <!--  <label for="uname"><b>Hospital Type:</b></label>
+                        <input type="text" style=" height:120%;" class="form-control"  name="edit_hosp_type" id="edit_hosp_type"> -->
+                        
+                        <label for="uname"><b>Hospital Type:</b></label>
+                         <select ng-model="hosType" class="form-control" name="edit_hosp_type" id="edit_hosp_type">
+                            <option ng-repeat="hos1 in hos_type"><b>{{hos1.value}}</b></option>
+        
+                      </select>
+                      <br>
+                      <br>
+                      
+                       <label for="pass"><b>Hospital Address:</b></label>
+                       <input type="text" style=" height:120%;"  class="form-control" autocomplete="false" name="edit_hosp_address" id="edit_hosp_address" placeholder="">
+                       <br>
+                      <br>
+                       
+                       <label for="pass"><b>Phone Number:</b></label>
+                       <input type="text" style=" height:120%;"  class="form-control" name ="edit_contact" id="edit_contact" placeholder="">
+                       <br>
+                       <br>
+                       
+                       <label for="pass"><b>Email Id:</b></label>
+                      <input type="email" style=" height:120%;"  class="form-control" id="edit_email" placeholder="">
+                       <br>
+                       
+                       <br>
+                       <label for="pass"><b>User Name:</b></label>
+                       <input type="text" style=" height:120%;"  class="form-control" autocomplete="false" name="edit_username" id="edit_username" placeholder="">
+                       <br>
+                      <br>
+                      <label for="pass"><b>Password:</b></label>
+                       <input type="password" style=" height:120%;" ng-model="passwordT" class="form-control" autocomplete="false" id="edit_password" placeholder=" enter Password">
+                       
+                       
+                       <br>
+                      <br>
+                      
+                      <label for="pass"><b>Confirm Password:</b></label>
+                       <input type="password" style=" height:120%;" ng-model="passwordC" class="form-control" autocomplete="false" id="edit_password_confirm" placeholder=" enter Password">
+                       
+                       
+                      
+                      
+                </div >
+                    <div class="form-group" ng-model="hospital_id1">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <button type="submit" class="btn btn-success pull-right"  ng-click="editHospitalSave()" value="Edit">Update</button>
+                    </div>
+                </form>
+                <!-- <div class="clearfix"></div>
+                <div class="modal-footer"></div> -->
+            </div>
+        </div>
+   <!--  </div> -->
+    <!-- *************************Edit Hospital model end************************ -->  
+    
+    
+    
+     <!-- ************* Review Hospital Modal Begin**********-->
+    <div class="modal"  id="reviewHospitalModal"  role="dialog">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title" >Review External Hospital<span><p id="hospid_review"></p></span></h4>
+            
+           
+        </div>
+        <div class="modal-body" style="max-height:700px;>
+            <div class="col-md-12">
+                <form name="editUser1" class="form-horizontal" novalidate autocomplete="off" >
+                    <div class="form-group" >
+                   
+                        <label for="uname"><b>Hospital Name:</b></label>
+                        <input type="text" style=" height:120%;" class="form-control"  name="reveiw_hosp_name" id="reveiw_hosp_name" disabled=true>
+                      <br>
+                      <br>
+                     <!--  <label for="uname"><b>Hospital Type:</b></label>
+                        <input type="text" style=" height:120%;" class="form-control"  name="edit_hosp_type" id="edit_hosp_type"> -->
+                        
+                        <label for="uname"><b>Hospital Type:</b></label>
+                         <select ng-model="hosType" class="form-control" name="reveiw_hosp_type" id="reveiw_hosp_type" disabled=true>
+                            <option ng-repeat="hos1 in hos_type"><b>{{hos1.value}}</b></option>
+        
+                      </select>
+                      <br>
+                      <br>
+                      
+                       <label for="pass"><b>Hospital Address:</b></label>
+                       <input type="text" style=" height:120%;"  class="form-control" autocomplete="false" name="reveiw_hosp_address" id="reveiw_hosp_address" placeholder="" disabled=true>
+                       <br>
+                      <br>
+                       
+                       <label for="pass"><b>Phone Number:</b></label>
+                       <input type="number" style=" height:120%;"  class="form-control" name ="reveiw_contact" id="reveiw_contact" placeholder="" disabled=true>
+                       <br>
+                       <br>
+                       <label for="pass"><b>Email Id:</b></label>
+                      <input type="email" style=" height:120%;"  class="form-control" id="reveiw_email" placeholder="" disabled=true>
+                       <br>
+                       <br>
+                       <label for="pass"><b>User Name:</b></label>
+                       <input type="text" style=" height:120%;"  class="form-control" autocomplete="false" name="reveiw_username" id="reveiw_username" placeholder="" disabled=true>
+                       <br>
+                      <br>
+                       
+                     <!--   <br>
+                      <label for="pass"><b>Password:</b></label>
+                       <input type="password" style=" height:120%;" ng-model="passwordT" class="form-control"  id="reveiw_password" placeholder=" enter Password">
+                       
+                       
+                       <br>
+                      <br>
+                      
+                      <label for="pass"><b>Confirm Password:</b></label>
+                       <input type="password" style=" height:120%;" ng-model="passwordC" class="form-control" autocomplete="false" id="reveiw_password_confirm" placeholder=" enter Password">
+                       
+                       
+                       -->
+                      
+                </div >
+                    <div class="form-group" ng-model="hospital_id1" style="text-align:center;">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <button type="submit" class="btn btn-success"  id="not_approve" ng-click="approveHospitalSave(1)" value="Approve">Approve</button>
+                    	<button type="submit" class="btn btn-primary" id="not_reject" ng-click="approveHospitalSave(2)" value="Reject">Reject</button>
+                    
+                    	<p style="color:red;" class="hidden" id="not_verified"><b>E-mail not yet verified by the user</b></p>
+                    </div>
+                </form>
+                <!-- <div class="clearfix"></div>
+                <div class="modal-footer"></div> -->
+            </div>
+        </div>
+    
+    <!-- *************************Review Hospital model end************************ -->         
+	
+        
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./search_files/jquery.min.js"></script>
+    <script src="./search_files/bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="./search_files/holder.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="./search_files/ie10-viewport-bug-workaround.js"></script>
+   	<script src="js/values.js"></script>
+    <script src="js/allExternalHospitals.js"></script>
+   
+    </body>
+</html>

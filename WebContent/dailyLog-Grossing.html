@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://getbootstrap.com/examples/dashboard/ -->
+<html lang="en" hola_ext_inject="disabled">
+
+	<head>
+	
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>Sample Tracker</title>
+		<link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+		<link href="bootstrap/bootstrap-combined.min.css" rel="stylesheet">
+		<!-- Bootstrap core CSS -->
+		<link href="./search_files/bootstrap.min.css" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link href="./search_files/search.css" rel="stylesheet">
+
+		<script src="./search_files/ie-emulation-modes-warning.js"></script><style type="text/css"></style>
+		<!-- <script src="http://cdn.jsdelivr.net/alasql/0.2/alasql.min.js"></script>-->
+		<script src="js/alasql.min.js"></script>
+		<script src="bootstrap/angular.js"></script>
+    	<script src="bootstrap/angular-animate.js"></script>
+   	    <script src="bootstrap/ui-bootstrap-tpls.min.js"></script>
+      	<!-- <script src="bootstrap/angular.min.js"></script>-->
+      	<script src="bootstrap/jquery.min.js"></script>
+      	<script src="bootstrap/angular-sanitize.min.js"></script>
+      	<script src="bootstrap/ui-bootstrap-tpls-0.6.0.js"></script>
+      	<script src="bootstrap/angular-cookies.js"></script>
+      	<script src="js/jquery-ui.min.js"></script>
+      	
+  </head>
+
+    <body ng-app="myApp2" class="ng-cloak" ng-controller="Controller2 as ctrl">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">Lab Sample Tracker</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse navbar-right">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a class="active" ng-click="showAll()">All</a></li>
+      					<li><a ng-click="showInternals()">Internals</a></li>
+      					<li><a ng-click="showReferrals()">Referrals</a></li>
+                        <li >
+                        <button type="button" onclick="window.print()" class="btn btn-sm btn-primary" title="Print" >
+            				<i class="glyphicon glyphicon-print"></i> Print
+      						</button></li>
+      					
+                    </ul>
+                </div>
+            </div>
+        </nav>
+		
+        <div class="container-fluid" >
+            <div class="row">
+                <div class="col-sm-3 col-md-2 sidebar">
+                    <ul class="nav nav-sidebar">
+                        <li><a href="#">Dashboard</a></li>
+                        <li><a href="indexofsearch.html">Search</a></li>
+                        <li class="active"><a href="activityLogs.html">Activity Logs</a></li>
+                        <li><a href="allassets.html">All Assets</a></li>
+                        <li><a href="allTransactions.html">All Transaction</a></li>
+                        <li><a href="allncs.html">All Ncs</a></li>
+                    </ul>
+                </div>
+              
+                <font face="Times New Roman">
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                    <h4 class="page-header" align="center">Department of Neuropathology</h4>
+                    <h4 class="page-header" align="center">National Institue of Mental And Sciences,Bangalore-560029</h4>
+                    <!-- <div align="right">
+                    <button type="button" ng-click="printAllAssets()" class="btn btn-sm btn-primary" title="Print" >
+            				<i class="glyphicon glyphicon-print"></i> Print All
+      						</button>
+      				</div>-->
+                    <br>
+				<div ng-show="ctrl.state">
+                    <h1 class="header">{{ctrl.clickedNp}}  <button class="btn btn-primary" ng-click="ctrl.state=false;ctrl.buttonstate=true"><font size="4"> close</font></button> </h1>
+                    	<table class="table table-striped">
+                    		 <thead>
+                                <tr>  
+                                    <th>Station</th>
+                                    <th>Technician</th>
+                                    <th>Time</th>                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                            	 <tr ng-repeat="output in ctrl.reportOutputlist">
+									<td ng-bind="output.depName"></td>
+									<td ng-bind="output.techName"></td>
+									<td ng-bind="output.time"></td>
+            					</tr>
+							</tbody>
+						</table>
+                	</div>
+                	<div ng-show = ctrl.results></div>
+                    <div ng-show = "ctrl.buttonstate">
+                    	<table class="table table-striped table-bordered">
+                    		 <thead>
+                    		 	<tr>
+                    		 		<th colspan="5" rowspan="2"><h3 align="center"><b>DAILY LOG - GROSSING</b></h3></th>
+                    		 		<td colspan="2" ><h5 align="center"><b>{{ctrl.heading2}}</b></h5></td>
+                    		 	</tr>
+                    		 	<tr>
+                    		 	<td colspan="2"><h5><b>Date&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;{{today}}</b></h5></td>
+                    		 	</tr>
+                                <tr>  
+                                	<!-- <th>  </th>-->
+                                    <th>SI. No</th>
+                                    <th>NP - No</th>
+                                    <th>Biopsy Type</th>
+                                    <th>No. of Blocks</th>
+                                    <th>AP/RK/KFF</th>
+                                    <th>Decal</th>
+                                    <th>Discard/Preserve/Date</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                            	 <tr ng-repeat-start="output in ctrl.outputlist | limitTo:100">
+               						<!-- <td>
+                   						<button ng-click="expanded = !expanded;">
+                        				<span ng-bind="expanded ? '-' : '+'"></span>
+                    					</button>
+                					</td>-->
+                					<td>{{$index + 1}}</td>
+									<td ng-bind="output.npNumber"></td>
+									<td ng-bind="output.biopsy"></td>
+									<td ng-bind="output.noOfBlocks"></td>
+									<!-- <td ng-bind="output.process_status.substr(0,output.process_status.indexOf(':')==-1?output.process_status.length:output.process_status.indexOf(':'))"></td> -->
+									<td ng-bind="output.process_status"></td>
+									<td ng-bind="output.decal"></td>
+									<td ng-bind="output.process_status.substr(output.process_status.indexOf(':')==-1?output.process_status.length:output.process_status.indexOf(':')+1,output.process_status.length)"></td>
+									
+            					</tr>
+            					
+                    			<tr ng-repeat-end ng-show="expanded">
+									<td></td>
+									<td colspan="3">
+										<table class="table table-bordered">
+											<thead>
+                                                    <tr>  
+                                                        <th>Block Number</th>
+                                                        <th>Status</th>
+                                                        <th>Biopsy Type</th>
+                                                        <th>Last Updated</th>
+                                                        <th> </th>
+                                                    </tr>
+                                            </thead>
+										    <tbody>
+										        <tr ng-repeat="block in output.blocks">
+										            <td><span ng-bind="block.blockNum"></span></td>
+                                   				 	<td><span ng-bind="block.status"></span></td>
+                                   				 	<td><span ng-bind="block.biopsy_type"></span></td>
+                                    				<td><span ng-bind="block.formattedTime"></span></td>
+                                    				<td><button class="btn btn-primary" ng-click = "ctrl.transDetails(block.blockNum);ctrl.buttonstate=false">Details</td>
+										        </tr>
+										    </tbody>
+										</table>
+									</td>
+								</tr>
+								<tr>
+            						<th colspan="3">Total No of blocks :</th>
+            						<td ng-bind="totalBlocks"></td>
+            						<td colspan="3"></td>
+            					</tr>
+							</tbody>
+						</table>
+						<table class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<th>Biopsy Type</th>
+									<th>Nos</th>
+								</tr>
+							</thead>
+							<tbody>
+							
+								<tr ng-show="ctrl.tumor!=0">
+									<td>Tumor</td>
+									<td ng-bind="ctrl.tumor"></td>
+								</tr>
+								<tr ng-show="ctrl.tumor_routine!=0">
+									<td>Tumor (routine)</td>
+									<td ng-bind="ctrl.tumor_routine"></td>
+								</tr>
+								<tr ng-show="ctrl.tumor_ihc!=0">
+									<td>Tumor with IHC</td>
+									<td ng-bind="ctrl.tumor_ihc!=0"></td>
+								</tr>
+								<tr ng-show="ctrl.tumor_frozen!=0">
+									<td>Tumor+intraoperative squash/frozen</td>
+									<td ng-bind="ctrl.tumor_frozen!=0"></td>
+								</tr>
+								<tr ng-show="ctrl.pit_ihc!=0">
+									<td>Pituitary tumor with IHC</td>
+									<td ng-bind="ctrl.pit_ihc!=0"></td>
+								</tr>
+								<tr ng-show="ctrl.muscle!=0">
+									<td>Muscle</td>
+									<td ng-bind="ctrl.muscle"></td>
+								</tr>
+								<tr ng-show="ctrl.muscle_ehc!=0">
+									<td>Fresh Muscle for enzyme histochemistry (EHC)</td>
+									<td ng-bind="ctrl.muscle_ehc"></td>
+								</tr>
+								<tr ng-show="ctrl.muscle_ehc_ele!=0">
+									<td>Fresh Muscle for enzyme histochemistry (EHC) + electron microscopy</td>
+									<td ng-bind="ctrl.muscle_ehc_ele"></td>
+								</tr>
+								<tr ng-show="ctrl.muscle_routine!=0">
+									<td>Fixed muscle (routine)</td>
+									<td ng-bind="ctrl.muscle_routine"></td>
+								</tr>
+								<tr ng-show="ctrl.muscle_routine_ele!=0">
+									<td>Fixed muscle (routine) with electron microscopy</td>
+									<td ng-bind="ctrl.muscle_routine_ele"></td>
+								</tr>
+								<tr ng-show="ctrl.muscle_nerve!=0">
+									<td>Muscle+Nerve</td>
+									<td ng-bind="ctrl.muscle_nerve"></td>
+								</tr>
+								<tr ng-show="ctrl.muscle_nerve_skin!=0">
+									<td>Muscle+Nerve+Skin</td>
+									<td ng-bind="ctrl.muscle_nerve_skin"></td>
+								</tr>
+								<tr ng-show="ctrl.muscle_skin!=0">
+									<td>Muscle+Skin</td>
+									<td ng-bind="ctrl.muscle_skin"></td>
+								</tr>
+								<tr ng-show="ctrl.nerve!=0">
+									<td>Nerve</td>
+									<td ng-bind="ctrl.nerve"></td>
+								</tr>
+								<tr ng-show="ctrl.nerve_routine!=0">
+									<td>Nerve biopsy (routine)</td>
+									<td ng-bind="ctrl.nerve_routine"></td>
+								</tr>
+								<tr ng-show="ctrl.nerve_ele!=0">
+									<td>Nerve biopsy (routine) with semithin/electron microscopy</td>
+									<td ng-bind="ctrl.nerve_ele"></td>
+								</tr>
+								<tr ng-show="ctrl.skin!=0">
+									<td>Skin</td>
+									<td ng-bind="ctrl.skin"></td>
+								</tr>
+								<tr ng-show="ctrl.skin_routine!=0">
+									<td>Skin biopsy (routine)</td>
+									<td ng-bind="ctrl.skin_routine"></td>
+								</tr>
+								<tr ng-show="ctrl.skin_ele!=0">
+									<td>Skin biopsy (routine) with electron microscopy</td>
+									<td ng-bind="ctrl.skin_ele"></td>
+								</tr>
+								<tr ng-show="ctrl.nerve_skin!=0">
+									<td>Nerve+Skin</td>
+									<td ng-bind="ctrl.nerve_skin"></td>
+								</tr>
+								<tr ng-show="ctrl.epilepsy!=0">
+									<td>Epilepsy</td>
+									<td ng-bind="ctrl.epilepsy"></td>
+								</tr>
+								<tr ng-show="ctrl.epilepsy_routine!=0">
+									<td>Epilepsy (routine) with immunohistochemistry</td>
+									<td ng-bind="ctrl.epilepsy_routine"></td>
+								</tr>
+								<tr ng-show="ctrl.brainBiopsy!=0">
+									<td>Brain Biopsy</td>
+									<td ng-bind="ctrl.brainBiopsy"></td>
+								</tr>
+								<tr ng-show="ctrl.lipBiopsy!=0">
+									<td>Lip Biopsy</td>
+									<td ng-bind="ctrl.lipBiopsy"></td>
+								</tr>
+								<tr ng-show="ctrl.lip1!=0">
+									<td>Lip</td>
+									<td ng-bind="ctrl.lip1"></td>
+								</tr>
+								<tr ng-show="ctrl.liverBiopsy!=0">
+									<td>Liver Biopsy</td>
+									<td ng-bind="ctrl.liverBiopsy"></td>
+								</tr>
+								<tr ng-show="ctrl.liver1!=0">
+									<td>Liver</td>
+									<td ng-bind="ctrl.liver1"></td>
+								</tr>
+								<tr ng-show="ctrl.fluid!=0">
+									<td>Fluid</td>
+									<td ng-bind="ctrl.fluid"></td>
+								</tr>
+								<tr ng-show="ctrl.conjunctiva!=0">
+									<td>Conjunctiva</td>
+									<td ng-bind="ctrl.conjunctiva"></td>
+								</tr>
+								<tr ng-show="ctrl.lymphNode!=0">
+									<td>Lymph Node</td>
+									<td ng-bind="ctrl.lymphNode"></td>
+								</tr>
+								<tr ng-show="ctrl.hair!=0">
+									<td>Hair</td>
+									<td ng-bind="ctrl.hair"></td>
+								</tr>
+								<tr ng-show="ctrl.thymus!=0">
+									<td>Thymus</td>
+									<td ng-bind="ctrl.thymus"></td>
+								</tr>
+								<tr ng-show="ctrl.other!=0">
+									<td>Other</td>
+									<td ng-bind="ctrl.other"></td>
+								</tr>
+							</tbody>
+						</table>
+						<table class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Technician(Name/Date)</th>
+									<th>Resident(Name/Date)</th>
+									<th>PDF/Faculty(Name/Date)</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th>Grossing</th>
+									<td>{{ctrl.techName}} ({{today}})</td>
+									<td>{{ctrl.residentName}} ({{today}})</td>
+									<td></td>
+								</tr>
+								<tr>
+									<th>Embedding</th>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
+								<tr>
+									<th>Sectioning</th>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
+								</tbody>
+							</table>
+							<table class="table table-striped table-bordered">
+							  <tbody>
+								<tr style="height:80px;">
+									<th>Staining By</th>
+									<td>HE</td>
+									<td>Special Stains</td>
+									<td>EHC</td>
+									<td>IHC</td>
+								</tr>			
+								<tr style="height:40px;">
+									<th rowspan="2">Comments</th>
+									<td>Section</td>
+									<td>Special St.Control</td>
+									<td>EHC Test</td>
+									<td>IHC Control</td>
+								</tr>
+								<tr style="height:40px;">
+									<td>HE</td>
+									<td>Test</td>
+									<td></td>
+									<td>Test</td>
+								</tr>
+								<tr>
+								<th>Overall Comments</th>
+								<td colspan="4"></td>
+								</tr>
+							</tbody>
+						</table>
+						</div>
+                </div>
+                </font>
+            </div>
+        </div>
+        
+        
+        
+	
+        
+ <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- <script src="./search_files/jquery.min.js"></script>-->
+    <script src="./search_files/bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="./search_files/holder.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="./search_files/ie10-viewport-bug-workaround.js"></script>
+   	<script src="js/values.js"></script>
+    <script src="js/app.js"></script>
+    <!-- <script src="js/user_service.js"></script>-->
+    <script src="js/dailyLog-Grossing.js"></script>
+   
+    </body>
+</html>

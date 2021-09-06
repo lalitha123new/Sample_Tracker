@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta type="viewport" content="width=device-width, initial-scale=1" />
+    
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+    
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular-animate.js"></script>
+    <script type="text/javascript" src="./scanner_detection/jquery.scannerdetection.js"></script>-->
+    
+    
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap/bootstrap-combined.min.css" rel="stylesheet">
+     
+    <script src="bootstrap/angular.min.js"></script>
+    <script src="bootstrap/jquery.min.js"></script>
+    <script src="bootstrap/angular-sanitize.min.js"></script>
+    <script src="bootstrap/ui-bootstrap-tpls-0.6.0.js"></script>
+    <script src="bootstrap/angular-cookies.js"></script>
+   
+    <script type="text/javascript">
+        $(function() {
+          $("#barcodeText").focus();
+          $('#barcodeText').keypress(function(e){
+              if(e.keyCode==13)
+                  $('#sendBarcode').click();
+          });
+      });
+   /* function LaunchApp() {
+
+        var ws = new ActiveXObject("WScript.Shell");
+        ws.Exec("C:\\Windows\\notepad.exe");
+    }*/
+</script>
+
+<title>Reporting Station, NeuroPathology Lab, NIMHANS</title>
+<!--Need to check where the below Style has role-->
+<style>
+    .jumbotron {
+        padding: 0.5em 0.6em;
+        h1 {
+            font-size: 2em;
+        }
+        p {
+            font-size: 1.2em;
+            .btn {
+                padding: 0.5em;
+            }
+        }
+    }
+    .modal
+    {
+        height:530px;
+    }
+    #loginModal
+    {
+        height:300px;
+    }
+    #oldNpModal
+    {
+        height:300px;
+    }
+    #confirmNp
+    {
+        height:200px;
+    }
+    #mydiv {  
+        position:absolute;
+
+        width:10%;
+        height:20%;
+        left:46%;
+        top:40%;
+        z-index:1000;
+
+        opacity: .8;
+    }
+    .tablehead{
+        font-weight: bold;
+        font-size: 19px;
+
+    }
+
+    .ajax-loader {
+        position: absolute;
+
+
+        display: block;     
+    }
+    .btn-xl {
+    padding: 10px 20px;
+    font-size: 20px;
+    border-radius: 10px;
+    width:50%;
+}
+
+</style>
+</head>
+<body  ng-app="ReportingStation" >
+    <div  ng-controller="ReportingController" ng-init="specialRequestInit()">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <p class="navbar-brand">Instructions, NeuroPathology Lab, NIMHANS</p>
+                </div>
+
+                <div align="right">
+
+                    <p> <b>Logged in as </b>{{username}}</p>
+                    <!-- <button type="button" id="unlinked" class="btn btn-default btn-small" onclick="window.location.href='linking.html'">Unlinked({{unLinked.length}})</button>-->
+                    <!--<button type="button" class="btn btn-default btn-small"  onclick="$('#loginModal').modal('show')">Login</button>-->
+                    <button type="button" class="btn btn-success btn-small"  ng-click="getAllUsers()" ng-hide="showLogout" >Login</button>
+                    <button type="button" class="btn btn-success btn-small" ng-click="logout()" ng-show="showLogout">Logout</button>
+
+                    
+                    
+                </div>
+            </div>
+        </nav>
+    <!-- *************************************************************************************************************************************
+    loginModel Code
+
+
+
+    ********************************************************************************************************************************************-->
+    <!-- ************* Login Modal **********-->
+
+    <div class="modal fade" id="loginModal" >
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">User Login</h4>
+        </div>
+        <div class="modal-body">
+            <div class="col-md-12">
+                <form name="LoginCredentials" class="form-horizontal" novalidate >
+                    <div class="form-group" >
+                        <label for="uname"><b>Users :</b></label>
+                        <select ng-model="users" class="form-control" id="uname" >
+                            <option ng-repeat="tech in techTable"><b>{{tech.technicianName}}</b></option>
+
+                        </select>
+                        <br>
+                        <br>
+                        <label for="pass"><b>Password :</b></label>
+                        <input type="password" style=" height:120%;" ng-model="password" class="form-control" placeholder= "Enter Password" id="pass">
+                        <div ng-show="invalidPassword"> <font color="red"> Invalid password</font></div>
+                    </div >
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <input type="submit" class="btn btn-success pull-right" ng-click="setUsername()" value="Login" />
+                    </div>
+                </form>
+                <div class="clearfix"></div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+    <!-- *************************modal for old npNumbers************************ -->
+    <div class="modal fade" id="oldNpModal" >
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">NP Numbers</h4>
+        </div>
+        <div class="modal-body">
+            <div class="col-md-12">
+                <form name="LoginCredentials" class="form-horizontal" novalidate >
+                    <div class="form-group" >
+                        <label for="npNumbers"><b>NP Numbers associated with this patient</b></label>
+                        <select ng-model="npNum" class="form-control" id="npNumbers" >
+                            <option><b>Create new</b></option>
+                            <option ng-repeat="np in oldRequests"><b>{{np.npBase}}</b></option>
+
+                        </select>
+                    </div >
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <input type="submit" class="btn btn-success pull-right" ng-click="setNpNumber()" value="Select" />
+                    </div>
+                </form>
+                <div class="clearfix"></div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+    <!-- *************************modal for confirm npNumber************************ -->
+    <div class="modal fade" id="confirmNp" >
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">Confirm NP Number</h4>
+        </div>
+        <div class="modal-body">
+            <div class="col-md-12">
+                <form name="LoginCredentials" class="form-horizontal" novalidate >
+                    <div class="form-group" >
+                        <label for="npNumbers"><b>Are you sure to assign this NP Number : <font size="5" color="blue">{{npNumber}} </font>?</b></label>
+                    </div >
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <input type="submit" class="btn btn-success pull-right" ng-click="checkNpNumber()" value="Confirm" />
+                    </div>
+                </form>
+                <div class="clearfix"></div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+    
+<!--     <div align="center" value="Read Barcode :">
+        <label>
+         
+            <input type="text" ng-model="barcodeValue" ng-disabled="checkboxModel" id="barcodeText" ng-blur="barcodeValue=barcodeValue.toUpperCase();" placeholder="Scan/Enter NP Number"> -->
+    <!-- *************************************************************ATTENTION*******************************************************************************
+     SO , the person scans the barcode after putting the cursor on the input above and clicks button to populate patient data******
+     *************************************************************************************************************** -->
+       <!--  </input>
+        <button type="button" id="sendBarcode" ng-disabled="barcodeValue==''" class="btn btn-default" ng-click="getPatientFromRequest()" title="Get Patient Details by Scanning Barcode"><i class="glyphicon glyphicon-barcode"></i>  Submit</button>
+        </label>
+    </div> -->
+    <div class="container-fluid">
+        <div>
+ 
+           <div class="container">
+
+                <table class="table table-striped table-bordered">
+                    <thead class="tablehead">
+                    <tr>
+                    <td colspan="4">
+                     <h3 class="col-lg-offset-5">Case Number :: {{npbasevalue}} </h3>
+                     </td>
+                    </tr>
+                      <tr>
+                        <th>Assets</th>
+                        <th>Special Request</th>
+                        <th>Panel</th>
+                        <th>Test</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                      <td>
+                            <label class="checkbox-inline">
+                                <label>Select Block :
+                                 <select multiple="multiple" ng-model="special.block1" ng-change="showRequest()">
+                                    <option ng-show="asset.type==2" ng-repeat="asset in assetTable"><b>{{asset.npNumber}}</b></option>
+                                 </select>
+                     </label>
+                            </label>
+                    </td>
+                    <td>
+                    <div class="form-group">
+                        <label class="checkbox checkbox-primary">
+                            <input id="5" type="checkbox" ng-model="special.checkbox_stain"><b>Special Stain</b>
+                        </label>
+                    </div>
+                    </td>
+                    <td>
+                    <select ng-disabled="!special.checkbox_stain==true" ng-change="updateStain()" ng-model="special.stain" class="form-control" placeholder="Select Special Stain">
+                    <option ng-repeat="stain in special_stains" value="{{$index}}">{{stain}}</option>
+                    </select>
+                    </td>
+                    <td style="width: 35%;">
+                     <div ng-show="special.checkbox_stain==true && special.stain!=''" class="jumbotron">
+	                    <label>Select Tests:</label>
+	                    		<label class="checkbox-inline"><input type="checkbox" ng-model="selectAll" ng-click="selectAllTests()">Select All</label>
+			                    <label class="checkbox-inline" ng-repeat="test in stainTestTable">
+								  <input ng-checked="selectAll" type="checkbox" ng-model="selectedStainTests[test]" ng-true-value="true" ng-false-value="false">{{test}}
+								</label>
+								<div style="margin-top: 15px;">
+						<label>
+						Others : <input type="text" name="others" ng-model="others1"/>
+						</label>
+						</div>
+						</div>
+                    </td>
+                    
+                </tr>
+                <tr>
+                      <td>
+                            <label class="checkbox-inline">
+                                <label>Select Block :
+                                <select ng-model="special.block2" multiple="multiple" ng-change="showRequest1()">
+                                  <option ng-show="asset.type==2" ng-repeat="asset in assetTable"><b>{{asset.npNumber}}</b></option>
+                               </select>
+                           </label>
+                            </label>
+                    </td>
+                    <td>
+                    <div class="form-group">
+                        <label class="checkbox checkbox-primary">
+                            <input id="6" type="checkbox" ng-model="special.checkbox_ihc"><b>IHC</b>  
+                        </label>
+                        
+                    </div>
+                    </td>
+                    <td>
+                   <!--  <input ng-disabled="!special.checkbox_ihc==true" typeahead-on-select="updateIHC()" type="text" ng-model="special.ihc" typeahead="name for name in ihc | filter:$viewValue " class="form-control" placeholder="Enter characters to search"> -->
+                    <select ng-disabled="!special.checkbox_ihc==true" ng-change="updateIHC()" ng-model="special.ihc" class="form-control" placeholder="Select IHC" >
+                  	<option ng-repeat="i in ihc" value="{{$index}}">{{i}}</option>
+                    </select> 
+                    <!-- <input type="text" ng-disabled="!special.checkbox_ihc==true" ng-change="updateIHC()" ng-model="special.ihc" class="form-control" placeholder="Select IHC" list="ihcs" />
+                    <datalist id="ihcs">
+						<option ng-repeat="i in ihc" value="{{$index}}">{{i}}</option>
+					</datalist> -->
+                    </td>
+                    <td style="width: 35%;">
+                     <div ng-show="special.checkbox_ihc==true && special.ihc!=''" class="jumbotron">
+	                    <label>Select Tests:</label>
+	                    		<label class="checkbox-inline"><input type="checkbox" ng-model="selectAll2" ng-click="selectAllTests2()">Select All</label>
+			                    <label class="checkbox-inline" ng-repeat="test in ihcTestTable">
+								  <input ng-checked="selectAll2" type="checkbox" ng-model="selectedihcTests[test]" ng-true-value="true" ng-false-value="false">{{test}}
+								</label>
+								<div style="margin-top: 15px;">
+						<label>
+						Others : <input type="text" name="others" ng-model="others2"/>
+						</label>
+						</div>
+						</div> 
+                    </td>
+                </tr>
+                <tr>
+                      <td>
+                            <label class="checkbox-inline">
+                                <label>Select Tissue :
+                                    <select ng-model="special.tissue1" id="3" multiple="multiple" ng-change="processall()" >
+                                        <option ng-show="asset.type==1" ng-repeat="asset in assetTable"><b>{{asset.npNumber}}</b></option>
+                                    </select>
+                                </label>
+                            </label>
+                    </td>
+                    <td colspan="3">
+                    <div class="form-group">
+                        <label class="checkbox checkbox-primary">
+                             <input id="3" type="checkbox" ng-model="special.processAll"><b>Process All</b>
+                        </label>
+                    </div>
+                    </td>
+                </tr>
+                <tr>
+                      <td>
+                            <label class="checkbox-inline">
+                                <label>Select Tissue :
+                                    <select ng-model="special.tissue2" id="3" multiple="multiple" ng-change="em()" >
+                                        <option ng-show="asset.type==1" ng-repeat="asset in assetTable"><b>{{asset.npNumber}}</b></option>
+                                    </select>
+                                </label>
+                            </label>
+                    </td>
+                    <td  colspan="3">
+                    <div class="form-group">
+                        <label class="checkbox checkbox-primary">
+                            <input type="checkbox" ng-model="special.em"><b>EM</b>
+                        </label>
+                    </div>
+                    </td>
+                </tr>
+
+        
+        <tr>
+        <td colspan="4">
+        <div class="form-group">
+            <b>Note :</b><textarea class="form-control" ng-model="special.note" id="7"></textarea>
+            </div>
+          <div class="col-md-6 text-center">
+                <input type="submit" class="btn btn-success pull-right btn-xl" ng-click="submit()" onclick="$('#3').val(null),$('#1').val(null),$('#2').val(null)" value="Submit" />
+            </div>
+            </td>
+            </tr>
+                </tbody>
+        </table>
+    </div>
+
+  <!--      <div id="mydiv" ng-show="myVar">
+    <img src="img/loader.gif" class="ajax-loader"/>
+</div>
+            <div class="container">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h5 align="center">
+                                        Patient UHID :: <b>{{patient.UHID}}</b>
+                                    </h5>
+                                    <h5 align="center">
+                                        Patient Name :: <b>{{patient.patientName}}</b>
+                                    </h5>
+                                    <h5 align="center">
+                                        Age :: <b>{{patient.patientAge}}</b>
+                                    </h5>
+                                    <h5 align="center">
+                                        Sex :: <b>{{patient.patientSex === 0 ? "Male" : Female}}</b>
+                                    </h5>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h5 align="center">
+                                        Sample Request ID:: <b>{{patient.sampleRequestId}}</b>
+                                    </h5>
+                                    <h5 align="center">
+                                        NP Number:: <b>{{patient.npBase}}</b>
+                                    </h5>
+                                    <h5 align="center">
+                                        Referring Doctor :: <b>{{patient.surgeon}}</b>
+                                    </h5>
+                                    <h5 align="center">
+                                         Created :: <b>{{patient.created}}</b>
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+             <div align="center">
+                <button type="button" class="btn btn-info" ng-click="doneReporting()" ng-disabled="!(recievingStationStep==1)">Report Done
+                    <i class="glyphicon glyphicon-ok-sign"></i></button>
+                <button type="button" class="btn btn-primary" ng-click="sendSpecialRequest()" ng-disabled="!(recievingStationStep==1)">Special Request
+                    </button>
+                </div>  -->
+            </div>
+        </div>
+        <!-- <div align="center"> -->
+     <!--   <form class="form-inline" role="form1">
+     <!-- BELOW DIVS ARE ONLY TO INCREASE SPACE < NOTHING BEYOND THAT :( > DIDN"T GET A WORK_ AROUND-->
+      <!--       <div class="form-group"></div>
+            <div class="form-group"></div>
+            <div class="form-group"></div>
+            <div class="form-group"></div>
+            <div class="form-group"></div>
+            <div class="form-group"></div>
+            <div class="form-group"></div>
+            <div class="form-group"></div>
+            <div class="form-group"></div>
+            <div class="form-group"></div>
+            <div class="form-group"></div>
+            <div class="form-group"></div>
+            <div class="form-group">
+            <label for="npSuggestion">NP Number:</label>
+            <input type="text" class="form-control" id="npSuggestion" ng-model="npNumber" placeholder={{npSuggestion}} ng-disabled="updateNpBase==0">
+            <button type="button" class="btn btn-info"  ng-click="checkNpNumber()" title="Confirm NP Number"ng-disabled="!(recievingStationStep==2||recievingStationStep==3)">Proceed...</button>
+                <button type="button" class="btn btn-sm btn-warning" title="Edit NP Number" ng-disabled="!(recievingStationStep==2||recievingStationStep==3)" ng-click="updateNpNumber()">
+                    <i class="glyphicon glyphicon-pencil"></i>
+                </button>
+            </div > 
+        </form>  --> 
+        <!-- </div> -->
+<!--    <div ng-show="true">
+        <br>
+            <form class="form-horizontal" >
+            <div class="clearfix" style="padding-bottom: 5px"></div>
+            <div class="form-group" >
+                <div class="col-sm-12" >
+                    <div class="panel panel-primary" id="asset-list1">
+                        <!-- <div class="panel-heading">Pending Cases({{assetTasksTable.length}})</div>
+                        <div class="panel-body" style="padding:0px">
+                            <table class="table table-striped table-bordered" style="margin:0">
+                                <thead>
+                                <tr>
+                                    <th>NP Number </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="asset in assetTasksTable" >
+                                    <td ng-click="checkCount($index)">{{asset.npNumber}}</td>
+                                </tr>
+                                </tbody>
+                            </table> -->
+         <!--                </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div> -->
+    <!-- *************************************************************************************************************************************
+    insertModal Code
+
+
+
+    ********************************************************************************************************************************************-->
+    <!-- ************* Insert Modal **********-->
+
+  <!--   <div class="modal fade" id="insertModal" >
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">New Asset</h4>
+        </div>
+        <div class="modal-body">
+            <div class="col-md-12">
+                <form name="assetForm" class="form-horizontal" novalidate >
+                   <div class="form-group">
+                   <label for="specimen"><b>Select Sample Type: </b></label>
+                        <select name="testSpecimen" ng-model="asset.specimen" class="form-control" id="specimen" required>
+                            <option>Tissue</option>
+                            <option>Block</option>
+                            <option>Stained Slide</option>
+                            <option>Unstained Slide</option>
+                            <option>Frozen</option>
+                            <option>Fluid</option>
+                        </select>
+                   </div>
+                   <br>
+                    <script>$('#specimen').change(function() {
+                        $('#fixative').prop('disabled', false);
+                        $('#fixative').val("");
+
+                        if ($(this).val() == 'Unstained Slide'||$(this).val() == 'Stained Slide'||$(this).val() == 'Block') {
+                            $('#fixative').val("");
+                            $('#fixative').prop('disabled', true);
+                        }
+                    });
+                    </script>
+                   <div class="form-group">
+                        <label for="fixative"><b>Fixative: </b></label>
+                        <select ng-model="asset.fixative" class="form-control" id="fixative" >
+                            <option>None</option>
+                            <option>Fresh</option>
+                            <option>Saline</option>
+                            <option>10% Formalin</option>
+                            <option>2.5% Cidex</option>
+                            <option>2% Glutaraldehyde</option>
+                            <option>Alcohol</option>
+                            <option>Other</option>
+                        </select>
+                   </div>
+                   <br>
+                   <div class="form-group" >
+                        <label for="biopsy"><b>Biopsy :</b></label>
+                        <select ng-model="asset.biopsy" class="form-control" id="biopsy" >
+                            <option><b>Nerve</b></option>
+                            <option><b>Muscle</b></option>
+                            <option><b>Skin</b></option>
+                            <option><b>Brain</b></option>
+                            <option><strong>Lip</strong></option>
+                            <option><b>Epilepsy</b></option>
+                            <option><b>Tumor</b></option>
+                            <option><b>Hair</b></option>
+                            <option><b>Lymph Node</b></option>
+                            <option><b>Liver</b></option>
+                            <option><b>Thymus</b></option>
+                            <option><b>Other</b></option>
+                        </select>
+                   </div >
+                   <div class="form-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <input type="submit" class="btn btn-success pull-right" ng-click="assetForm.$valid && create(asset)" onclick="$('#3').val(null),$('#1').val(null),$('#2').val(null)" value="Save" />
+                   </div>
+                </form>
+                <div class="clearfix"></div>
+               <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+
+-->
+<!--****************************************************EDIT MODAL****************************************************************************8-->
+
+
+<div class="modal fade" id="editModal">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <h4 class="modal-title">Special Request</h4>
+    </div>
+    <div class="modal-body" style="max-height: 475px;">
+        <div class="col-md-12">
+            <form name="assetForm" class="form-horizontal" novalidate >
+                <h3>Case Number :: {{patient.npBase}}</h3>
+                <br>
+                    <!-- <div class="form-group" >
+                        <label for="3"><b>Select Asset :</b></label>
+                        <select ng-model="special.asset" class="form-control" id="3" >
+                            <option ng-repeat="asset in assetTable"><b>{{asset.npNumber}}</b></option>
+                        </select>
+                    </div>
+                    <br>-->
+                    <div class="form-group">
+
+                        <label class="checkbox-inline">
+                            <input id="3" type="checkbox" ng-model="special.processAll"><b>Process All</b>
+                            <label ng-show="special.processAll==true">Select Tissue :
+                                <select ng-model="special.tissue" id="3" >
+                                    <option ng-show="asset.type==1" ng-repeat="asset in assetTable"><b>{{asset.npNumber}}</b></option>
+                                </select>
+                            </label>
+                        </label>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-inline">
+                            <input id="4" type="checkbox" ng-model="special.em"><b>EM</b>
+                            <label ng-show="special.em==true">Select Tissue :
+                                <select ng-model="special.tissue" id="3" >
+                                    <option ng-show="asset.type==1" ng-repeat="asset in assetTable"><b>{{asset.npNumber}}</b></option>
+                                </select>
+                            </label>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-inline">
+                            <input id="5" type="checkbox" ng-model="special.checkbox_stain"><b>Special Stain</b>
+                            <label ng-show="special.checkbox_stain==true">Select Block :
+                                <select ng-model="special.block" >
+                                    <option ng-show="asset.type==2" ng-repeat="asset in assetTable"><b>{{asset.npNumber}}</b></option>
+                                </select>
+                            </label>
+                        </label>
+                        <select ng-show="special.checkbox_stain==true" ng-change="updateStain()" ng-model="special.stain" class="form-control" placeholder="Select Special Stain">
+                            <option ng-repeat="stain in special_stains" value="{{$index}}">{{stain}}</option>
+                        </select>
+                        <div ng-show="special.checkbox_stain==true && special.stain!=''" class="jumbotron">
+                            <label>Select Tests:</label>
+                            <label class="checkbox-inline"><input type="checkbox" ng-model="selectAll" ng-click="selectAllTests()">Select All</label>
+                            <label class="checkbox-inline" ng-repeat="test in stainTestTable">
+                              <input ng-checked="selectAll" type="checkbox" ng-model="selectedStainTests[test]" ng-true-value="true" ng-false-value="false">{{test}}
+                          </label>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="checkbox-inline">
+                        <input id="6" type="checkbox" ng-model="special.checkbox_ihc"><b>IHC</b>  
+                        <label ng-show="special.checkbox_ihc==true">Select Block :
+                            <select ng-model="special.block" >
+                                <option ng-show="asset.type==2" ng-repeat="asset in assetTable"><b>{{asset.npNumber}}</b></option>
+                            </select>
+                        </label>
+                    </label>
+                    <select ng-show="special.checkbox_ihc==true" ng-change="updateIHC()" ng-model="special.ihc" class="form-control" placeholder="Select IHC" >
+                        <option ng-repeat="i in ihc" value="{{$index}}">{{i}}</option>
+                    </select> 
+                    <div ng-show="special.checkbox_ihc==true && special.ihc!=''" class="jumbotron">
+                        <label>Select Tests:</label>
+                        <label class="checkbox-inline"><input type="checkbox" ng-model="selectAll2" ng-click="selectAllTests2()">Select All</label>
+                        <label class="checkbox-inline" ng-repeat="test in ihcTestTable">
+                          <input ng-checked="selectAll2" type="checkbox" ng-model="selectedihcTests[test]" ng-true-value="true" ng-false-value="false">{{test}}
+                      </label>
+                  </div>    
+              </div>
+              <div class="form-group">
+                <label for="7"><b>Note :</b></label>
+                <textarea class="form-control" ng-model="special.note" id="7"></textarea>
+            </div>
+            <br>
+            <div class="form-group">
+                <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                <input type="submit" class="btn btn-success pull-right" ng-click="submit()" onclick="$('#3').val(null),$('#1').val(null),$('#2').val(null)" value="Submit" />
+            </div>
+        </form>
+        <div class="clearfix"></div>
+        <div class="modal-footer"></div>
+    </div>
+</div>
+<div class="clearfix"></div>
+</div>
+
+<div align="center" style="padding:0px;">
+
+   <!-- <button type="button" class="btn btn-md btn-success" onClick="window.location.reload();">
+        <!-- <i class="glyphicon glyphicon-save"></i>
+        Save form and --><!-- Clear All
+        <i class="glyphicon glyphicon-refresh"></i>
+    </button>-->
+</div>
+<script src="bootstrap/ui-bootstrap-tpls.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/values.js"></script>
+<script src="js/reporting.js"></script>
+<script src="js/alasql.min.js"></script>
+<script src="js/xlsx.core.min.js"></script>
+</div>
+</body>
+</html>

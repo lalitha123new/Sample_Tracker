@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://getbootstrap.com/examples/dashboard/ -->
+<html lang="en" hola_ext_inject="disabled">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<title>Sample Tracker</title>
+
+		<!-- Bootstrap core CSS -->
+		<link href="./search_files/bootstrap.min.css" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link href="./search_files/search.css" rel="stylesheet">
+		<style type="text/css"></style>
+		
+		<script src="./search_files/ie-emulation-modes-warning.js"></script>
+		<script src="bootstrap/angular.js"></script>
+    	<script src="bootstrap/angular-animate.js"></script>
+   	    <script src="bootstrap/ui-bootstrap-tpls.min.js"></script>
+  
+  </head>
+
+    <body ng-app="myApp" class="ng-cloak" ng-controller="NpDeleteController">
+    
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">Lab Sample Tracker</a> 
+                     
+                    <button type="button" ng-model="check" ng-click="logOutUser()" class="btn btn-sm btn-danger"  style="margin-top: 10px;margin-left: 1059px;"> <i class="glyphicon glyphicon-off"></i>Logout</button>
+                    <a class="navbar-brand"  href="allUsers.html" style="margin-top: -42px; margin-left: 964px;color:#09bd51;"> <i class="glyphicon glyphicon-step-backward"></i>Back</a>
+                   
+                </div>
+            </div>
+        </nav>
+		
+        <div class="container-fluid" ng-controller="NpDeleteController as ctrl">
+            <div class="row">
+              
+                
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                    <h1 class="page-header">DELETE NP NUMBER</h1>
+                    <form class="form-horizontal" role="form">
+                       <!--  <div class="form-group">
+                            <label for="patientName" class="col-sm-2 control-label">Patient Name</label>                        
+                            <div class="col-sm-4">
+                            
+                            
+                                <input type="text" ng-model="ctrl.search_str_pname" ng-disabled ="ctrl.search_str_np" class="form-control" id="pName" name="patientName" placeholder="Enter Patient Name" autocomplete="off">
+								
+                            
+                            </div>
+                        </div> -->
+                        <div class="form-group">
+                            <label for="npNumber" class="col-sm-2 control-label">NP Number</label>
+                            <div class="col-sm-4">
+                                <input type="text" ng-model = "ctrl.search_str_np" ng-disabled ="ctrl.search_str_pname" class="form-control" id="npNumber" name="npNumber" placeholder="Enter NP Number" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-7">
+                                <button class="btn btn-primary" ng-click="ctrl.searchFunction();" >Search</button>
+                                <input type="button" class="btn btn-warning" value="Reset" onClick="document.location.reload(true)">
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+				<div id="patientDT" class="container-fluid hidden" style="padding-top: 10px">
+				<div class="row">
+					<div class="col-md-6"><h1 class="header">Patient Details:</h1></div>
+					<div class="col-md-6"><h2 align="right" ng-if="ctrl.status!='Dispatched'">Waiting At : {{ctrl.status}} </h2><h2 align="right" style="color:green;" ng-if="ctrl.status=='Dispatched'">{{ctrl.status}} </h2></div>
+				</div>
+				<br>
+					<div class="jumbotron">
+						<div id="mydiv" ng-show="myVar">
+							<img src="img/loader.gif" class="ajax-loader" />
+						</div>
+						<div class="container">
+							<div class="row">
+								<div class="col-sm-6">
+									<h5 align="center">
+										Patient UHID :: <b>{{ctrl.patient.UHID}}</b>
+									</h5>
+									<h5 align="center">
+										Patient Name :: <b>{{ctrl.patient.patientName}}</b>
+									</h5>
+									<h5 align="center">
+										Age :: <b>{{ctrl.patient.patientAge}}</b>
+									</h5>
+									<h5 align="center">
+										Sex :: <b>{{ctrl.patient.patientSex === 0 ? "Male" : Female}}</b>
+									</h5>
+								</div>
+								<div class="col-sm-6">
+									<h5 align="center">
+										Sample Request ID:: <b>{{ctrl.patient.sampleRequestId}}</b>
+									</h5>
+									<h5 align="center">
+										NP Number:: <b>{{ctrl.patient.npBase}}</b>
+									</h5>
+									<h5 align="center">
+										Referring Doctor :: <b>{{ctrl.patient.surgeon}}</b>
+									</h5>
+									<h5 align="center">
+										 Created :: <b>{{ctrl.patient.created}}</b>
+									</h5>
+									
+									<button type="button"  ng-if="ctrl.new_nextState <= 6"  ng-click ="deleteNpNumber(ctrl.patient.npBase,ctrl.status)"  class="btn btn-sm btn-danger" title="delete" >
+            				<i class="glyphicon glyphicon-trash"></i> Delete
+      						</button>
+      						<h5  align="center" ng-if="ctrl.new_nextState > 6" style="color:red;">YOU CAN'T DELETE NP NUMBER AT THIS STAGE..</h5>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div ng-show="ctrl.state">
+                    <h1 class="header">{{ctrl.clickedNp}}  <button class="btn btn-primary" ng-click="ctrl.state=false;ctrl.buttonstate=true"><font size="4"> close</font></button> </h1>
+                    	<table class="table table-striped">
+                    		 <thead>
+                                <tr>  
+                                    <th>Station</th>
+                                    <th>Technician</th>
+                                    <th>Time</th>                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                            	 <tr ng-repeat="output in ctrl.reportOutputlist">
+									<td ng-bind="output.depName"></td>
+									<td ng-bind="output.techName"></td>
+									<td ng-bind="output.time"></td>
+            					</tr>
+							</tbody>
+						</table>
+                	</div>
+                	<div ng-show = ctrl.results>
+                	<h1 class="header">No Results</h1>
+                	</div>
+                    <div ng-show = "ctrl.buttonstate">
+                    <h1 class="header">Search Results</h1>
+                    	<table class="table table-striped">
+                    		 <thead>
+                                <tr>  
+                                	<!-- <th>  </th>-->
+                                    <th>NP Number</th>
+                                    <th>Patient Name</th>
+                                    <!-- <th>Current Status</th>-->
+                                   <!--  <th>Received Date</th>-->
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                            	 <tr ng-repeat-start="output in ctrl.outputlist" ng-click="ctrl.showPatientDetails(output)">
+               						<!-- <td>
+                   						<button ng-click="expanded = !expanded;">
+                        				<span ng-bind="expanded ? '-' : '+'"></span>
+                    					</button>
+                					</td>-->
+									<td ng-bind="output.npBase"></td>
+									<td ng-bind="output.patientName"></td>
+									<!-- <td ng-bind="output.currentState"></td>-->
+									<!-- <td ng-bind=""></td>-->
+									
+            					</tr>
+                    			<tr ng-repeat-end ng-show="expanded">
+									<td></td>
+									<td colspan="3">
+										<table class="table table-bordered">
+											<thead>
+                                                    <tr>  
+                                                        <th>Block Number</th>
+                                                        <th>Status</th>
+                                                        <th>Biopsy Type</th>
+                                                        <th>Last Updated</th>
+                                                        <th> </th>
+                                                    </tr>
+                                            </thead>
+										    <tbody>
+										        <tr ng-repeat="block in output.blocks">
+										            <td><span ng-bind="block.blockNum"></span></td>
+                                   				 	<td><span ng-bind="block.status"></span></td>
+                                   				 	<td><span ng-bind="block.biopsy_type"></span></td>
+                                    				<td><span ng-bind="block.formattedTime"></span></td>
+                                    				<td><button class="btn btn-primary" ng-click = "ctrl.transDetails(block.blockNum);ctrl.buttonstate=false">Details</td>
+										        </tr>
+										    </tbody>
+										</table>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						</div>
+						
+                </div>
+            </div>
+        </div>
+        
+        
+        
+	
+        
+ <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./search_files/jquery.min.js"></script>
+    <script src="./search_files/bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="./search_files/holder.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="./search_files/ie10-viewport-bug-workaround.js"></script>
+  	<script src="js/values.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/user_service.js"></script>
+    <script src="js/np_numberDelete.js"></script>
+   
+    </body>
+</html>

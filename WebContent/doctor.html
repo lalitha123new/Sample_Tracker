@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://getbootstrap.com/examples/dashboard/ -->
+<html ng-app="myApp2">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+      
+    <!-- <link rel="icon" href="https://getbootstrap.com/favicon.ico">-->
+
+    <title>Sample Tracker</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="./dashboard_files/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="./dashboard_files/dashboard.css" rel="stylesheet">
+    
+     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.js"></script>
+     <script src="bootstrap/angular.min.js"></script>
+     <script src="bootstrap/ui-bootstrap-tpls-0.6.0.js"></script>
+     <script src="bootstrap/angular-cookies.js"></script>
+     <script src="js/values.js"></script>
+     <script src="js/doctor.js"></script>
+   
+  </head>
+
+    <body ng-controller="doctorController">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">Lab Sample Tracker</a>
+                </div>
+                <!-- <div id ="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li ><a data-toggle="modal" data-target="#myModal">Admin Login</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li ><a id="logOut" href="index.html"></a></li>
+                    </ul>
+                </div> -->
+            </div>
+        </nav>
+	<!-- Login Modal -->
+	<div class="modal fade" id="myModal" role="dialog">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<!-- <div class="modal-header modal-primary">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Admin Login</h4>
+				</div> -->
+				<div class="modal-body">
+					<form>
+					<div class="form-group">
+						<input type="text" class="form-control" id="userName" placeholder="Username">
+					</div>
+					<div class="form-group">
+						<input type="password" class="form-control" id="userPassword" placeholder="Password">
+					</div>
+					<div class="form-group text-center">
+							<span id="err" class="hidden" style="color: red">Wrong username and password</span>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" onclick="login()" class="btn btn-success pull-right">LOGIN</button>
+					<button type="button" class="hidden btn btn-default pull-left" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-3 col-md-2 sidebar">
+                    <ul class="nav nav-sidebar">
+                        <li><a href="#">Dashboard</a></li>
+                        <li  class="active"><a href="doctor.html">Doctor</a></li>
+                        <li><a href="indexofsearch.html">Search</a></li>
+                        <li><a href="activityLogs.html">Activity Logs</a></li>
+                        <li><a href="allassets.html">All Assets</a></li>
+                        <li><a href="allTransactions.html">All Transaction</a></li>
+                        <li><a href="allncs.html">All Ncs</a></li>
+                         <li><a href="allcases.html">All Cases</a></li>
+                    </ul>
+                </div>
+                
+               
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                   <h1 class="page-header">Doctor Login</h1>
+                </div>
+                
+                <div class="container">    
+        <div id="loginbox" style="margin-top:14%;margin-left: 35%;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
+            <div class="panel panel-info" >
+                    <div class="panel-heading">
+                        <div class="panel-title">Sign In</div>
+                       <!-- <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#">Forgot password?</a></div>-->
+                    </div>     
+
+                    <div style="padding-top:30px" class="panel-body" >
+
+                        <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                            
+                        <form id="loginform" class="form-horizontal" role="form">
+                                    
+                            <div style="margin-bottom: 25px" class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                        <select ng-model="doctors" class="form-control" id="uname" >
+                            <option ng-repeat="doc in doctor"><b>{{doc}}</b></option>
+        
+                      </select>                                      
+                                    </div>
+                                
+                            <div style="margin-bottom: 25px" class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                        <input id="login-password" ng-model="password" type="password" class="form-control" name="password" placeholder="password">
+                                    </div>
+                                    
+
+                          <!--       
+                            <div class="input-group">
+                                      <div class="checkbox">
+                                        <label>
+                                          <input id="login-remember" type="checkbox" name="remember" value="1"> Remember me
+                                        </label>
+                                      </div>
+                                    </div> -->
+
+
+                                <div style="margin-top:10px" class="form-group">
+                                    <!-- Button -->
+
+                                    <div class="col-sm-12 controls">
+                                     <button id="btn-signup" ng-click="doctorlogin(doctors,password)" type="button" class="btn btn-info"><i class="icon-hand-right"></i>Enter</button>
+                                     <button id="btn-fbsignup" type="reset" class="btn btn-primary"><i class="icon-facebook"></i>Clear</button>
+
+                                    </div>
+                                </div>
+
+<!-- 
+                                <div class="form-group">
+                                    <div class="col-md-12 control">
+                                        <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
+                                            Don't have an account! 
+                                        <a href="#" onClick="$('#loginbox').hide(); $('#signupbox').show()">
+                                            Sign Up Here
+                                        </a>
+                                        </div>
+                                    </div>
+                                </div>  -->   
+                            </form>     
+
+
+
+                        </div>                     
+                    </div>  
+        </div>
+        <div id="signupbox" style="display:none; margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <div class="panel-title">Sign Up</div>
+                            <div style="float:right; font-size: 85%; position: relative; top:-10px"><a id="signinlink" href="#" onclick="$('#signupbox').hide(); $('#loginbox').show()">Sign In</a></div>
+                        </div>  
+                        <div class="panel-body" >
+                            <form id="signupform" class="form-horizontal" role="form">
+                                
+                                <div id="signupalert" style="display:none" class="alert alert-danger">
+                                    <p>Error:</p>
+                                    <span></span>
+                                </div>          
+                                <div class="form-group">
+                                    <label for="email" class="col-md-3 control-label">Email</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="email" placeholder="Email Address">
+                                    </div>
+                                </div>
+                                    
+                                <div class="form-group">
+                                    <label for="firstname" class="col-md-3 control-label">First Name</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="firstname" placeholder="First Name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastname" class="col-md-3 control-label">Last Name</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="lastname" placeholder="Last Name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" class="col-md-3 control-label">Password</label>
+                                    <div class="col-md-9">
+                                        <input type="password" class="form-control" name="passwd" placeholder="Password">
+                                    </div>
+                                </div>
+                                    
+                                <div class="form-group">
+                                    <label for="icode" class="col-md-3 control-label">Invitation Code</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="icode" placeholder="">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <!-- Button -->                                        
+                                    <div class="col-md-offset-3 col-md-9">
+                                        <button id="btn-signup" type="button" class="btn btn-info"><i class="icon-hand-right"></i> &nbsp Sign Up</button>
+                                        <span style="margin-left:8px;">or</span>  
+                                    </div>
+                                </div>
+                                
+                                <div style="border-top: 1px solid #999; padding-top:20px"  class="form-group">
+                                    
+                                    <div class="col-md-offset-3 col-md-9">
+                                        <button id="btn-fbsignup" type="button" class="btn btn-primary"><i class="icon-facebook"></i>   Sign Up with Facebook</button>
+                                    </div>                                           
+                                        
+                                </div>
+                                
+                                
+                                
+                            </form>
+                         </div>
+                    </div>
+
+               
+               
+                
+         </div> 
+    </div>
+    
+                
+                   <!--  <table id="stats">
+                        <tr>
+                            <td>
+                                Live Samples
+                                <div class="circle-wrapper">
+                                    <div class="circle text-center">
+                                        <p id = "c1">100</p>
+                                    </div>
+                                </div>    
+                            </td>
+                            <td>
+                                Delayed Samples
+                                <div class="circle-wrapper">
+                                    <div class="circle text-center">
+                                        <p id="c2">25</p>
+                                    </div>
+                                </div>    
+                            </td>
+                            <td>
+                                Total Samples
+                                <div class="circle-wrapper">
+                                    <div class="circle text-center">
+                                        <p id="c3">10000</p>
+                                    </div>
+                                </div>    
+                            </td>
+                        </tr>
+                    </table>-->
+                </div>
+            </div>
+        </div>
+   <!--  <script>
+        $(document).ready(function(){
+            $.post("http://localhost:8080/FinalSpring/rest/controller/webDashboard",
+                   {
+         		 	temp:"abc" ,
+                    },
+                   function(data, status){
+                     
+                         document.getElementById('c1').innerHTML = data.a;
+                         document.getElementById('c2').innerHTML = data.b;
+                         document.getElementById('c3').innerHTML = data.c;
+                   
+                    });
+    });
+    </script> -->
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./dashboard_files/jquery.min.js"></script>
+    <script src="./dashboard_files/bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="./dashboard_files/holder.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="./dashboard_files/ie10-viewport-bug-workaround.js"></script>
+  
+
+</body></html>

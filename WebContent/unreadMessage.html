@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta type="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+    
+	
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="generalBiopsy.html">
+    <link href="bootstrap/bootstrap-combined.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/notification.css">
+    <link href="css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <script src="bootstrap/angular.min.js"></script>
+    <script src="bootstrap/jquery.min.js"></script>
+    <script src="bootstrap/angular-sanitize.min.js"></script>
+    <script src="bootstrap/ui-bootstrap-tpls-0.6.0.js"></script>
+    <script src="bootstrap/angular-cookies.js"></script>
+    
+    <script type="text/javascript">
+    $(function() {
+          $("#barcodeText").focus();
+          $('#barcodeText').keypress(function(e){
+              if(e.keyCode==13)
+              $('#sendBarcode').click();
+            });
+        });
+    var notification_count = 2;
+    $(document).ready(function() {
+    /* $.ajax({
+		  type: "GET",
+		  url: serverURL + "users/" + userId + "/pushdStatus",
+		  success: function(data){
+			  notification_count = data;
+			  console.log("pushdStatus-1-"+data); */
+			  
+			  
+			  
+				// begin code for bell
+				var el = document.querySelector('.notification');
+
+				
+				    
+				    el.setAttribute('data-count', notification_count);
+				    console.log(el.getAttribute('data-count'));
+				    el.classList.remove('notify');
+				    el.offsetWidth = el.offsetWidth;
+				    el.classList.add('notify');
+				    if(notification_count >= 0){
+				        el.classList.add('show-count');
+				    }
+				    if(notification_count  == 0){
+				    	
+				    	$('#notify_div').addClass("invisible");
+				    	$('#notify_div1').removeClass("invisible");
+				    	document.getElementById("notify_div1").style.cursor = "default";
+				    	
+				    }
+				
+		  });
+			  
+    //});
+    //});
+    </script>
+    <title>Reporting Station, NeuroPathology Lab, NIMHANS</title>
+    
+    <!--Need to check where the below Style has role-->
+    <style>
+    
+    .jumbotron {
+            padding: 0.5em 0.6em;
+            h1 {
+                font-size: 2em;
+            }
+            p {
+                font-size: 1.2em;
+                .btn {
+                    padding: 0.5em;
+                }
+            }
+     }
+      .modal
+      {
+          height:530px;
+      }
+	#loginModal
+	{
+	height:400px;
+	}
+	#oldNpModal
+	{
+	height:300px;
+	}
+	#confirmNp
+	{
+	height:200px;
+	}
+	#mydiv {  
+    position:absolute;
+    width:10%;
+    height:20%;
+    left:46%;
+    top:40%;
+    z-index:1000;
+    opacity: .8;
+ 	}
+
+	.ajax-loader {
+    position: absolute;
+    display: block;     
+	}
+
+	.tick {
+	      background-color: #d6d6d6;
+	}
+.panel-heading h3 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: normal;
+    width: 75%;
+    padding-top: 8px;
+}
+
+	/* nicDit textarea css*/
+	.nicEdit-main{
+	     background-color: white;
+	}
+	
+	.row {
+	    margin-left: 0px;
+	    margin-right: 0px;
+	}
+	.form-horizontal .form-group{
+	margin-left: 0px;
+    margin-right: 0px;
+    }
+    
+     #myNavbar{
+    text-align:right;
+    }
+ 	 @media (max-width: 900px) {
+  
+    	#myNavbar{
+    	text-align:center;
+    	}
+    	
+		}
+			
+		table {
+		border-collapse:collapse;
+		 table-layout:fixed; 
+		 width:100%;
+		 }
+ 		table td {
+ 		border:solid 1px #fab;
+ 		width:100px;
+ 		word-wrap:break-word;
+ 		 }
+   
+   
+	  #uploadModal {
+	 width:900px;
+	 margin-left:-385px;
+		}
+
+	#messageModal{
+
+	width:900px;
+ 	margin-left:-385px;
+	}
+
+	#displayMessageModal{
+	width:900px;
+	 margin-left:-385px;
+	}
+
+
+	.timepicker{
+	z-index:-1000;
+	}
+/* begin code for bell*/
+
+.notification {
+    display: inline-block;
+    position: relative;
+    padding: 0.6em;
+    background:#FFA726;
+    font-size: 1.3em;
+     
+}
+
+.notification::before, 
+.notification::after {
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+   
+}
+
+.notification::before {
+    display: block;
+    content: "\f0f3";
+    font-family: "FontAwesome";
+    transform-origin: top center;
+}
+
+.notification::after {
+    font-family: Arial;
+    font-size: 0.7em;
+    font-weight: 700;
+    color:black;
+    position: absolute;
+    top: 5px;
+    right: -9px;
+    padding: 5px 8px;
+    line-height: 100%;
+    border: 2px black solid;
+    border-radius: 60px;
+    background: red;
+    opacity: 0;
+    content: attr(data-count);
+    opacity: 0;
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+    transition: transform, opacity;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out;
+}
+
+.notification.notify::before {
+    -webkit-animation: ring 1.5s ease;
+    animation: ring 1.5s ease;
+}
+
+.notification.show-count::after {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+}
+
+@-webkit-keyframes ring {
+    0% {
+        -webkit-transform: rotate(35deg);
+    }
+    12.5% {
+        -webkit-transform: rotate(-30deg);
+    }
+    25% {
+        -webkit-transform: rotate(25deg);
+    }
+    37.5% {
+        -webkit-transform: rotate(-20deg);
+    }
+    50% {
+        -webkit-transform: rotate(15deg);
+    }
+    62.5% {
+        -webkit-transform: rotate(-10deg);
+    }
+    75% {
+        -webkit-transform: rotate(5deg);
+    }
+    100% {
+        -webkit-transform: rotate(0deg);
+    }
+}
+
+@keyframes ring {
+    0% {
+        -webkit-transform: rotate(35deg);
+        transform: rotate(35deg);
+    }
+    12.5% {
+        -webkit-transform: rotate(-30deg);
+        transform: rotate(-30deg);
+    }
+    25% {
+        -webkit-transform: rotate(25deg);
+        transform: rotate(25deg);
+    }
+    37.5% {
+        -webkit-transform: rotate(-20deg);
+        transform: rotate(-20deg);
+    }
+    50% {
+        -webkit-transform: rotate(15deg);
+        transform: rotate(15deg);
+    }
+    62.5% {
+        -webkit-transform: rotate(-10deg);
+        transform: rotate(-10deg);
+    }
+    75% {
+        -webkit-transform: rotate(5deg);
+        transform: rotate(5deg);
+    }
+    100% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+} 
+.disabledbutton {
+ pointer-events: none;
+ }
+.invisible{
+display:none;
+}
+/* end of code for bell*/
+
+
+.thclass1{
+border:1px solid black;
+
+}
+
+.tdclass1{
+border:1px solid black;
+}
+    </style>
+</head>
+<body  ng-app="messageStation" >
+<div  ng-controller="messageController" ng-init="getPendingTasksReporting()">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+            	<p class="navbar-brand">Unread Messages</p>
+            </div>
+
+            <div id="myNavbar">
+            		
+  					<p> <b>Logged in as </b>{{username}}</p>
+  					
+  					<button id="notify_div" title="click here to see the Notifications" class="notification" style="background-color:blue;" ng-click="getMessages(8)"></button>
+      	
+      	
+  					
+  					<button type="button" class="btn btn-primary btn-small" onclick="home()">Home</button>
+  					<!-- <button type="button" id="unlinked" class="btn btn-default btn-small" onclick="window.location.href='linking.html'">Unlinked({{unLinked.length}})</button>-->
+  					<!--<button type="button" class="btn btn-default btn-small"  onclick="$('#loginModal').modal('show')">Login</button>-->
+  					<button type="button" class="btn btn-success btn-small"  ng-click="getAllUsers()" ng-hide="showLogout" >Login</button>
+                    <button type="button" class="btn btn-success btn-small" ng-click="logout()" ng-show="showLogout">Logout</button>
+  			
+					
+					
+			</div>
+        </div>
+    </nav>
+    <!-- *************************************************************************************************************************************
+    loginModel Code
+
+
+
+    ********************************************************************************************************************************************-->
+    <!-- ************* Login Modal **********-->
+
+    <div class="modal fade" id="loginModal" >
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">User Login</h4>
+        </div>
+        <div class="modal-body">
+            <div class="col-md-12">
+                <form name="LoginCredentials" class="form-horizontal" novalidate >
+                    <div class="form-group" >
+                        <!-- <label for="uname"><b>Users :</b></label>
+                        <select ng-model="users" class="form-control" id="uname" >
+                            <option ng-repeat="tech in techTable"><b>{{tech.technicianName}}</b></option>
+        
+                      </select> -->
+                      
+                       <label for="uname"><b>Faculty :</b></label>
+                        <select ng-model="users" class="form-control" id="uname" >
+                            <option ng-repeat="tech in faculty_Array"><b>{{tech.technicianName}}</b></option>
+                      </select>
+                      <label for="uname"><b>Resident :</b></label>
+                        <select ng-model="users" class="form-control" id="uname" >
+                            <option ng-repeat="tech in residentArray"><b>{{tech.technicianName}}</b></option>
+                      </select>
+                      <br>
+                      <br>
+                       <label for="pass"><b>Password :</b></label>
+                       <input type="password" style=" height:120%;" ng-model="password" class="form-control" placeholder= "Enter Password" id="pass">
+                       <div ng-show="invalidPassword"> <font color="red"> Invalid password</font></div>
+                </div >
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <input type="submit" class="btn btn-success pull-right" ng-click="setUsername()" value="Login" />
+                    </div>
+                </form>
+                <div class="clearfix"></div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    
+    
+    <!-- *************************modal for old npNumbers************************ -->
+        <div class="modal fade" id="oldNpModal" >
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">NP Numbers</h4>
+        </div>
+        <div class="modal-body">
+            <div class="col-md-12">
+                <form name="LoginCredentials" class="form-horizontal" novalidate >
+                    <div class="form-group" >
+                        <label for="npNumbers"><b>NP Numbers associated with this patient</b></label>
+                        <select ng-model="npNum" class="form-control" id="npNumbers" >
+                        	<option><b>Create new</b></option>
+                            <option ng-repeat="np in oldRequests"><b>{{np.npBase}}</b></option>
+        
+                      </select>
+                </div >
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <input type="submit" class="btn btn-success pull-right" ng-click="setNpNumber()" value="Select" />
+                    </div>
+                </form>
+                <div class="clearfix"></div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+    <!-- *************************modal for confirm npNumber************************ -->
+        <div class="modal fade" id="confirmNp" >
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">Confirm NP Number</h4>
+        </div>
+        <div class="modal-body">
+            <div class="col-md-12">
+                <form name="LoginCredentials" class="form-horizontal" novalidate >
+                    <div class="form-group" >
+                        <label for="npNumbers"><b>Are you sure to assign this NP Number : <font size="5" color="blue">{{npNumber}} </font>?</b></label>
+                </div >
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <input type="submit" class="btn btn-success pull-right" ng-click="checkNpNumber()" value="Confirm" />
+                    </div>
+                </form>
+                <div class="clearfix"></div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+    
+    
+   
+    
+    <div class="modal fade modal-lg" id="messageModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+    
+      <!-- Modal content-->
+    
+       <div class="modal-header">
+           <!--  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button> -->
+            <h4 class="modal-title">Unread Messages</h4>
+        </div>
+        <div class="modal-body">
+         
+             <table>
+             <thead>
+             <tr>
+             <th class="thclass1">Np Number</th>
+             <th class="thclass1">Message</th>
+             <th class="thclass1">Action</th>
+             </tr>
+             </thead>
+             <tbody>
+             <tr>
+             <td class="tdclass1">520/20</td>
+             <td class="tdclass1">Message for 520/20</td>
+             <td class="tdclass1"><button type="button" class="btn btn-default" ng-click="viewMessage()">View</button></td>
+             </tr>
+             </tbody>
+             </table>  
+             
+             
+            
+           
+        </div>
+        <div class="form-group" style="text-align:center;margin-top:30px;">
+                         <button type="button" class="btn btn-default" ng-click="close1()" >Close</button>
+                        
+                    </div>
+       
+        </div>
+    </div>
+    
+    <div class="modal fade modal-lg" id="displayMessageModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+    
+      <!-- Modal content-->
+    
+       <div class="modal-header">
+           <!--  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button> -->
+            <h4 class="modal-title">View Messages</h4>
+        </div>
+        <div class="modal-body">
+         
+             <table style="border:1px solid black;">
+             <thead>
+             <tr>
+             <th class="thclass1">Np Number</th>
+             <th class="thclass1">Message</th>
+             </tr>
+             </thead>
+             
+             <tbody>
+             <tr>
+             <td class="tdclass1">520/20</td>
+             <td class="tdclass1">Message1</td>
+             </tr>
+             </tbody>
+             </table>  
+             <div style="text-align:center;padding-top:20px;">
+             <form>
+             
+        <textarea id="messagebox" rows="4" cols="50">
+        </textarea>
+        <div style="text-align:center;">
+         <button type="button" class="btn btn-default" ng-click="sendReply()">Send Reply</button>
+          <button type="button" class="btn btn-default" ng-click="close2()" >Close</button>
+        </div>
+        </form>
+        </div>
+           
+        </div>
+        <div class="form-group" style="text-align:center;margin-top:30px;">
+                        <!-- <button type="button" class="btn btn-default" ng-click="close1()" >Close</button> -->
+                        
+                    </div>
+       
+        </div>
+    </div>
+    
+    <div class="modal fade" id="NCRModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+    
+       <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">NCR details</h4>
+        </div>
+        <div class="modal-body">
+         
+               
+             <form>
+              <!-- <div class="form-group">
+                    <label class="checkbox-inline">
+                    <input id="3" type="checkbox" ng-model="markNcs"><b style="color:red;">Add to NCR</b></label>
+                    </div> -->
+                    <div class="form-group">
+                    <label for="4"><b>Corrective Action</b></label>
+                    <input class="form-control" style="height:120%;" type="text" ng-model="edit.corrective" id="4">
+                    </div>
+                    <div class="form-group" >
+                    <label for="5"><b>Preventive Action</b></label>
+                    <input class="form-control" style="height:120%;" type="text" ng-model="edit.preventive" id="5">
+                    </div>
+                    <div class="form-group">
+                    <label for="6"><b>Type</b></label>
+                    <input class="form-control" style="height:120%;" type="text" ng-model="edit.ncsType" id="6">
+                    </div>
+                    <div class="form-group" >
+                    <label for="7"><b>Faculty</b></label>
+                    <input class="form-control" style="height:120%;" type="text" ng-model="edit.faculty" id="7">
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <input type="submit" class="btn btn-success pull-right" ng-click="update(asset)" onclick="$('#3').val(null),$('#1').val(null),$('#2').val(null)" value="Save" />
+                    </div>
+                </form>
+                
+           
+        </div>
+       
+        </div>
+    </div>
+    
+    
+  
+    
+    <script src="bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="js/ckeditor/ckeditor.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/values.js"></script>
+    <script src="js/message.js"></script>
+    <script src="js/alasql.min.js"></script>
+    <script src="js/xlsx.core.min.js"></script>
+    
+   
+     
+     
+     
+    
+   </div>
+</body>
+</html>

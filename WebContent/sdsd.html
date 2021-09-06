@@ -1,0 +1,98 @@
+<html lang="en">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta type="viewport" content="width=device-width, initial-scale=1" />
+    
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    
+</head>
+
+
+<body ng-app="receivingStation" ng-controller="VerifyController">
+<div class="container">
+    <!-- Loading Window -->
+    <!-- ************* Insert Modal **********-->
+    <div class="modal fade" id="insertModal">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">New Asset</h4>
+        </div>
+        <div class="modal-body">
+            <div class="col-md-12">
+                <form name="assetForm" class="form-horizontal" novalidate >
+                    <!--<input type="hidden" ng-model="asset.Id" />-->
+                    <div>
+                        <label for="1"><b>Select Type: </b></label>
+                        <select ng-model="asset.specimen" class="form-control" id="1" required >
+                            <option>Tissue</option>
+                            <option>Block</option>
+                            <option>Stained Slide</option>
+                            <option>Unstained Slide</option>
+                            <option>Frozen</option>
+                            <option>Fluid</option>
+                        </select>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="2"><b>Fixative: </b></label>
+                        <select ng-model="asset.fixative" class="form-control" id="2" >
+                            <option>Fresh</option>
+                            <option>Saline</option>
+                            <option>10% Formalin</option>
+                            <option>Cidex</option>
+                            <option>Glutaraldehyde</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <br>
+                    <div class="form-group" >
+                        <label for="3"><b>Biopsy :</b></label>
+                        <select ng-model="asset.biopsy" class="form-control" id="3" >
+                            <option>Muscle</option>
+                            <option>Nerve</option>
+                            <option>Skin</option>
+                            <option>Brain</option>
+                            <option>Lip</option>
+                        </select>
+                    </div>
+                    <hr/>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <input type="submit" class="btn btn-success pull-right" ng-click="assetForm.$valid && create(asset)" value="Save" />
+                    </div>
+                </form>
+                <div class="clearfix"></div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+
+    <!--****************** TABLE *****************-->
+
+    <div class="row">
+        <form class="form-horizontal">
+            <div class="pull-right">
+                <button type="button" class="btn btn-sm btn-success" onclick="$('#insertModal').modal('show')">
+                    <i class="glyphicon glyphicon-plus"></i> New
+                </button>
+            </div>
+            <div class="clearfix"></div>
+        </form>
+    </div>
+</div>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.9.0/ui-bootstrap-tpls.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/verify.js"></script>
+
+</body>
+
+</html>

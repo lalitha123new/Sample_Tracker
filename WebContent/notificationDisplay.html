@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>Sample Tracker</title>
+		<link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+		<link rel="stylesheet" href="css/notification.css">
+		<link href="bootstrap/bootstrap-combined.min.css" rel="stylesheet">
+		<!-- Bootstrap core CSS -->
+		<link href="./search_files/bootstrap.min.css" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link href="./search_files/search.css" rel="stylesheet">
+		
+		<script src="./search_files/ie-emulation-modes-warning.js"></script>
+		<script src="js/alasql.min.js"></script>
+		<script src="bootstrap/angular.js"></script>
+	   	<script src="bootstrap/angular-animate.js"></script>
+	  	<script src="bootstrap/ui-bootstrap-tpls.min.js"></script>
+	   
+	    <script src="bootstrap/jquery.min.js"></script>
+	    <script src="bootstrap/angular-sanitize.min.js"></script>
+	    <script src="bootstrap/ui-bootstrap-tpls-0.6.0.js"></script>
+	    <script src="bootstrap/angular-cookies.js"></script>
+	    
+	    <script>
+	    
+	    function home1(){
+            window.location.href="externalSample.html";
+        }
+	    </script>
+	    
+<style>
+
+body {
+margin: 0 auto;
+/* max-width: 800px; */
+padding: 0 20px;
+}
+
+
+/* .container {
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+} */
+
+.darker {
+border-color: #ccc;
+background-color: #ddd;
+}
+
+.container::after {
+content: "";
+clear: both;
+display: table;
+}
+
+.container img {
+float: left;
+max-width: 60px;
+width: 100%;
+margin-right: 20px;
+border-radius: 50%;
+}
+
+.container img.right {
+float: right;
+margin-left: 20px;
+margin-right:0;
+}
+
+.time-right {
+float: right;
+color: #aaa;
+}
+
+.time-left {
+float: left;
+color: #999;
+}
+</style>
+
+</head>
+
+<!-- this page is to display the notification messages from the external hospitals for the super admin login -->
+
+<body ng-app="myApp2" class="ng-cloak" style="padding-top:0px;" ng-controller="notificationController as ctrl">
+
+
+ <div class="navbar navbar-inverse">
+  	<div class="container">
+    <a class="navbar-brand" href="index.html">Lab Sample Tracker</a>
+                    
+    <button class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="mynavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li><button type="button" onclick="home1()" class="btn btn-sm btn-success " style="margin-right: 10px;"><i class="glyphicon "></i>Home
+      	</button></li>
+      	
+        <!-- <li><button type="button" ng-click="back()" class="btn btn-sm btn-warning" style="margin-right: 10px;"><i class="glyphicon "></i>Back
+     	</button></li> -->
+      	
+        <li><button type="button"  ng-click="logOutUser()" class="btn btn-sm btn-danger"> <i class="glyphicon glyphicon-off"></i>Logout</button>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+		
+			
+				
+<div class="row" style="margin-top:20px;">
+
+
+<div class="col-md-12">
+<div class="col-md-1"></div>
+<div class="col-md-9" style="text-align:left;">
+<h1 class="page-header">Chat Messages</h1>
+</div>
+
+ <div class="col-md-2"></div>
+ </div>
+ </div>
+ <div class="row">
+ <div class="col-md-12">
+ <div class="col-md-10"></div>
+ 
+<div class="col-md-1" style="text-align:right">
+<!-- <button type="button" ng-click="back()" class="btn btn-sm btn-success"><i class="glyphicon "></i>Back</button> -->
+</div>
+<div class="col-md-1" style="text-align:left">
+ <!-- <button type="button" onclick="home()" class="btn btn-sm btn-success"><i class="glyphicon "></i>Home</button> -->
+		
+<!--<a id="notify_div" title="click here to see the Notifications" class="notification" style="cursor:pointer;margin-top:20px;text-align:right;" href="/Sample_Tracker/notificationDisplay.html" ></a>-->		
+</div>
+
+</div>
+</div>
+
+
+<br>
+<div class="row">
+
+  <div class="col-md-12">
+  <div ng-show = ctrl.results></div>
+  <div ng-show = "ctrl.buttonstate">
+
+      <table class="table table-hover" style="background-color: #fff;border:1px solid black;">
+        
+        <thead>
+        
+          <tr style="border:1px solid black;">
+            <th class="border_class success header_class"><i class="w3-small custom-icon fa fa-ravelry"></i>Sr. No.</th>
+            <th class="border_class success header_class"><i class="w3-small custom-icon fa fa-user"></i>NP-no</th>
+            <th class="border_class success header_class"><i class="w3-small custom-icon fa fa-venus-mars"></i>Messages</th>
+            <th class="border_class success header_class"><i class="w3-small custom-icon fa fa-venus-mars"></i>Date</th>
+            <th class="border_class success header_class" style="border-right:1px solid black;"><i class="w3-small custom-icon fa fa-venus-mars"></i>Read Message</th>
+          
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr style="background-color:white;" ng-repeat-start="output in ctrl.outputlist1 | limitTo:100" ng-style="{ 'background-color' : (output.read_flag == '0') ? '#ffa1a1' : 'white' }">
+            
+            <td>{{$index +1}}</td>
+            <td ng-bind="output.np_num"></td>
+            <td ng-bind="output.notification_msg"></td>
+             <td ng-bind="output.created_at"></td>
+            <td style="border-right:1px solid black;"><button type="button" ng-click="readMessage(output.hospitalid,output.sample_id,output.notification_id,output.np_num)" title="write message" class="btn btn-primary">Read Message</button></td>
+
+          </tr>
+          <tr ng-repeat-end>
+          <td></td>
+			<td colspan="8">
+										
+			</td>
+          </tr>
+        </tbody>
+         
+        </table>
+        </div>
+  </div>
+</div>
+
+ <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./search_files/jquery.min.js"></script>
+    <script src="./search_files/bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="./search_files/holder.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="./search_files/ie10-viewport-bug-workaround.js"></script>
+   	<script src="js/values.js"></script>
+    <script src="js/notification.js"></script>
+
+</body>
+</html>

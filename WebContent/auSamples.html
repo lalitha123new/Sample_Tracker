@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://getbootstrap.com/examples/dashboard/ -->
+
+<html lang="en" hola_ext_inject="disabled">
+
+	<head>
+	
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>Sample Tracker</title>
+		<link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+		<link href="bootstrap/bootstrap-combined.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="css/notification.css">
+		<link href="css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+		<!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"> -->
+		<!-- Bootstrap core CSS -->
+		<link href="./search_files/bootstrap.min.css" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link href="./search_files/search.css" rel="stylesheet">
+
+		<script src="./search_files/ie-emulation-modes-warning.js"></script><style type="text/css"></style>
+		<!-- <script src="http://cdn.jsdelivr.net/alasql/0.2/alasql.min.js"></script>-->
+		<script src="js/alasql.min.js"></script>
+		<script src="bootstrap/angular.js"></script>
+	   	<script src="bootstrap/angular-animate.js"></script>
+	  	<script src="bootstrap/ui-bootstrap-tpls.min.js"></script>
+	    <!-- <script src="bootstrap/angular.min.js"></script>-->
+	    <script src="bootstrap/jquery.min.js"></script>
+	    <script src="bootstrap/angular-sanitize.min.js"></script>
+	    <script src="bootstrap/ui-bootstrap-tpls-0.6.0.js"></script>
+	    <script src="bootstrap/angular-cookies.js"></script>
+	    
+      	<script>
+     
+     function back(){
+     window.location.href="allUsers.html";
+     }
+      </script>
+      
+<style>
+#editSampleModal{
+margin: auto;
+width: 60%;
+height:730px;
+padding: 10px;
+
+}
+</style>
+
+  
+</head>
+
+<!-- this page is to display the external Autoimmune lab samples in the superadmin login -->
+
+    <body ng-app="myApp2" class="ng-cloak" style="padding-top:0px;" ng-controller="auController as ctrl">
+    
+    <div class="navbar navbar-inverse">
+  	<div class="container">
+    <a class="navbar-brand" href="index.html">Lab Sample Tracker</a>
+                    
+    <button class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="mynavbar">
+    
+     <ul class="nav navbar-nav navbar-left">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+       <li><button type="button" class="btn btn-info btn-small" onClick="pageRefresh()" style="margin-left: 900px;">Refresh</button></li>
+        <li><button type="button"  ng-click="logOutUser()" class="btn btn-sm btn-danger"> <i class="glyphicon glyphicon-off"></i>Logout</button>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+      
+  	
+        <div class="container-fluid" ng-controller="auController">
+            <div class="row">
+              
+                <div class="col-md-12">
+                <div class="col-md-1"></div>
+                <div class="col-md-9">
+                    <h1 class="page-header">AU LAB SAMPLES</h1>
+                    </div>
+                     <div class="col-md-2"></div>
+                     </div>
+                     </div>
+                     
+                     <div class="row">
+                     <div class="col-md-12">
+                     <div class="col-md-9" style="padding-top:0px;"></div>
+                    
+                    <div class="col-md-1" style="padding-top:0px;"></div>
+					<div class="col-md-1" style="text-align:right;padding-top:0px;"></div>
+
+					<div class="col-md-1" style="text-align:left;padding-top:0px;">
+	
+					</div>
+					</div>
+					</div>
+      				
+                    <br>
+				<div class="col-md-12">
+                	<div ng-show = ctrl.results></div>
+                	
+                    <div ng-show = "ctrl.buttonstate">
+                    <!-- <div> --> 
+                    	<table align="center" class="table table-striped" border="1" style="border:1px solid black;">
+                    	
+                    		 <thead>
+                    		 
+                                <tr>  
+                                	
+                                	<th>S.No</th>
+                                	<th>Hosp_name</th>
+                                    <th>Sample_id:</th>
+                                    <th>Np_No</th>
+                                    <th>Status</th>
+                                    <th>Pat_name:</th>
+                                    <th>Referred_by:</th>
+                                    <th>Contact:</th>
+                                    <th>Email_ID:</th>
+                                    <th>Preview</th>
+                                    
+                                    
+                                </tr>
+                                
+                            </thead>
+                            
+                            <tbody>
+                            
+                            	 <tr ng-repeat-start="output in ctrl.outputlist1 | limitTo:100" ng-click="editSampleStatus(output.au_patient_id,output.au_pat_name,output.username,output.au_hosp_ref_no)" style="cursor:pointer">
+                            	 
+                            	    <td>{{$index +1}}</td>
+                            	    <td ng-bind="output.hosp_name"></td>
+									<td ng-bind="output.au_patient_id"></td>
+									<td ng-bind="output.au_np_no"></td>
+									<td ng-bind="output.status"></td>
+									
+									<td ng-bind="output.au_pat_name"></td>
+									<td ng-bind="output.au_referred_by"></td>
+									<td ng-bind="output.au_doctor_phone_no"></td>
+									<td ng-bind="output.au_doctor_email_id"></td>
+									
+									<td ><button type="button" ng-model="edit" data-toggle="modal"  ng-click="previewAuSample(output.au_patient_id)" class="btn btn-sm btn-info " title="edit" >
+            				<i class="glyphicon  glyphicon-pencil"></i> Preview
+      						</button>&nbsp&nbsp&nbsp
+      						
+      						</td> 
+            					</tr>
+            					
+                    			<tr ng-repeat-end>
+									<td></td>
+									<td colspan="8">
+										
+									</td>
+								</tr>
+								
+							</tbody>
+						</table>
+						</div>
+							
+                </div>
+            </div>
+            
+             <div class="modal"  id="editSampleModal"  role="dialog">
+             <div class="modal-dialog">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title" >Edit External AU Sample<span><p id="ext_sample_id"></p></span></h4>
+            
+           
+        </div>
+        <div class="modal-body" style="max-height:700px;>
+            <div class="col-md-12">
+                <form name="editUser1" class="form-horizontal" novalidate autocomplete="off" >
+                    <div class="form-group" >
+                   
+                        <label for="pat_name"><b>Patient Name:</b></label>
+                        <input type="text" style=" height:120%;" class="form-control"  name="edit_pat_name" id="edit_pat_name" disabled=true>
+                     
+                      <br>
+                        <br>
+                      
+                       <label for="uname"><b>Hospital Name:</b></label>
+                        <input type="text" style=" height:120%;" class="form-control"  name="edit_hosp_name" id="edit_hosp_name"  disabled=true>
+                     
+                      <br>
+                        <br>
+                    
+                        <label for="uname"><b>Ref Hosp Pat Id:</b></label>
+                          <input type="text" style=" height:120%;" class="form-control"  name="ref_hosp_pat_id" id="ref_hosp_pat_id"  disabled=true>
+                     
+                    
+                      <br>
+                        <br>
+                      
+                       <label for="pass"><b>Status:</b></label>
+                      <select ng-model="status" class="form-control" name="status" id="status">
+                            <option ng-repeat="option1 in status_options"><b>{{option1.value}}</b></option>
+        
+                      </select>
+                       <br>
+                         <br>
+                       
+                        <label for="pass"><b>Np Number:</b></label>
+                      <input type="text" style=" height:120%;" class="form-control"  ng-model="np_number" name="np_number" id="np_number">
+                     
+                    
+                     
+                       <br>
+                      <br>
+                      
+                      
+                      
+                </div >
+                    <div class="form-group" ng-model="hospital_id1">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <button type="submit" class="btn btn-success pull-right"  ng-click="ediSampleSave()" value="Edit">Update</button>
+                    </div>
+                </form>
+                <!-- <div class="clearfix"></div>
+                <div class="modal-footer"></div> -->
+            </div>
+            </div>
+        </div>
+        <!-- </div> -->
+       
+    
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./search_files/jquery.min.js"></script>
+    <script src="./search_files/bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="./search_files/holder.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="./search_files/ie10-viewport-bug-workaround.js"></script>
+   	<script src="js/values.js"></script>
+    <script src="js/auController.js"></script>
+   
+    </body>
+</html>

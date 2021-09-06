@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://getbootstrap.com/examples/dashboard/ -->
+
+<html lang="en" hola_ext_inject="disabled">
+
+	<head>
+	
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>Sample Tracker</title>
+		<link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+		<link href="bootstrap/bootstrap-combined.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="css/notification.css">
+		<link href="css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+		<!-- Bootstrap core CSS -->
+		<link href="./search_files/bootstrap.min.css" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link href="./search_files/search.css" rel="stylesheet">
+
+		<script src="./search_files/ie-emulation-modes-warning.js"></script><style type="text/css"></style>
+		<!-- <script src="http://cdn.jsdelivr.net/alasql/0.2/alasql.min.js"></script>-->
+		<script src="js/alasql.min.js"></script>
+		<script src="bootstrap/angular.js"></script>
+	   	<script src="bootstrap/angular-animate.js"></script>
+	  	<script src="bootstrap/ui-bootstrap-tpls.min.js"></script>
+	    <!-- <script src="bootstrap/angular.min.js"></script>-->
+	    <script src="bootstrap/jquery.min.js"></script>
+	    <script src="bootstrap/angular-sanitize.min.js"></script>
+	    <script src="bootstrap/ui-bootstrap-tpls-0.6.0.js"></script>
+	    <script src="bootstrap/angular-cookies.js"></script>
+	   
+      	<script>
+     function sampleList(){
+    	window.location.href = "notificationDisplay.html";
+    	 
+     }
+     function back(){
+     window.location.href="allUsers.html";
+     }
+    
+
+</script>
+       
+<style>
+#editSampleModal{
+margin: auto;
+width: 60%;
+height:730px;
+padding: 10px;
+
+}
+	
+
+</style>
+
+  
+</head>
+
+				<!--this page is to  display external samples in the receiving station -->
+
+    <body ng-app="myApp2" class="ng-cloak" style="padding-top:0px;" ng-controller="ExternalSampleDisplayController as ctrl">
+    
+    <div class="navbar navbar-inverse">
+  	<div class="container">
+    <a class="navbar-brand" href="index.html">Lab Sample Tracker</a>
+                    
+    <button class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="mynavbar">
+    
+     <ul class="nav navbar-nav navbar-left">
+      
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><button type="button" class="btn btn-info btn-small" onClick="pageRefresh()" style="margin-left: 900px;">Refresh</button></li>
+         <li> <a id="notify_div" title="click here to see the Notifications" class="notification" style="background-color:black; "href="externalNotificationDisplay.html" ></a>
+      	</li> 
+      	
+        <li><button type="button"  ng-click="back()" class="btn btn-sm btn-primary">Back</button>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+     
+  	
+        <div class="container-fluid" ng-controller="ExternalSampleDisplayController">
+        
+            		
+            		<div class="row">
+            		
+                	<div class="col-md-12">
+               
+                	<div class="col-md-6">
+                    <h1>EXTERNAL SAMPLES</h1>
+                    </div>
+                     <div class="col-md-2">
+                     <p><b>From Date</b></p><input type="text" name="S_Date" ng-model="startDate" placeholder="YYYY-MM-DD" />
+                      </div>
+                      <div class="col-md-2">
+                      <p><b>To Date</b></p><input type="text" name="S_Date" ng-model="endDate" placeholder="YYYY-MM-DD" />
+                     </div>
+                     <div class="col-md-2">
+                     <button class="btn btn-warning" ng-click="downloadFile()">Download</button>
+                     </div>
+                     
+                     </div>
+                     </div>
+                     
+                     <div class="row">
+                     <div class="col-md-12">
+                     <div class="col-md-9" style="padding-top:0px;"></div>
+                    <div class="col-md-1" style="padding-top:0px;"></div>
+					<div class="col-md-1" style="text-align:right;padding-top:0px;">
+  
+					</div>
+
+					<div class="col-md-1" style="text-align:left;padding-top:0px;">
+					</div>
+					</div>
+      				</div>
+      				
+      				
+                    <br>
+				<div class="col-md-12">
+				
+                	<div ng-show = ctrl.results></div>
+                	
+                    <div ng-show = "ctrl.buttonstate">
+                    <!-- <div> --> 
+                    	<table align="center" class="table table-striped" border="1" style="border:1px solid black;">
+                    	
+                    		 <thead>
+                    		 
+                                <tr>  
+                                	
+                                	<th>S.No</th>
+                                	<th>Hosp <br>name</th>
+                                    <th>Trans_id:</th>
+                                    <th>Np_No</th>
+                                    <th>Status</th>
+                                    <th>Pat_name:</th>
+                                    <th style="word-wrap: break-word;">Ref Hosp<br> Pat Id</th>
+                                    <th>Referred<br>by:</th>
+                                    <th>Contact:</th>
+                                    <th style="word-wrap: break-word;" >Email<br>ID:</th>
+                                   <!--  <th>Transaction Id</th> -->
+                                    <th>Payment</th>
+                                    <th>DD <br>No</th>
+                                     <th>Trans<br>No</th>
+                                     <th>Bank</th>
+                                      <th>DD/Trans Date</th>
+                                    <th>Preview</td>
+                                   
+                                    <!-- <th>Print</th> -->
+                                    
+                                    
+                                </tr>
+                                
+                            </thead>
+                            
+                            <tbody>
+                            
+                            	 <tr ng-repeat-start="output in ctrl.outputlist1 | myfilter: startDate: endDate"" ng-click="editSampleStatus(output.transaction_id,output.pat_name,output.username,output.hosp_ref_no)" style="cursor:pointer">
+                            	 
+                            	    <td>{{$index +1}}</td>
+                            	    <td ng-bind="output.username"></td>
+									<td ng-bind="output.transaction_id"></td>
+									<td ng-bind="output.npno"></td>
+									<td ng-bind="output.status"></td>
+									
+									<td ng-bind="output.pat_name"></td>
+									<td ng-bind="output.hosp_ref_no"></td>
+									<td ng-bind="output.referred_by"></td>
+									<td ng-bind="output.doctor_phone_no"></td>
+									<td ng-bind="output.doctor_email_id" style="word-wrap: break-word;"></td>
+									<!-- <td ng-bind="output.transaction_id"></td> -->
+      								<td ng-bind="output.amount"></td>
+      								<td ng-bind="output.dd1"></td>
+      								<td ng-bind="output.trans_no"></td>
+      								<td ng-bind="output.bank_name"></td>
+      								<td ng-bind="output.dd_date"></td>
+      								
+      								
+									<td ><button type="button" ng-model="edit" data-toggle="modal"  ng-click="previewSample(output.sample_id,output.npno,output.hospitalid)" class="btn btn-sm btn-info " title="edit" >
+            				<i class="glyphicon  glyphicon-pencil"></i> Preview
+      						</button>&nbsp&nbsp&nbsp
+      						</td>
+      						
+            					</tr>
+            					
+                    			<tr ng-repeat-end>
+									<td></td>
+									<td colspan="11">
+										
+									</td>
+								</tr>
+								
+							</tbody>
+						</table>
+						
+						</div>
+						
+						
+						
+	
+						
+                </div>
+                
+                
+            </div>
+            
+             <div class="modal"  id="editSampleModal"  role="dialog">
+             <div class="modal-dialog">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title" >Edit External Sample<span><p id="ext_sample_id"></p></span></h4>
+            
+           
+        </div>
+        <div class="modal-body" style="max-height:700px;>
+            <div class="col-md-12">
+                <form name="editUser1" class="form-horizontal" novalidate autocomplete="off" >
+                    <div class="form-group" >
+                   
+                        <label for="pat_name"><b>Patient Name:</b></label>
+                        <input type="text" style=" height:120%;" class="form-control"  name="edit_pat_name" id="edit_pat_name" disabled=true>
+                     
+                      <br>
+                        <br>
+                      
+                       <label for="uname"><b>Hospital Name:</b></label>
+                        <input type="text" style=" height:120%;" class="form-control"  name="edit_hosp_name" id="edit_hosp_name"  disabled=true>
+                     
+                      <br>
+                        <br>
+                    
+                        <label for="uname"><b>Ref Hosp Pat Id:</b></label>
+                          <input type="text" style=" height:120%;" class="form-control"  name="ref_hosp_pat_id" id="ref_hosp_pat_id"  disabled=true>
+                     
+                    
+                      <br>
+                        <br>
+                      
+                       <label for="pass"><b>Status:</b></label>
+                      <select ng-model="status" class="form-control" name="status" id="status">
+                            <option ng-repeat="option1 in status_options"><b>{{option1.value}}</b></option>
+        
+                      </select>
+                       <br>
+                         <br>
+                       
+                        <label for="pass"><b>Np Number:</b></label>
+                      <input type="text" style=" height:120%;" class="form-control"  ng-model="np_number" name="np_number" id="np_number">
+                     
+                    
+                     
+                       <br>
+                      <br>
+                      
+                      
+                      
+                </div >
+                    <div class="form-group" ng-model="hospital_id1">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <button type="submit" class="btn btn-success pull-right"  ng-click="ediSampleSave()" value="Edit">Update</button>
+                    </div>
+                </form>
+                <!-- <div class="clearfix"></div>
+                <div class="modal-footer"></div> -->
+            </div>
+            </div>
+        </div>
+            
+        <!-- </div> -->
+       
+
+        
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./search_files/jquery.min.js"></script>
+    <script src="./search_files/bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="./search_files/holder.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="./search_files/ie10-viewport-bug-workaround.js"></script>
+   	<script src="js/values.js"></script>
+    <script src="js/externalSampleDisplay.js"></script>
+    
+    <!-- following code is for filter table based on date -->
+    <script type="text/javascript" src="js/latest1.js"></script>
+	<script type="text/javascript" src="js/moment1.min.js"></script>
+	<script type="text/javascript" src="js/daterangepicker.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/daterangepicker.css" /> 
+ 
+ 
+ 
+    
+   
+    </body>
+</html>

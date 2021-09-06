@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta type="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+    
+    
+	
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="generalBiopsy.html">
+    <link href="bootstrap/bootstrap-combined.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/notification.css">
+    
+    <link href="css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <script src="bootstrap/angular.min.js"></script>
+    <script src="bootstrap/jquery.min.js"></script>
+    <script src="bootstrap/angular-sanitize.min.js"></script>
+    <script src="bootstrap/ui-bootstrap-tpls-0.6.0.js"></script>
+    <script src="bootstrap/angular-cookies.js"></script>
+    
+    <script type="text/javascript">
+    $(function() {
+          $("#barcodeText").focus();
+          $('#barcodeText').keypress(function(e){
+              if(e.keyCode==13)
+              $('#sendBarcode').click();
+            });
+        });
+    
+			  
+    //});
+    //});
+    </script>
+    <title>Reporting Station, NeuroPathology Lab, NIMHANS</title>
+    
+    <!--Need to check where the below Style has role-->
+    <style>
+        .jumbotron {
+            padding: 0.5em 0.6em;
+            h1 {
+                font-size: 2em;
+            }
+            p {
+                font-size: 1.2em;
+                .btn {
+                    padding: 0.5em;
+                }
+            }
+        }
+        .modal
+        {
+            height:530px;
+        }
+		#loginModal
+		{
+		height:400px;
+		}
+		#oldNpModal
+		{
+		height:300px;
+		}
+		#confirmNp
+		{
+		height:200px;
+		}
+		#mydiv {  
+    position:absolute;
+    
+    width:10%;
+    height:20%;
+    left:46%;
+    top:40%;
+    z-index:1000;
+    
+    opacity: .8;
+ }
+
+.ajax-loader {
+    position: absolute;
+  
+
+    display: block;     
+}
+
+.tick {
+      background-color: #d6d6d6;
+}
+.panel-heading h3 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: normal;
+    width: 75%;
+    padding-top: 8px;
+}
+
+/* nicDit textarea css*/
+.nicEdit-main{
+     background-color: white;
+}
+
+.row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+.form-horizontal .form-group{
+
+ margin-left: 0px;
+    margin-right: 0px;
+    }
+    
+     #myNavbar{
+    text-align:right;
+    }
+  @media (max-width: 900px) {
+  
+  
+    	#myNavbar{
+    	text-align:center;
+    	}
+    	
+		}
+		
+		table {border-collapse:collapse; table-layout:fixed; width:100%;}
+   table td {border:solid 1px #fab; width:100px; word-wrap:break-word;}
+   
+   
+  #uploadModal {
+ 
+ 
+ width:900px;
+ margin-left:-385px;
+}
+
+  #messageModal{
+
+width:900px;
+ margin-left:-385px;
+}  
+
+#displayMessageModal{
+
+width:900px;
+ margin-left:-385px;
+}
+
+
+.timepicker{
+z-index:-1000;
+
+}
+
+/* begin code for bell*/
+
+.notification {
+    display: inline-block;
+    position: relative;
+    padding: 0.6em;
+    /*background: #3498db;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 0.2em;*/
+    
+    background:#FFA726;
+    font-size: 1.3em;
+    
+    
+}
+
+.notification::before, 
+.notification::after {
+    color: blue;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+   
+}
+
+.notification::before {
+    display: block;
+    content: "\f0f3";
+    font-family: "FontAwesome";
+    transform-origin: top center;
+}
+
+.notification::after {
+    font-family: Arial;
+    font-size: 0.7em;
+    font-weight: 700;
+    color:black;
+    position: absolute;
+    top: 5px;
+    right: -9px;
+    padding: 5px 8px;
+    line-height: 100%;
+    border: 2px black solid;
+    border-radius: 60px;
+    background: red;
+    opacity: 0;
+    content: attr(data-count);
+    opacity: 0;
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+    transition: transform, opacity;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out;
+}
+
+.notification.notify::before {
+    -webkit-animation: ring 1.5s ease;
+    animation: ring 1.5s ease;
+}
+
+.notification.show-count::after {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+}
+
+@-webkit-keyframes ring {
+    0% {
+        -webkit-transform: rotate(35deg);
+    }
+    12.5% {
+        -webkit-transform: rotate(-30deg);
+    }
+    25% {
+        -webkit-transform: rotate(25deg);
+    }
+    37.5% {
+        -webkit-transform: rotate(-20deg);
+    }
+    50% {
+        -webkit-transform: rotate(15deg);
+    }
+    62.5% {
+        -webkit-transform: rotate(-10deg);
+    }
+    75% {
+        -webkit-transform: rotate(5deg);
+    }
+    100% {
+        -webkit-transform: rotate(0deg);
+    }
+}
+
+@keyframes ring {
+    0% {
+        -webkit-transform: rotate(35deg);
+        transform: rotate(35deg);
+    }
+    12.5% {
+        -webkit-transform: rotate(-30deg);
+        transform: rotate(-30deg);
+    }
+    25% {
+        -webkit-transform: rotate(25deg);
+        transform: rotate(25deg);
+    }
+    37.5% {
+        -webkit-transform: rotate(-20deg);
+        transform: rotate(-20deg);
+    }
+    50% {
+        -webkit-transform: rotate(15deg);
+        transform: rotate(15deg);
+    }
+    62.5% {
+        -webkit-transform: rotate(-10deg);
+        transform: rotate(-10deg);
+    }
+    75% {
+        -webkit-transform: rotate(5deg);
+        transform: rotate(5deg);
+    }
+    100% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+} 
+.disabledbutton {
+ pointer-events: none;
+ }
+.invisible{
+display:none;
+}
+/* end of code for bell*/
+
+
+.thclass1{
+border:1px solid black;
+/* background-color: #337ab7; */
+color:Black;
+padding-top:5px;
+padding-bottom:5px;
+text-align:center;
+
+}
+
+.tdclass1{
+border:1px solid black;
+word-break: break-all;
+padding-top:5px;
+padding-bottom:5px;
+}
+    </style>
+</head>
+<body  ng-app="ReportingStation" >
+<div  ng-controller="ReportingController" ng-init="getPendingTasksReporting()">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+            	<p class="navbar-brand">Reporting Station, NeuroPathology Lab, NIMHANS</p>
+            </div>
+            <ul class="nav navbar-nav ">
+           
+            <li style="padding:10px 5px;" ><span>Pending:- </span><button type="button" id="pendingCase"  class="btn btn-default"  ng-click="getPendingTasksReporting()" title="Pending cases">Cases: {{assetTasksTable.length}}</button></li>
+            <li style="padding:10px 5px;" ><button type="button" id="specialTask" ng-disabled="specialTask" class="btn btn-default"  ng-click="getSpecialTasks()" title="Special Tasks">Special Samples: {{noOfSpecialtasks}}</button></li>
+      		<li style="padding: 10px 5px;"><button type="button"
+						id="specialTask2" ng-disabled="specialTask2" class="btn btn-default"
+						ng-click="getSpecialTasks1()" title="Special Tasks">Instructions: {{noOfSpecialtasks2}}</button></li>
+      		
+      		</ul>
+
+            <div id="myNavbar">
+            		
+  					<p> <b>Logged in as </b>{{username}}</p>
+  					
+  					<button id="notify_div" title="click here to see the Notifications"  class="notification" style="background-color:#fff;border:beige;margin-right:7px;" ng-click="getMessages()" ng-disabled="checklogin"></button>
+      	
+      	
+  					
+  					<button type="button" class="btn btn-primary btn-small" onclick="home()">Home</button>
+  					<!-- <button type="button" id="unlinked" class="btn btn-default btn-small" onclick="window.location.href='linking.html'">Unlinked({{unLinked.length}})</button>-->
+  					<!--<button type="button" class="btn btn-default btn-small"  onclick="$('#loginModal').modal('show')">Login</button>-->
+  					<button type="button" class="btn btn-success btn-small"  ng-click="getAllUsers()" ng-hide="showLogout" >Login</button>
+                    <button type="button" class="btn btn-success btn-small" ng-click="logout()" ng-show="showLogout">Logout</button>
+  			
+					
+					
+			</div>
+        </div>
+    </nav>
+    <!-- *************************************************************************************************************************************
+    loginModel Code
+
+
+
+    ********************************************************************************************************************************************-->
+    <!-- ************* Login Modal **********-->
+
+    <div class="modal fade" id="loginModal" >
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">User Login</h4>
+        </div>
+        <div class="modal-body">
+            <div class="col-md-12">
+                <form name="LoginCredentials" class="form-horizontal" novalidate >
+                    <div class="form-group" >
+                        <!-- <label for="uname"><b>Users :</b></label>
+                        <select ng-model="users" class="form-control" id="uname" >
+                            <option ng-repeat="tech in techTable"><b>{{tech.technicianName}}</b></option>
+        
+                      </select> -->
+                      
+                       <label for="uname"><b>Faculty :</b></label>
+                        <select ng-model="users" class="form-control" id="uname" >
+                            <option ng-repeat="tech in faculty_Array"><b>{{tech.technicianName}}</b></option>
+                      </select>
+                      <label for="uname"><b>Resident :</b></label>
+                        <select ng-model="users" class="form-control" id="uname" >
+                            <option ng-repeat="tech in residentArray"><b>{{tech.technicianName}}</b></option>
+                      </select>
+                      <br>
+                      <br>
+                       <label for="pass"><b>Password :</b></label>
+                       <input type="password" style=" height:120%;" ng-model="password" class="form-control" placeholder= "Enter Password" id="pass">
+                       <div ng-show="invalidPassword"> <font color="red"> Invalid password</font></div>
+                </div >
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <input type="submit" class="btn btn-success pull-right" ng-click="setUsername()" value="Login" />
+                    </div>
+                </form>
+                <div class="clearfix"></div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    
+    
+    <!-- *************************modal for old npNumbers************************ -->
+        <div class="modal fade" id="oldNpModal" >
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">NP Numbers</h4>
+        </div>
+        <div class="modal-body">
+            <div class="col-md-12">
+                <form name="LoginCredentials" class="form-horizontal" novalidate >
+                    <div class="form-group" >
+                        <label for="npNumbers"><b>NP Numbers associated with this patient</b></label>
+                        <select ng-model="npNum" class="form-control" id="npNumbers" >
+                        	<option><b>Create new</b></option>
+                            <option ng-repeat="np in oldRequests"><b>{{np.npBase}}</b></option>
+        
+                      </select>
+                </div >
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <input type="submit" class="btn btn-success pull-right" ng-click="setNpNumber()" value="Select" />
+                    </div>
+                </form>
+                <div class="clearfix"></div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+    <!-- *************************modal for confirm npNumber************************ -->
+        <div class="modal fade" id="confirmNp" >
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">Confirm NP Number</h4>
+        </div>
+        <div class="modal-body">
+            <div class="col-md-12">
+                <form name="LoginCredentials" class="form-horizontal" novalidate >
+                    <div class="form-group" >
+                        <label for="npNumbers"><b>Are you sure to assign this NP Number : <font size="5" color="blue">{{npNumber}} </font>?</b></label>
+                </div >
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <input type="submit" class="btn btn-success pull-right" ng-click="checkNpNumber()" value="Confirm" />
+                    </div>
+                </form>
+                <div class="clearfix"></div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="modal fade modal-lg" id="uploadModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+    
+      <!-- Modal content-->
+    
+       <div class="modal-header">
+           <!--  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button> -->
+            <h4 class="modal-title">Uploaded File</h4>
+        </div>
+        <div class="modal-body">
+         
+               
+             <div class="" id="mydiv1" ng-show="myImage1"  style="text-align:center;">
+    		<img src="img/loader.gif" class="ajax-loader" style="margin-left: auto;margin-right: auto;display: block;"/>
+			</div>
+			<div>
+                   <iframe id="myFrame" style="display:none" width="100%" height="100%" ></iframe>
+                   </div>
+                <form name="assetForm" class="form-horizontal" novalidate >
+                <div class="col-md-12" style="text-align:center;">
+                <table style="border:1px solid black;margin-bottom:20px;table-layout:fixed;width:100%;text-align:center;background-color:white;">
+                <thead style="border:1px solid black;">
+                <tr >
+                <th style="border:1px solid black;text-align:center;width:100px;">List of Files</th>
+                <th style="text-align:center;width:100px;">Actions</th>
+                </tr>
+                </thead>
+                <tbody style="border:1px solid black;width:100px;">
+                <tr ng-repeat="f in file_array ">
+                <td style="border:1px solid black;width:100px;">
+                
+                
+                {{f.upload_path}}
+                
+                </td>
+                <td style="border:1px solid black;">
+                 <button type="button"  class="btn btn-sm btn-primary" ng-click="viewFile(f.upload_path)" title="view" id="button_view" > 
+                 <!-- <a target="_target" href="{{pic}}" role="button"> -->
+   				<i class="glyphicon glyphicon-eye-open"></i>
+   				<!-- </a> -->
+   				View 
+				</button>
+				<!--  <button type="button"  class="btn btn-sm btn-success" ng-click="deleteFile(upload_id)" title="Delete" >
+	   				<i class="glyphicon glyphicon-remove"></i> Delete 
+				</button> -->
+				</td>
+				</tr>
+				
+				
+				</tbody>
+				</table>
+				</div>
+				
+				
+                   
+                    
+                    <div class="form-group" style="text-align:center;margin-top:30px;">
+                        <button type="button" class="btn btn-default" ng-click="close()" >Close</button>
+                        
+                    </div>
+                </form>
+           
+        </div>
+       
+        </div>
+    </div>
+    
+     <div class="modal fade modal-lg" id="messageModal">
+     <div class="modal-dialog modal-lg"> 
+    
+      <!-- Modal content-->
+    
+       <div class="modal-header">
+           <!--  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button> -->
+            <h4 class="modal-title">Inbox</h4>
+        </div>
+        <div class="modal-body">
+         
+             <table>
+             <thead>
+             <tr>
+             
+             <th class="thclass1" height="10" width="5%">Sl No</th>
+             <th class="thclass1" height="10" width="10%" >Block Number</th>
+             <th class="thclass1" height="10" width="45%">Message</th>
+             <th class="thclass1" height="10" width="20%">Sender</th>
+             <th class="thclass1" height="10" width="10%">Date</th>
+             <th class="thclass1" height="10" width="10%">Action</th>
+             </tr>
+             </thead>
+             <tbody>
+            <tr ng-repeat="msg in messages track by $index" ng-style="{'backgroundColor':  msg.read_flag==0 ? '#f59790' : '#fff' }">
+             <td class="tdclass1" height="10" style="text-align:center;">{{$index + 1}}</td>
+             <td class="tdclass1" height="10" style="text-align:center;">{{msg.asset_number}}</td>
+             <td class="tdclass1" height="10">{{msg.message}}</td>
+             <td class="tdclass1" height="10" style="text-align:center;">{{msg.tech}}</td>
+              <td class="tdclass1" height="10" style="text-align:center;">{{msg.createdAt}}</td>
+             <td class="tdclass1" height="10" style="text-align:center;"><button type="button" class="btn btn-warning" ng-click="viewunreadMessageforNp1(msg.asset_number,msg.np_message_id)">View</button></td>
+             </tr>
+             </tbody>
+             </table>  
+             
+             
+             
+           
+        </div>
+        <div class="form-group" style="text-align:center;margin-top:10px;">
+                         <button type="button" class="btn btn-default" ng-click="close1()" >Close</button>
+                        
+                    </div>
+       
+        </div> 
+    </div>
+    
+    <div class="modal fade modal-lg" id="displayMessageModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+    
+      <!-- Modal content-->
+    
+       <div class="modal-header">
+           <!--  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button> -->
+            <h4 class="modal-title">View And Reply <span>{{np}}</span></h4>
+        </div>
+        <div class="modal-body">
+         
+             <table style="border:1px solid black;">
+             <thead>
+             <tr>
+            
+             <th class="thclass1" height="10" width="5%" style="text-align:center;">Sl.No</th>
+             <th class="thclass1" height="10" width="55%" style="text-align:center;">Message</th>
+             <th class="thclass1" height="10" width="20%" style="text-align:center;">Sender</th>
+             <th class="thclass1" height="10" width="20%" style="text-align:center;">Date</th>
+             </tr>
+             </thead>
+             
+             <tbody>
+             <tr ng-repeat="msg in messages2">
+             
+             <td class="tdclass1" height="10" style="text-align:center;">{{$index+1}}</td>
+             <td class="tdclass1" height="10">{{msg.message}}</td>
+             <td class="tdclass1" height="10" style="text-align:center;">Dr Anita</td>
+             <td class="tdclass1" height="10" style="text-align:center;">{{msg.createdAt}}</td>
+             </tr>
+             </tbody>
+             </table>  
+             <div style="text-align:center;padding-top:20px;">
+             <form>
+             
+        <textarea id="messagebox" rows="4" cols="50">
+        </textarea>
+        <div style="text-align:center;">
+         <button type="button" class="btn btn-success" ng-click="sendReply(np)">Send Reply</button>
+          <button type="button" class="btn btn-default" ng-click="close2()" >Close</button>
+        </div>
+        </form>
+        </div>
+           
+        </div>
+        <div class="form-group" style="text-align:center;margin-top:30px;">
+                        <!-- <button type="button" class="btn btn-default" ng-click="close1()" >Close</button> -->
+                        
+                    </div>
+       
+        </div>
+    </div>
+    
+    <div class="modal fade" id="NCRModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+    
+       <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">NCR details</h4>
+        </div>
+        <div class="modal-body">
+         
+               
+             <form>
+              <!-- <div class="form-group">
+                    <label class="checkbox-inline">
+                    <input id="3" type="checkbox" ng-model="markNcs"><b style="color:red;">Add to NCR</b></label>
+                    </div> -->
+                    <div class="form-group">
+                    <label for="4"><b>Corrective Action</b></label>
+                    <input class="form-control" style="height:120%;" type="text" ng-model="edit.corrective" id="4">
+                    </div>
+                    <div class="form-group" >
+                    <label for="5"><b>Preventive Action</b></label>
+                    <input class="form-control" style="height:120%;" type="text" ng-model="edit.preventive" id="5">
+                    </div>
+                    <div class="form-group">
+                    <label for="6"><b>Type</b></label>
+                    <input class="form-control" style="height:120%;" type="text" ng-model="edit.ncsType" id="6">
+                    </div>
+                    <div class="form-group" >
+                    <label for="7"><b>Faculty</b></label>
+                    <input class="form-control" style="height:120%;" type="text" ng-model="edit.faculty" id="7">
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <input type="submit" class="btn btn-success pull-right" ng-click="update(asset)" onclick="$('#3').val(null),$('#1').val(null),$('#2').val(null)" value="Save" />
+                    </div>
+                </form>
+                
+           
+        </div>
+       
+        </div>
+    </div>
+    
+    
+    
+    <div align="center" value="Read Barcode :">
+    	<label>
+   		 
+        <input type="text" ng-model="barcodeValue" ng-disabled="checkboxModel" id="barcodeText" ng-blur="barcodeValue=barcodeValue.toUpperCase();" placeholder="Scan/Enter NP Number">
+	<!--*************************************************************ATTENTION*******************************************************************************
+	 SO , the person scans the barcode after putting the cursor on the input above and clicks button to populate patient data******
+	***************************************************************************************************************-->
+        </input>
+        <button type="button" id="sendBarcode" ng-disabled="barcodeValue==''" class="btn btn-default" ng-click="getPatientFromRequest()" title="Get Patient Details by Scanning Barcode"><i class="glyphicon glyphicon-barcode"></i>  Submit</button>
+		</label>
+    </div>
+	<div class="container-fluid" style="padding-top: 10px" id="container1">
+  		<div class="jumbotron">
+  		<div id="mydiv" ng-show="myVar">
+    <img src="img/loader.gif" class="ajax-loader"/>
+</div>
+            <div class="container">
+							<div class="row">
+								<div class="col-sm-6">
+									<h5 align="center">
+										Patient UHID :: <b>{{patient.UHID}}</b>
+									</h5>
+									<h5 align="center">
+										Patient Name :: <b>{{patient.patientName}}</b>
+									</h5>
+									<h5 align="center">
+										Age :: <b>{{patient.patientAge}}</b>
+									</h5>
+									<h5 align="center">
+										Sex :: <b>{{patient.patientSex === 0 ? "Male" : Female}}</b>
+									</h5>
+								</div>
+								<div class="col-sm-6">
+									<h5 align="center">
+										Sample Request ID:: <b>{{patient.sampleRequestId}}</b>
+									</h5>
+									<h5 align="center">
+										NP Number:: <b>{{patient.npBase}}</b>
+									</h5>
+									<h5 align="center">
+										Referring Doctor :: <b>{{patient.surgeon}}</b>
+									</h5>
+									<h5 align="center">
+										 Created :: <b>{{patient.created}}</b>
+									</h5>
+								</div>
+								<!-- <div class="col-md-6"></div> -->
+								<div class="clear"></div>
+								
+								<!-- commented -->
+								 <div class="col-md-12">
+								<div class="col-md-4" style="text-align:right;">
+								<label id="select_label"><b>Select Template::</b></label>
+								</div>
+								
+								<div class="col-md-4" style="text-align:center;">
+								
+								<select id="template_dropdown" ng-disabled="!(recievingStationStep==1)">
+								 <option value="" selected>Select</option>
+								  <option value="epileptic">Epileptic</option>
+								  <option value="general">General</option>
+								  <option value="muscle">Muscle</option>
+								 
+								</select>
+								</div>
+								
+								<div class="col-md-4" style="float:left;">
+								<button type="button" id="select_button" ng-disabled="!(recievingStationStep==1)" class="btn btn-warning" ng-click="openTemplate()">Edit</button></div>
+								</div>
+								
+							</div>
+							
+							<div class="row">
+							<!-- general biopsy -->
+							<div id="div1"  class="hidden">
+							<form>
+							
+							<textarea name="editor1"  id="editor1" style="background-color:white;width: 1000px;">
+  							<p>
+  							 <u><strong>Nature Of Specimen:</strong></u>
+   							<br /> 
+    						<br />
+						  	<u><strong>Frozen Section Report:</strong></u>
+						  	<br /><br />
+						  	<u><strong>Histopathology Report:</strong></u>
+						  	<br /><br /> 
+						  	<u> <strong>Final Impression:</strong></u>
+						  	<br /> <br />
+						  	<u>  <strong>Reported By:</strong></u>
+						  	<br /> <br /><br />
+   							</p>
+						
+							</textarea><br />
+							</form>
+							</div>
+							
+							
+							<!-- muscle biopsy -->
+							<div id="div2"  class="hidden">
+							<form>
+							
+							<textarea name="editor2"  id="editor2" style="background-color:white;width: 1000px;">
+  							<p>
+<span><u><strong>Muscle biopsy report</strong></u></span>
+</p>
+<table border= 1  cellpadding= 0  cellspacing= 0 >
+
+<tbody>
+<tr>
+<td style= width:310px;height:41px; colspan="4" >
+<p>
+
+<strong>Gross details</strong>
+</p>
+
+</td>
+
+</tr>
+
+<tr>
+<td >
+<p><strong>Biopsy (Frozen)</strong></p>
+</td>
+<td >
+<p><strong>Enzyme histochemistry (Yes/No)</strong></p></td>
+<td ><p><strong>Tissue preserved (EM) (Yes/No)</strong></p></td>
+<td ><p><strong>Unstained slides (Yes/No)</strong></p>
+</td>
+</tr>
+
+<tr>
+<td colspan="2"><p><strong>Clinical diagnosis:&nbsp; </strong></p></td>
+<td colspan="2"><p><strong>Site of biopsy: </strong><strong>&nbsp; </strong></p></td>
+</tr>
+</tbody>
+
+</table>
+
+<p><span style= font-size:16px; ><strong><u>Microscopic findings</u></strong></span></p>
+
+<table border= 1  cellpadding= 0  cellspacing= 0 >
+
+<tbody>
+<tr>
+<td style= width:310px;height:41px; colspan="2"><p style="text-align:center;"><strong>Paraffin Sections</strong></p></td>
+
+</tr>
+<tr>
+<td style= width:310px;height:41px; ><p><strong>Quality of fixation</strong></p>
+</td>
+<td style= width:378px;height:41px; ><p></p></td>
+</tr>
+<tr><td style= width:310px;height:41px; ><p><strong>Haematoxylin & Eosin (HE)</strong>:</p></td>
+<td style= width:378px;height:41px; ><p></p>
+</td>
+</tr>
+<tr>
+<td style= width:310px;height:41px; ><p><strong>Masson’s trichrome (MAT)</strong>:</p></td>
+<td style= width:378px;height:41px; ><p></p></td>
+</tr>
+
+<tr>
+<td style= width:310px;height:41px; colspan="2"><p style="text-align:center;"><strong>CRYOSECTIONS</strong></p></td>
+</tr>
+
+<tr>
+<td ><p><strong>Quality of tissue</strong></p>
+</td>
+<td ><p></p></td>
+</tr>
+<tr><td ><p><strong>Haematoxylin & Eosin (HE)</strong>:</p></td>
+<td ><p></p>
+</td>
+</tr>
+<tr>
+<td  ><p><strong>Modified Gomori trichrome (MGT)</strong>:</p></td>
+<td ><p></p></td>
+</tr>
+<tr>
+<td ><p><strong>Oxidative enzymes (NADH/SDH)</strong>:</p></td>
+<td  ><p></p></td>
+</tr>
+<tr>
+<td ><p><strong>ATPase (pH 9.4, 4.6)</strong>:</p></td>
+<td  ><p></p></td>
+</tr>
+<tr>
+<td  ><p><strong>Other stains </strong>:</p></td>
+<td ><p></p></td>
+</tr>
+</tbody>
+
+</table>
+<p><u><strong>Impression:</u></strong></p>
+<p><strong>Comments:</strong></p>
+<p><strong>Immunohistochemistry -  Required /Not Required  ;   Electron Microscopy –Required /Not Required</strong></p>
+
+
+
+</textarea>
+						</form>
+							</div>
+							
+							
+							<!-- epileptic biopsy -->
+							<div id="div3"  class="hidden">
+							<form>
+							
+							<textarea name="editor3"  id="editor3" style="background-color:white;width: 1000px;">
+  							<p>
+<span><u><strong>TEMPORAL LOBE EPILEPSY CASES - SYNOPTIC REPORTING</strong></u></span>
+</p>
+<table border= 1  cellpadding= 0  cellspacing= 0 >
+
+<tbody>
+<tr>
+<td style= width:168px;height:39px; colspan="2" >
+<p>
+<span style= font-size:16px;>
+<strong>HIPPOCAMPUS</strong>
+</span></p>
+
+</td>
+<!-- <td colspan= 4  style= width:539px;height:39px; >
+</td> -->
+</tr>
+
+<tr>
+<td style= width:168px;height:36px; >
+<p><span><strong>DENTATE GYRUS CHANGES (NeuN)
+Thinning/gaps (type 1)
+Dispersion/Ectopic neurons/ duplication (type 2)
+</strong></span></p>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td style= width:310px;height:41px;  ><p><span style= font-size:16px; ><strong>AMMON’S HORN 
+(Neu N, NF) </strong></span></p></td>
+<td style= width:310px;height:41px;  ><p><span style= font-size:16px; ><strong>NEURONAL LOSS (NeuN stain):  </strong></span></p>
+</td>
+</tr>
+
+<tr>
+<td style= width:310px;height:41px; ><span style= font-size:16px; ><strong>AMYGDALA(loss/gliosis/satellitosis/hamartia)</strong></span></td>
+<td></td>
+</tr>
+<tr>
+<td style= width:310px;height:41px; ><p><span style= font-size:16px; ><strong>TEMPORAL CORTEX</strong></span></p>
+</td>
+<td style= width:378px;height:41px; ><p><span style= font-size:16px; ></span></p></td>
+</tr>
+<tr><td style= width:310px;height:41px; ><p><span style= font-size:16px; ><strong>LAMINAR ARCHITECTURE
+(Neu N)
+</strong>:</span></p></td>
+<td style= width:378px;height:41px; ><p><span style= font-size:16px; ></span></p>
+</td>
+</tr>
+<tr>
+<td style= width:310px;height:41px; ><p><span style= font-size:16px; ><strong>DYSMORPHIC NEURONS (NF)/ BALOON NEURONS
+(GFAP, Vimentin)
+</strong>:</span></p></td>
+<td style= width:378px;height:41px; ><p><span style= font-size:16px; ></span></p></td>
+</tr>
+
+<tr>
+<td style= width:310px;height:41px; ><span style= font-size:16px; ><strong>OTHERS</strong></span></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+
+<p><strong>FINAL IMPRESSION</strong></p>
+<table border= 1  cellpadding= 0  cellspacing= 0>
+<tbody>
+
+<tr>
+<td style= width:168px;height:39px;>SITE</td>
+<td>PATHOLOGY</td>
+<td>GRADE/TYPE</td>
+</tr>
+
+<tr>
+<td style= width:168px;height:39px;></td>
+<td>AMMON’S HORN - </td>
+<td>AH TYPE (Blumcke)</td>
+</tr>
+
+
+<tr>
+<td>AMYGDALA</td>
+<td></td>
+<td></td>
+</tr>
+
+
+<tr>
+<td>TEMPORAL CORTEX</td>
+<td></td>
+<td>FCD</td>
+</tr>
+
+<tr>
+<td  colspan="2"><span><u>ILAE CONSENSUS CLASSIFICATION (NEW  ILAE, 2011):</u></span></td>
+<td></td>
+
+</tr>
+
+
+</tbody>
+
+</table>
+
+
+</textarea>
+						</form>
+							</div>
+							
+							</div>
+							
+							<!-- begin newly added code for typing the report -->
+							
+							<!-- end of newly added code for typing the report -->
+						</div>
+			 <div align="center">
+			 <button type="button" class="btn btn-success hidden" id="report_button1" ng-click="submitReport()">Save
+                    <i class="glyphicon glyphicon-plus"></i></button>
+                
+                <button type="button" class="btn btn-info" ng-click="doneReporting()" ng-disabled="flag">Report Done
+                    <i class="glyphicon glyphicon-ok-sign"></i></button>
+                <button type="button" class="btn btn-primary" ng-click="sendSpecialRequest()" ng-disabled="!(recievingStationStep==1)">Add Instructions
+                    </button>
+                    
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#uploadModal" ng-click="getFiles(patient.npBase)" ng-disabled="!(recievingStationStep==1)">View Uploaded File
+                    </button>
+                    
+                    <!-- <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#messageModal" ng-click="getMessage(patient.npBase)" ng-disabled="!(recievingStationStep==1)">View Message
+                    </button> -->
+                    <!-- <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#NCRModal" ng-disabled="!(recievingStationStep==1)">NCR
+                    </button> -->
+            </div> 
+        </div>
+  	</div>
+	<div align="center">
+     <!--   <form class="form-inline" role="form1">
+<!-- BELOW DIVS ARE ONLY TO INCREASE SPACE < NOTHING BEYOND THAT :( > DIDN"T GET A WORK_ AROUND-->
+      <!--       <div class="form-group"></div>
+            <div class="form-group"></div>
+            <div class="form-group"></div>
+            <div class="form-group"></div>
+            <div class="form-group"></div>
+            <div class="form-group"></div>
+            <div class="form-group"></div>
+            <div class="form-group"></div>
+            <div class="form-group"></div>
+            <div class="form-group"></div>
+            <div class="form-group"></div>
+            <div class="form-group"></div>
+            <div class="form-group">
+	      	<label for="npSuggestion">NP Number:</label>
+	      	<input type="text" class="form-control" id="npSuggestion" ng-model="npNumber" placeholder={{npSuggestion}} ng-disabled="updateNpBase==0">
+	      	<button type="button" class="btn btn-info"  ng-click="checkNpNumber()" title="Confirm NP Number"ng-disabled="!(recievingStationStep==2||recievingStationStep==3)">Proceed...</button>
+                <button type="button" class="btn btn-sm btn-warning" title="Edit NP Number" ng-disabled="!(recievingStationStep==2||recievingStationStep==3)" ng-click="updateNpNumber()">
+                    <i class="glyphicon glyphicon-pencil"></i>
+                </button>
+            </div > 
+	    </form>  --> 
+	</div>
+	<!-- Unread Message -->
+	
+	
+	
+	<div ng-show="true">
+        <br>
+        
+        
+            <form class="form-horizontal" >
+            <div class="clearfix" style="padding-bottom: 5px"></div>
+            <div class="form-group" >
+                <div class="col-sm-12" >
+                
+                
+               <!--  <div class="hidden" id="messageDiv1" style="padding-bottom:20px;">
+         
+            <table>
+             <thead>
+             <tr>
+             
+             <th class="thclass1">Sl No</th>
+             <th class="thclass1">Block Number</th>
+             <th class="thclass1">Message</th>
+             <th class="thclass1">Action</th>
+             </tr>
+             </thead>
+             <tbody>
+             <tr>
+             <td class="tdclass1">1</td>
+             <td class="tdclass1">520/20:A:01</td>
+             <td class="tdclass1">Message for 520/20</td>
+             <td class="tdclass1"><button type="button" class="btn btn-success" ng-click="viewunreadMessageforNp()">View</button></td>
+             </tr>
+             </tbody>
+             </table> 
+             
+             
+             <div style="text-align:center;padding-top:20px;">
+             <form>
+             
+        <textarea id="messagebox" rows="4" cols="50">
+        </textarea>
+        <div style="text-align:center;">
+         <button type="button" class="btn btn-default" ng-click="viewMessage()">View</button>
+          <button type="button" class="btn btn-default" ng-click="close1()" >Close</button>
+        </div>
+        </form>
+        </div>
+           
+        </div> -->
+                
+                <div class="hidden panel panel-primary" id="messageDiv1" style="margin-bottom:20px;">
+         				<div class="panel-heading" style="padding: 24px 15px;">
+                         <div class="panel-title pull-left">Messages</div> 
+                        
+                        </div>
+             <table>
+             <thead>
+             <tr>
+             <th class="thclass1" width="5%">Sl No</th>
+             <th class="thclass1" width="10%">Block Number</th>
+             <th class="thclass1" width="45%">Message</th>
+             <th class="thclass1" width="10%">Sender</th>
+             <th class="thclass1" width="20%">Date</th>
+             <th class="thclass1" width="10%">Action</th>
+             </tr>
+             </thead>
+             <tbody>
+             <tr ng-repeat="msg in messages3">
+             <td class="tdclass1" height="10" style="text-align:center;">{{$index + 1}}</td>
+             <td class="tdclass1" height="10" style="text-align:center;">{{msg.asset_number}}</td>
+             <td class="tdclass1" height="10">{{msg.message}}</td>
+             <td class="tdclass1" height="10" style="text-align:center;">{{msg.tech}}</td>
+             <td class="tdclass1" height="10" style="text-align:center;">{{msg.createdAt}}</td>
+             <td class="tdclass1" style="text-align:center;"><button type="button" class="btn btn-success" ng-click="viewreplyMessage(msg.asset_number)">View & Reply</button></td>
+             </tr>
+             </tbody>
+             </table>  
+             
+             
+             <!-- <div style="text-align:center;padding-top:20px;">
+             <form>
+             
+        <textarea id="messagebox" rows="4" cols="50">
+        </textarea>
+        <div style="text-align:center;">
+         <button type="button" class="btn btn-default" ng-click="viewMessage()">View</button>
+          <button type="button" class="btn btn-default" ng-click="close1()" >Close</button>
+        </div>
+        </form>
+        </div> -->
+           
+        </div>
+        
+         <div class="hidden panel panel-primary" id="messageDiv2" style="margin-bottom:20px;">
+          <div class="panel-heading" style="padding: 24px 15px;">
+                         <div class="panel-title pull-left">Special Instructions</div> 
+                        
+                        </div> 
+             <table>
+             <thead>
+             <tr>
+             <th class="thclass1" width="5%">Sl No</th>
+             <th class="thclass1" width="10%">Np No</th>
+             <th class="thclass1" width="5%">Biopsy Type</th>
+            <th class="thclass1" width="5%">Special Stain</th>
+            <th class="thclass1" width="5%">IHC</th>
+            <th class="thclass1" width="5%">Other Instruction</th>
+            <th class="thclass1" width="5%">Date</th>
+            
+             </tr>
+             </thead>
+             <tbody>
+             <tr ng-repeat="special in specialArrayNp">
+             <td class="tdclass1" height="10" style="text-align:center;">{{$index + 1}}</td>
+             <td class="tdclass1" height="10" style="text-align:center;">{{special.npNumber}}</td>
+             <td class="tdclass1" height="10" style="text-align:center;">{{special.biopsy}}</td>
+             <td class="tdclass1" height="10" style="text-align:center;">{{special.special_stain}}</td>
+             <td class="tdclass1" height="10" style="text-align:center;">{{special.ihc}}</td>
+              <td class="tdclass1" height="10" style="text-align:center;">{{special.biopsy}}</td>
+              <td class="tdclass1" height="10" style="text-align:center;">{{special.createdAt}}</td> 
+             
+             </tr>
+            
+             </tbody>
+             </table>  
+             
+             
+             
+           
+        </div>
+        
+        <div class="hidden panel panel-primary" id="messageDiv3" style="margin-bottom:20px;">
+         
+         
+         <div class="panel-heading" style="padding: 24px 15px;">
+                         <div class="panel-title pull-left">Special Tasks</div> 
+                        
+                        </div>
+             <table>
+             <thead>
+             <tr>
+             <th class="thclass1" width="5%">Sl No</th>
+             <th class="thclass1" width="10%">Np No</th>
+             <th class="thclass1" width="5%">Biopsy Type</th>
+             <th class="thclass1" width="5%">Process All</th>
+             <th class="thclass1" width="5%">Process More</th>
+             <th class="thclass1" width="5%">EM</th>
+            <th class="thclass1" width="5%">Date</th>
+            
+             </tr>
+             </thead>
+             <tbody>
+             <tr ng-repeat="special in specialArrayTissueNp">
+             <td class="tdclass1" height="10" style="text-align:center;">{{index + 1}}</td>
+             <td class="tdclass1" height="10" style="text-align:center;">{{special.npNumber}}</td>
+             <td class="tdclass1" height="10" style="text-align:center;">{{special.biopsy}}</td>
+             <td class="tdclass1" height="10" style="text-align:center;"><input type="checkbox" ng-checked="special.process_all == 1" disabled=true /></td>
+             <td class="tdclass1" height="10" style="text-align:center;"><input type="checkbox" ng-checked="special.process_more == 1" disabled=true /></td>
+             <td class="tdclass1" height="10" style="text-align:center;"><input type="checkbox" ng-checked="special.em == 1" disabled=true /></td>
+              <td class="tdclass1" height="10" style="text-align:center;">{{special.createdAt}}</td> 
+             
+             </tr>
+            
+             </tbody>
+             </table>  
+             
+             
+             
+           
+        </div>
+        
+                    <div class="panel panel-primary" id="asset-list1"><!-- asset List Start-->
+                        <div class="panel-heading" style="padding: 24px 15px;">
+                         <div class="panel-title pull-left">
+                        Pending Cases({{assetTasksTable.length}})
+                        </div> 
+                        <div class="panel-title pull-right">
+                        <span>{{nparray.length}} items selected</span>
+                        </div>
+                        </div>
+                        <div class="panel-body" style="padding:0px">
+                            <table class="table table-bordered" style="margin:0">
+                                <thead>
+                                <tr>
+                                    <th>NP Number </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="asset in assetTasksTable" >
+                                    <td ng-click="checkCount($index)" ng-class="{'tick' : asset.clicked}">{{asset.npNumber}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div><!-- asset List End -->
+                    
+                    <div class="panel panel-primary" id="asset-list2"><!-- asset List Start-->
+                        <div class="panel-heading">{{label}}</div>
+                        <div class="panel-body" style="padding:0px">
+                        
+                            <table class="table table-striped table-bordered" style="margin:0">
+                            <thead>
+                                <tr>
+                                    <th>NP Number </th>
+                                     <th>Biopsy Type</th>
+                                    <th>PROCESS ALL</th>
+                                    <th>PROCESS MORE</th>
+                                    <th>EM</th>
+                                    <th>Notes</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="asset in assetTasksTable1">
+                                    <td>{{asset.npNumber}}</td>
+                                    <td><input type="checkbox" ng-checked="asset.process_all == 1" disabled=true /></td>
+                                    <td><input type="checkbox" ng-checked="asset.process_more == 1" disabled=true /></td>
+                                    <td><input type="checkbox" ng-checked="asset.em == 1" disabled=true /></td>
+                                    <td>{{asset.notes}}</td>
+                                   
+                                    
+                                    </tr>
+                                    </tbody>
+                              
+                                
+                            </table>
+                        </div>
+                    </div><!-- asset List End -->
+                    
+                    
+                    <div class="panel panel-primary" id="asset-list3">
+						<!-- asset List Start-->
+						<div class="panel-heading">{{label}}</div>
+						<div class="panel-body" style="padding: 0px">
+							<table class="table table-striped table-bordered class1"
+								style="margin: 0;">
+								
+								<thead>
+									<tr>
+										<th>NP Number</th>
+										<th>Biopsy Type</th>
+										<th>Special Stain</th>
+										<th>IHC</th>
+										<th>Other Instruction</th>
+										<th>Notes</th>
+										<th>Date</th>
+										</tr>
+										</thead>
+										<tbody>
+										<tr ng-repeat="asset in assetTasksTable2">
+										<td>{{asset.npNumber}}</td>
+										<td>{{asset.biopsy}}</td>
+										<td>{{asset.special_stain}}</td>
+										<td>{{asset.ihc}}</td>
+										<td>{{asset.block_others}}</td>
+										<td>{{asset.notes}}</td>
+										<td>{{asset.createdAt}}</td>
+										</tr>
+										</tbody>
+									
+								
+							</table>
+						</div>
+					</div>
+					<!-- asset List End -->
+                    
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    
+    <!-- *************************************************************************************************************************************
+    insertModal Code
+
+
+
+    ********************************************************************************************************************************************-->
+    <!-- ************* Insert Modal **********-->
+
+  <!--   <div class="modal fade" id="insertModal" >
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">New Asset</h4>
+        </div>
+        <div class="modal-body">
+            <div class="col-md-12">
+                <form name="assetForm" class="form-horizontal" novalidate >
+                   <div class="form-group">
+                   <label for="specimen"><b>Select Sample Type: </b></label>
+                        <select name="testSpecimen" ng-model="asset.specimen" class="form-control" id="specimen" required>
+                            <option>Tissue</option>
+                            <option>Block</option>
+                            <option>Stained Slide</option>
+                            <option>Unstained Slide</option>
+                            <option>Frozen</option>
+                            <option>Fluid</option>
+                        </select>
+                   </div>
+                   <br>
+                    <script>$('#specimen').change(function() {
+                        $('#fixative').prop('disabled', false);
+                        $('#fixative').val("");
+
+                        if ($(this).val() == 'Unstained Slide'||$(this).val() == 'Stained Slide'||$(this).val() == 'Block') {
+                            $('#fixative').val("");
+                            $('#fixative').prop('disabled', true);
+                        }
+                    });
+                    </script>
+                   <div class="form-group">
+                        <label for="fixative"><b>Fixative: </b></label>
+                        <select ng-model="asset.fixative" class="form-control" id="fixative" >
+                            <option>None</option>
+                            <option>Fresh</option>
+                            <option>Saline</option>
+                            <option>10% Formalin</option>
+                            <option>2.5% Cidex</option>
+                            <option>2% Glutaraldehyde</option>
+                            <option>Alcohol</option>
+                            <option>Other</option>
+                        </select>
+                   </div>
+                   <br>
+                   <div class="form-group" >
+                        <label for="biopsy"><b>Biopsy :</b></label>
+                        <select ng-model="asset.biopsy" class="form-control" id="biopsy" >
+                            <option><b>Nerve</b></option>
+                            <option><b>Muscle</b></option>
+                            <option><b>Skin</b></option>
+                            <option><b>Brain</b></option>
+                            <option><strong>Lip</strong></option>
+                            <option><b>Epilepsy</b></option>
+                            <option><b>Tumor</b></option>
+                            <option><b>Hair</b></option>
+                            <option><b>Lymph Node</b></option>
+                            <option><b>Liver</b></option>
+                            <option><b>Thymus</b></option>
+                            <option><b>Other</b></option>
+                        </select>
+                   </div >
+                   <div class="form-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <input type="submit" class="btn btn-success pull-right" ng-click="assetForm.$valid && create(asset)" onclick="$('#3').val(null),$('#1').val(null),$('#2').val(null)" value="Save" />
+                   </div>
+                </form>
+                <div class="clearfix"></div>
+               <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+
+ -->
+    <!--****************************************************EDIT MODAL****************************************************************************8-->
+
+
+    <div class="modal fade" id="editModal">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">Special Request</h4>
+        </div>
+        <div class="modal-body" style="max-height: 475px;">
+            <div class="col-md-12">
+                <form name="assetForm" class="form-horizontal" novalidate >
+                    <h3>Case Number :: {{patient.npBase}}</h3>
+                    <br>
+                    <!-- <div class="form-group" >
+                        <label for="3"><b>Select Asset :</b></label>
+                        <select ng-model="special.asset" class="form-control" id="3" >
+                            <option ng-repeat="asset in assetTable"><b>{{asset.npNumber}}</b></option>
+                        </select>
+                    </div>
+                    <br>-->
+                    <div class="form-group">
+                    
+                    <label class="checkbox-inline">
+                    <input id="3" type="checkbox" ng-model="special.processAll"><b>Process All</b>
+                    <label ng-show="special.processAll==true">Select Tissue :
+                    <select ng-model="special.tissue" id="3" >
+                            <option ng-show="asset.type==1" ng-repeat="asset in assetTable"><b>{{asset.npNumber}}</b></option>
+                     </select>
+                     </label>
+                     </label>
+  
+                    </div>
+                    <div class="form-group">
+                    <label class="checkbox-inline">
+                    <input id="4" type="checkbox" ng-model="special.em"><b>EM</b>
+                    <label ng-show="special.em==true">Select Tissue :
+                    <select ng-model="special.tissue" id="3" >
+                            <option ng-show="asset.type==1" ng-repeat="asset in assetTable"><b>{{asset.npNumber}}</b></option>
+                     </select>
+                     </label>
+                    </label>
+                    </div>
+                    <div class="form-group">
+                    <label class="checkbox-inline">
+                    <input id="5" type="checkbox" ng-model="special.checkbox_stain"><b>Special Stain</b>
+                    <label ng-show="special.checkbox_stain==true">Select Block :
+                    <select ng-model="special.block" >
+                            <option ng-show="asset.type==2" ng-repeat="asset in assetTable"><b>{{asset.npNumber}}</b></option>
+                     </select>
+                     </label>
+                    </label>
+                    <select ng-show="special.checkbox_stain==true" ng-change="updateStain()" ng-model="special.stain" class="form-control" placeholder="Select Special Stain">
+                    <option ng-repeat="stain in special_stains" value="{{$index}}">{{stain}}</option>
+                    </select>
+	                    <div ng-show="special.checkbox_stain==true && special.stain!=''" class="jumbotron">
+	                    <label>Select Tests:</label>
+	                    		<label class="checkbox-inline"><input type="checkbox" ng-model="selectAll" ng-click="selectAllTests()">Select All</label>
+			                    <label class="checkbox-inline" ng-repeat="test in stainTestTable">
+								  <input ng-checked="selectAll" type="checkbox" ng-model="selectedStainTests[test]" ng-true-value="true" ng-false-value="false">{{test}}
+								</label>
+						</div>
+                    </div>
+                    <div class="form-group">
+                    <label class="checkbox-inline">
+                    <input id="6" type="checkbox" ng-model="special.checkbox_ihc"><b>IHC</b>  
+                    <label ng-show="special.checkbox_ihc==true">Select Block :
+                    <select ng-model="special.block" >
+                            <option ng-show="asset.type==2" ng-repeat="asset in assetTable"><b>{{asset.npNumber}}</b></option>
+                     </select>
+                     </label>
+                    </label>
+                    <select ng-show="special.checkbox_ihc==true" ng-change="updateIHC()" ng-model="special.ihc" class="form-control" placeholder="Select IHC" >
+                  	<option ng-repeat="i in ihc" value="{{$index}}">{{i}}</option>
+                    </select> 
+                    <div ng-show="special.checkbox_ihc==true && special.ihc!=''" class="jumbotron">
+	                    <label>Select Tests:</label>
+	                    		<label class="checkbox-inline"><input type="checkbox" ng-model="selectAll2" ng-click="selectAllTests2()">Select All</label>
+			                    <label class="checkbox-inline" ng-repeat="test in ihcTestTable">
+								  <input ng-checked="selectAll2" type="checkbox" ng-model="selectedihcTests[test]" ng-true-value="true" ng-false-value="false">{{test}}
+								</label>
+						</div>    
+                    </div>
+                    <div class="form-group">
+                    <label for="7"><b>Note :</b></label>
+                        <textarea class="form-control" ng-model="special.note" id="7"></textarea>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <input type="submit" class="btn btn-success pull-right" ng-click="submit()" onclick="$('#3').val(null),$('#1').val(null),$('#2').val(null)" value="Submit" />
+                    </div>
+                </form>
+                <div class="clearfix"></div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    
+     
+  
+    <div align="center" style="padding:0px;">
+
+   <!-- <button type="button" class="btn btn-md btn-success" onClick="window.location.reload();">
+        <!-- <i class="glyphicon glyphicon-save"></i>
+        Save form and --><!-- Clear All
+        <i class="glyphicon glyphicon-refresh"></i>
+    </button>-->
+    </div>
+    <script src="bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- <script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script> -->
+    <script src="js/ckeditor/ckeditor.js"></script>
+   <!--  <script src="js/ckeditor/htmlwriter/plugin.js"></script> -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/values.js"></script>
+    <script src="js/reporting.js"></script>
+    <script src="js/alasql.min.js"></script>
+    <script src="js/xlsx.core.min.js"></script>
+    
+    <!-- <script  src="js/textarea.js"></script>
+     <script>bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });</script> -->
+     
+     <script>
+     
+        CKEDITOR.replace( 'editor1'
+        		  , {
+        	toolbar: [
+        		{ name: 'document', items: [ 'Save', '-', 'NewPage', 'Preview','Print','Table','Maximize' ] },	// Defines toolbar group with name (used to create voice label) and items in 3 subgroups.
+        		[ 'Cut', 'Copy', 'Paste', 'PasteText', 'Undo', 'Redo' ],			// Defines toolbar group without name.
+        																							// Line break - next group will be placed in new line.
+        		{ name: 'basicstyles', items: [ 'Bold', 'Italic','Underline','Font','FontSize','SelectAll' ] }																				// Line break - next group will be placed in new line.
+        		
+        	] 
+        }  
+        );
+        //extraPlugins : 'htmlwriter'
+                        
+     </script>
+     <script></script>
+    
+   </div>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://getbootstrap.com/examples/dashboard/ -->
+<html lang="en" hola_ext_inject="disabled">
+
+	<head>
+	
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>Sample Tracker</title>
+		
+		<link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+		<link href="bootstrap/bootstrap-combined.min.css" rel="stylesheet">
+		<!-- Bootstrap core CSS -->
+		<link href="./search_files/bootstrap.min.css" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link href="./search_files/search.css" rel="stylesheet">
+
+		<script src="./search_files/ie-emulation-modes-warning.js"></script><style type="text/css"></style>
+		<!-- <script src="http://cdn.jsdelivr.net/alasql/0.2/alasql.min.js"></script>-->
+		<script src="js/alasql.min.js"></script>
+		<script src="bootstrap/angular.js"></script>
+    	<script src="bootstrap/angular-animate.js"></script>
+   	    <script src="bootstrap/ui-bootstrap-tpls.min.js"></script>
+      	<script src="bootstrap/angular.min.js"></script>
+      	<script src="bootstrap/jquery.min.js"></script>
+      	<script src="bootstrap/angular-sanitize.min.js"></script>
+      	<script src="bootstrap/ui-bootstrap-tpls-0.6.0.js"></script>
+      	<script src="bootstrap/angular-cookies.js"></script>
+      	
+  </head>
+
+    <body ng-app="myApp2" class="ng-cloak" ng-controller="doctordetails as ctrl">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">Lab Sample Tracker</a>
+                </div>
+                <div align="right">
+                
+                <button type="button" class="btn btn-success btn-small" ng-click="logout()">Logout</button>
+                </div>
+            </div>
+        </nav>
+		
+        <div class="container-fluid">
+            <div class="row">
+                
+              
+              
+                
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                    <h1 class="page-header">{{doctornames}}</h1>
+                    <div align="right">
+                    <button type="button" ng-click="printAllAssets()" class="btn btn-sm btn-primary" title="Print" >
+            				<i class="glyphicon glyphicon-print"></i> Print All
+      				</button>
+      				</div>
+                    <br>
+                	<div ng-show = ctrl.results></div>
+                    <div ng-show = "ctrl.buttonstate">
+                    	<table class="table table-striped">
+                    		 <thead>
+                                <tr>  
+                                	<!-- <th>  </th>-->
+                                	<th>Np Number</th>
+                                    <th>Patient Name</th>
+                                    <th>Patient Age</th>
+                                    <th>Patient Sex</th>
+                                    <th>Created</th>
+                                    <th>Waiting at</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            	 <tr ng-repeat-start="output in ctrl.outputlist">
+               				<!-- <td>
+                   						<button ng-click="expanded = !expanded;">
+                        				<span ng-bind="expanded ? '-' : '+'"></span>
+                    					</button>
+                					</td>-->
+									<td ng-bind="output.npBase"></td>
+									<td ng-bind="output.patientName"></td>
+									<td ng-bind="output.patientAge"></td>
+									<td>{{output.patientSex === 0 ? "Male" : Female}}</td>
+									<td ng-bind="output.created.substring(0,output.created.lastIndexOf(':'))"></td>
+									<td ng-bind="output.status==undefined?'not available':ctrl.stations[output.status-1]"></td>
+            					</tr>
+                    			<tr ng-repeat-end ng-show="expanded">
+									<td></td>
+									<td colspan="3">
+										<table class="table table-bordered">
+											<thead>
+                                                    <tr>  
+                                                        <th>Block Number</th>
+                                                        <th>Status</th>
+                                                        <th>Biopsy Type</th>
+                                                        <th>Last Updated</th>
+                                                        <th> </th>
+                                                    </tr>
+                                            </thead>
+										    <tbody>
+										        <tr ng-repeat="block in output.blocks">
+										            <td><span ng-bind="block.blockNum"></span></td>
+                                   				 	<td><span ng-bind="block.status"></span></td>
+                                   				 	<td><span ng-bind="block.biopsy_type"></span></td>
+                                    				<td><span ng-bind="block.formattedTime"></span></td>
+                                    				<td><button class="btn btn-primary" ng-click = "ctrl.transDetails(block.blockNum);ctrl.buttonstate=false">Details</td>
+										        </tr>
+										    </tbody>
+										</table>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						</div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+	
+        
+ <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./search_files/jquery.min.js"></script>
+    <script src="./search_files/bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="./search_files/holder.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="./search_files/ie10-viewport-bug-workaround.js"></script>
+   	<script src="js/values.js"></script>
+    <!-- <script src="js/user_service.js"></script>-->
+    <script src="js/doctorDetails.js"></script>
+   
+    </body>
+</html>
