@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://getbootstrap.com/examples/dashboard/ -->
+
+<html lang="en" hola_ext_inject="disabled">
+
+	<head>
+	
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>Sample Tracker</title>
+		<link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+		<link href="bootstrap/bootstrap-combined.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="css/notification.css">
+		<!-- Bootstrap core CSS -->
+		<link href="./search_files/bootstrap.min.css" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link href="./search_files/search.css" rel="stylesheet">
+
+		<script src="./search_files/ie-emulation-modes-warning.js"></script><style type="text/css"></style>
+		<!-- <script src="http://cdn.jsdelivr.net/alasql/0.2/alasql.min.js"></script>-->
+		<script src="js/alasql.min.js"></script>
+		<script src="bootstrap/angular.js"></script>
+	   	<script src="bootstrap/angular-animate.js"></script>
+	  	<script src="bootstrap/ui-bootstrap-tpls.min.js"></script>
+	    <!-- <script src="bootstrap/angular.min.js"></script>-->
+	    <script src="bootstrap/jquery.min.js"></script>
+	    <script src="bootstrap/angular-sanitize.min.js"></script>
+	    <script src="bootstrap/ui-bootstrap-tpls-0.6.0.js"></script>
+	    <script src="bootstrap/angular-cookies.js"></script>
+	    
+      	<script>
+      	 
+        var sampleid = sessionStorage.getItem("sample_id");
+        var sample_test = "";
+        var sample_test_img = [];
+        var hosp_id = "";
+        var imgArray = [];
+        
+        var dd_array = [];
+        var user_name = "";
+        var age_array = [];
+        
+        var block_check = false;
+        var slide_check = false;
+        var other_check = false;
+        var heading = "";
+        
+        $(document).ready(function() {
+        	
+    		$.ajax({
+    			  type: "GET",
+    			  url: BASE_URL2+"patienttemp/"+sampleid,
+    			  success: function(data){
+    				  
+    				hosp_id = data[0].hospitalid;
+    				user_name = data[0].username;
+    				
+    				var d = new Date();
+    				var date = d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear() + " " +
+    		      	d.getHours() + ":" + d.getMinutes();
+    		      	
+    				sessionStorage.setItem("np_num1",data[0].npnum);
+    				$('#np_no').append(data[0].sample_id);
+    				//$('#hosp_name').append(data[0].username);
+    				//$('#ext_id').append(data[0].extr_id);
+    				//$('#ext_id').append(data[0].transaction_id);
+    				extr_id = data[0].transaction_id;
+    				JsBarcode("#barcode", extr_id);
+    				$('#date_of_entry').append(date);
+    				$('#pat_name').append(data[0].pat_name);
+    				age_array = data[0].pat_age.split("-");
+    			    data[0].pat_age = age_array[0]+"Y" + "-" + age_array[1]+"M" + "-" +  age_array[2]+"D";
+    				$('#pat_age').append(data[0].pat_age+"/"+data[0].pat_gender);
+    				$('#pat_gender').append(data[0].hosp_ref_no);
+    				$('#referred_by').append(data[0].referred_by);
+    				$('#doctor_phone_no').append(data[0].doctor_phone_no);
+    				$('#doctor_email_addr').append(data[0].doctor_email_id);
+    				$('#patient_phone_no').append(data[0].pat_phno);
+    				$('#patient_email_addr').append(data[0].pat_email);
+    				$('#amount').append(data[0].amount);
+    				$('#clinic_history').append(data[0].clinic_history);
+    				$('#examination').append(data[0].examination);
+    				$('#investigation').append(data[0].investigation);
+    				$('#previous_biopsy_number').append(data[0].previous_biopsy_number);
+    				$('#provision').append(data[0].diagnosis);
+    				
+    				
+    				sample_test = JSON.parse(data[0].sample_test);
+    				dd_array = JSON.parse(data[0].dd_no);
+    				$('#dd_no').append(dd_array[0].dd_no);
+    				$('#online_no').append(dd_array[0].trans_no);
+    				$('#bank_name').append(dd_array[0].bank_name);
+    				$('#dd_date').append(dd_array[0].date_of_dd.formatted);
+    				
+    				if(dd_no != ""){
+    					$('#radio1').attr('checked', true);
+    					$('#radio2').attr('checked', false);
+    				}else if(online_no!=""){
+    					$('#radio1').attr('checked', false);
+    					$('#radio2').attr('checked', true);
+    					
+    				}
+    				
+    				
+    				sample_test_img = data[0].sample_image_url;
+    				
+						var out1 = '';
+						
+						if(data[0].sample_image_url != null){
+							
+						 imgArray= data[0].sample_image_url.split(','); 
+						
+    					for(var i=0;i<(imgArray[i].length-1);i++){
+    					
+    					out1 +='<tr>' +
+
+    					'<td class="text_class" style="padding-left:15px;padding-top:8px;padding-bottom:8px;border:1px solid black;">'+imgArray[i]+'</td>'+
+    					'<td class="text_class" style="padding-left:15px;padding-top:8px;padding-bottom:8px;border:1px solid black;">'+
+    					'<button type="button"  class="btn btn-md btn-primary" onclick="viewFile3(`'+imgArray[i]+'`)" title="view" id="button_view" >'+"View"+'</button>'+
+    					'</td>';
+							
+    					'</tr>';
+
+    					}
+    				
+						}else{
+							imgArray= "";
+							
+						}
+    					
+			    	    $('#uploadtable').html(out1);
+			    	    
+    				//REST call to get ext hosp details
+    				$.ajax({
+    		  			  type: "GET",
+    		  			  url: BASE_URL2+"hospitalDetails/"+hosp_id,
+    		  			  success: function(data){
+    		  				
+    		  					$('#hosp_name').append(data.hospitalname);
+    		  					$('#hosp_contact').append(data.phone);
+    		  					$('#hosp_email').append(data.mail);
+    		  					$('#hosp_address').append(data.hospital_address);
+    		  					
+    		  			  },
+    		  			  error: function() {
+    		  				 console.log("error");
+    		  				 
+    		  			  } 
+    		  		});
+    				
+    			
+    				var out = '';
+    				//for displaying the sample quantity heading based on the specimen
+    				for(var i=0;i<sample_test.length;i++){
+    					
+    					if(sample_test[i].fixative === undefined){
+    						sample_test[i].fixative =  "";
+    					}
+    					if(sample_test[i].ref_no === undefined){
+    						sample_test[i].ref_no =  "";
+    					}
+    					
+    					 if(sample_test[i].specimen === "Blocks"){
+    						
+    				          block_check = true;
+
+    				        } else  if(sample_test[i].specimen === "Slides for Opinion" ){
+    				        	
+    				          slide_check = true;
+
+    				         }
+    				         else if(sample_test[i].specimen != "Blocks" && sample_test[i].specimen != "Slides for Opinion"){
+    				        	
+    				          other_check = true;
+    				        }
+
+    					 
+    					out +='<tr>' +
+
+    					'<td class="text_class" style="padding-left:15px;padding-top:8px;padding-bottom:8px;border:1px solid black;">'+sample_test[i].specimen+'</td>'+
+
+    					'<td class="text_class" style="padding-left:15px;padding-top:8px;padding-bottom:8px;border:1px solid black;">'+sample_test[i].sample_type+ '</td>'+
+    					'<td class="text_class" style="padding-left:15px;padding-top:8px;padding-bottom:8px;border:1px solid black;">'+sample_test[i].sample_site+ '</td>'+
+    					'<td class="text_class" style="padding-left:15px;padding-top:8px;padding-bottom:8px;border:1px solid black;">'+sample_test[i].fixative+ '</td>'+
+    					'<td class="text_class" style="padding-left:15px;padding-top:8px;padding-bottom:8px;border:1px solid black;">'+sample_test[i].ref_no+ '</td>'+
+    					'<td class="text_class" style="padding-left:15px;padding-top:8px;padding-bottom:8px;border:1px solid black;">'+sample_test[i].sample_quantity+ '</td>';
+						'</tr>';
+
+    				}
+    				
+    				 	if(block_check === true && slide_check === false && other_check === false){
+ 						
+					        heading = "No. of Blocks";
+
+					      }else if(block_check === false && slide_check === true && other_check === false){
+					    	
+					       heading = "No. of Slides";
+					       
+					      }else if(block_check === false && slide_check === false && other_check === true){
+					    	 
+					       heading = "No. of Bottles";
+					        
+					      }else{
+					    	  
+					        heading = "No. of Bottles/Blocks/Slides";
+					       
+					      }
+						
+					 $("#quantity_heading").append(heading);
+    					
+			    	    $('#sample_test_tbody').html(out);
+			    	    $('#sample_test_tbody1').html(out);
+    							
+    			  },
+    			  error: function() {
+    				 console.log("error");
+    				 
+    			  } 
+    		});
+    		
+    		
+    		
+    		
+    		
+    	});
+        
+        //function to view the uploaded sample image in new tab
+        function viewFile3(link){
+        	
+        	var tabOrWindow = window.open(BASE_URL2+link, '_blank');
+       	 	tabOrWindow.focus();
+        		
+        }
+        
+      </script>
+      
+<style>
+
+
+.text_class{
+text-align:left;}
+
+/*css for download page*/
+@media print {
+   .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
+        float: left;
+   }
+   .col-sm-12 {
+        width: 100%;
+   }
+   .col-sm-11 {
+        width: 91.66666667%;
+   }
+   .col-sm-10 {
+        width: 83.33333333%;
+   }
+   .col-sm-9 {
+        width: 75%;
+   }
+   .col-sm-8 {
+        width: 66.66666667%;
+   }
+   .col-sm-7 {
+        width: 58.33333333%;
+   }
+   .col-sm-6 {
+        width: 50%;
+   }
+   .col-sm-5 {
+        width: 41.66666667%;
+   }
+   .col-sm-4 {
+        width: 33.33333333%;
+   }
+   .col-sm-3 {
+        width: 25%;
+   }
+   .col-sm-2 {
+        width: 16.66666667%;
+   }
+   .col-sm-1 {
+        width: 8.33333333%;
+   }
+}
+
+.tdclass2{
+border:1px solid black;
+padding-left:5px;
+}
+</style>
+
+  
+</head>
+
+<!-- this page is to preview the the external sample details with chat history, send message, and view uploaded files for the super admin login -->
+
+    <body ng-app="myApp2" class="ng-cloak" ng-controller="readMessageController as ctrl">
+    
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+        
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">Lab Sample Tracker</a>
+                    <span align="left">
+                    
+                    <button type="button" class="btn btn-info btn-small" onClick="pageRefresh()" style="margin-left: 900px;">Refresh</button>
+                    <button type="button"  ng-click="logOutUser()" class="btn btn-sm btn-danger"  > <i class="glyphicon glyphicon-off"></i>Logout</button>
+                    	
+                    <!-- <button type="button"  ng-click="OpenExe()" class="btn btn-sm btn-danger"  style="margin-top: 10px;margin-left: 1059px;"> <i class="glyphicon glyphicon-off"></i>Launch</button> -->
+                    <button type="button" onclick="home1()" class="btn btn-sm btn-success">
+					 <i class="glyphicon "></i>Home
+				     </button>
+                    </span>
+                    
+                </div>
+            </div>
+            
+        </nav>
+		
+        <div class="container-fluid" ng-controller="readMessageController">
+        
+            <div class="row">
+               <div class="col-md-12">
+               <div class="col-md-1"></div>
+                <div class="col-md-9">
+                <h3 class="page-header"  style="margin-top:5px;">PREVIEW </h3>
+                </div>
+                <div class="col-md-2"></div>
+                </div>
+                </div>
+              <div class="row" style="padding-top:0px;padding-bottom:0px;">
+              <div class="col-md-12">
+              <div class="col-md-10"></div>
+				<div class="col-md-1" style="text-align:right">
+				    <!-- <button type="button" onclick="back()" class="btn btn-sm btn-success">
+					 <i class="glyphicon "></i>Back
+				     </button> -->
+				</div>
+				<div class="col-md-1" style="text-align:left">
+				<!-- <button type="button" onclick="home1()" class="btn btn-sm btn-success">
+					 <i class="glyphicon "></i>Home
+				     </button> -->
+				
+					
+				</div>
+                  
+  				
+  			</div>
+  			</div>
+  			
+  			
+  			<div class="panel" style="background-color:#009688;padding-top:0px;">
+  <div class="panel-heading" >
+  <h4 style="color:white;margin-top:10px;vertical-align: top;text-align:center;padding-top:0px;"><b>HISTOPATHOLOGY REQUEST FORM</b>
+  <!-- <a routerLink="/dashboard/testlist" class="w3-button w3-green custom-button" style="float:right;"><i class="w3-medium fa fa-chevron-left"> Back</i></a> -->
+  </h4>
+  </div>
+</div>
+
+
+  			<div class="container">
+  			<div class="row">
+    <div class="col-md-12 col-sm-12">
+    <div class="panel panel-success" style="margin-bottom:5px;">
+      <!-- <div class="panel-heading"><b>Clinical History</b></div> -->
+      <div class="panel-body col-md-6  col-sm-6" style="text-align:left;" id="neuro_no"><b>Neuro Path No(Lab Use Only):</b></div>
+      <div class="panel-body col-md-6  col-sm-6" style="text-align:right;"><p  id="date_of_entry"><b>Date: </b></p></div>
+    </div> 
+
+  </div>
+</div>
+  			
+  			<div class="panel-group">
+
+      <div class="panel panel-default" style="width: 100%; text-align: right;margin-bottom:5px;padding:4px;">
+           <div class="panel-body text_class" style="padding:5px;">
+           <div class="col-md-12 col-sm-12">
+           <div class="col-md-6 col-sm-6" style="text-align:left;">
+           <p  id="hosp_name" style="font-size:bold;"><b>Hospital: </b></p>
+           <p  id="hosp_contact" style="font-size:bold;"><b>Contact: </b></p>
+            <p  id="hosp_email" style="font-size:bold;"><b>EmailId: </b></p>
+           </div>
+           <div class="col-md-6 col-sm-6" style="text-align:right;">
+          
+           <!-- <span style="text-align:right;">
+           
+           <p  id="ext_id"><b> </b></p>
+           
+           </span> -->
+            <span style="text-align:right;">
+           <div>
+           <svg id="barcode" style="width:20%;height:20%;"></svg>
+           </div>
+           <!-- <p  id="ext_id"><b> </b></p> -->
+           
+           </span>
+           </div>
+           </div>
+           </div>
+            
+            
+          </div>
+        </div> 
+        
+
+      <div class="row"> 
+        <div class="col-md-12 col-sm-12" style="margin-bottom:5px;">       
+          <div class="panel panel-success col-md-4 col-sm-4" style='padding:0px;'>
+            <div class="panel-body"  id ="pat_name"><span><b>Name: </b></span></div>
+          </div>
+
+        <div></div>
+
+        <div class="panel panel-success col-md-4 col-sm-4" style='padding:0px;'>
+            <div class="panel-body" id ="pat_age"><span><b>Age/Gender: </b></span></div>
+          </div>
+          
+          <div class="panel panel-success col-md-4 col-sm-4" style='padding:0px;margin-top:0px;'>
+        <div class="panel-body" id="pat_gender"><span><b>Ref Hosp Pat Id: </b></span></div>
+      </div>  
+  </div> 
+</div>
+
+ 
+    
+<div class="row"> 
+    <div class="col-md-12 col-sm-12" style="margin-bottom:5px;">
+  
+    <div class="panel panel-success col-md-4 col-sm-4" style='padding:0px;'>
+      <div class="panel-body" id="referred_by"><span><b>Referred By: </b></span></div>
+    </div> 
+    
+     <div class="panel panel-success col-md-4 col-sm-4" style='padding:0px;margin-top:0px;'>
+      <div class="panel-body" id="doctor_phone_no"><span><b>Consultant Mobile No: </b></span></div>
+    </div>
+    
+     <div class="panel panel-success col-md-4 col-sm-4" style='padding:0px;margin-top:0px;'>
+      <div class="panel-body" id="doctor_email_addr"><span><b>Consultant E-mail:</b> </span></div>
+    </div>
+     
+
+    </div>
+</div>
+
+<div class="row"> 
+    <div class="col-md-12 col-sm-12" style="margin-bottom:5px;">
+
+    <div class="panel panel-success col-md-4 col-sm-4" style='padding:0px;'>
+      <div class="panel-body" id="patient_phone_no"><span><b>Patient Mobile No: </b></span></div>
+    </div> 
+    
+     <div class="panel panel-success col-md-4 col-sm-4" style='padding:0px;margin-top:0px;'>
+      <div class="panel-body" id="patient_email_addr"><span><b>Patient E-mail: </b></span></div>
+    </div>
+    
+     <div class="panel panel-success col-md-4 col-sm-4" style='padding:0px;margin-top:0px;'>
+      <div class="panel-body" id="hosp_address"><span><b>Hosp.Address:</b> </span></div>
+    </div>
+     
+
+    </div>
+</div>
+
+
+
+<!-- begin new code with specimen,sample_type,fixative,sample_quantity -->
+<div class="" style="">
+  
+  <table class="table-responsive"  id ="sample_test_table" style="width:100%;">
+    <thead class="panel-heanding panel-success">
+        <tr  style="border:1px black;" class="panel panel-success">
+            <th width="" class="td_class  col-md-3 " style="padding-top:10px;padding-bottom:10px;">Specimen
+                </th>
+            <th width="" class="td_class  col-md-3" style="padding-top:10px;padding-bottom:10px;">Test
+               </th>
+                <th width="" class="td_class  col-md-3" style="padding-top:10px;padding-bottom:10px;">Biopsy-Site
+               </th>
+            <th width="" class="td_class  col-md-3" style="padding-top:10px;padding-bottom:10px;">Fixative
+                </th>
+                <th width="" class="td_class  col-md-3" style="padding-top:10px;padding-bottom:10px;">Ref.Number
+                </th>
+            <th width="" class=" col-md-3" style="padding-top:10px;padding-bottom:10px;" id="quantity_heading">
+                   </th>
+                  </tr>
+                </thead>
+                  <tbody id="sample_test_tbody">
+                  
+    </tbody>
+</table>
+
+</div>
+
+<!-- end new code with specimen,sample_type,fixative,sample_quantity -->
+
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12">
+    <div class="panel panel-success" style="margin-bottom:5px;margin-top:10px;">
+      <div class="panel-body" id="clinic_history"><span><b>Clinical History: </b></span></div>
+    </div> 
+
+  </div>
+</div>
+
+
+<div class="row">
+<div class="col-md-12 col-sm-12" style="margin-bottom:5px;">
+    <div class="panel panel-success">
+      <div class="panel-body" id="examination"><span><b>Examination: </b></span></div>
+    </div>
+
+  </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12">
+    <div class="panel panel-success" style="margin-bottom:5px;">
+      <div class="panel-body" id="investigation"><span><b>Investigation: </b></span></div>
+    </div> 
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12 col-sm-12">
+  <div class="panel panel-success" style="margin-bottom:5px;">
+    <div class="panel-body" id="previous_biopsy_number"><span><b>Previous Biopsy Number If Any: </b></span></div>
+  </div> 
+
+</div>
+</div>
+
+
+
+<div class="row">
+  <div class="col-md-12 col-sm-12" style="text-align:center;">
+  <div class="panel panel-success" style="margin-bottom:5px;">
+   <div class="panel-body" style="text-align:left;"><span><b></b> </span></div>
+   <table  style=" margin: 0 auto;text-align:left;">
+   <thead>
+   <tr style="text-align:left;">
+   <th >Uploaded files:</th>
+   </tr>
+   </thead>
+   <tbody id="uploadtable">
+   </tbody>
+   
+   </table>
+      </div> 
+</div>
+</div>
+
+<div class="row">
+  <div class="col-md-12 col-sm-12">
+  <div class="panel panel-success" style="margin-bottom:5px;">
+    <div class="panel-body" id="provision"><span><b>Clinical Diagnosis: </b></span></div>
+  </div> 
+
+</div>
+</div>
+
+<div class="row">
+  <div class="col-md-12 col-sm-12">
+  <div class="panel panel-success" style="margin-bottom:5px;">
+    <div class="panel-body" id="Operative"><span><b>Operative Notes(For Neuro Surgery): </b></span></div>
+  </div> 
+
+</div>
+</div>
+
+					<div class="row">
+                    <div class="col-md-12 col-sm-12" style="margin-bottom:5px;">
+                      <div class="col-md-4 col-sm-4" style="padding-left:0px;padding-right:0px;">
+                      
+                               <div class="panel panel-default fixed-bottom">
+                              
+                                <div class="panel-body" style="text-align:left; ">
+                                <label class="radio-inline">
+                                  <input type="radio" name="optradio"   id="radio1" disabled=true>DD 
+                                </label>
+                                <label class="radio-inline">
+                                  <input type="radio" name="optradio"   id="radio2" disabled=true>Online Transaction
+                                </label>
+                              </div>
+                              </div>
+                              </div>
+                              
+                              <div class="col-md-4 col-sm-4" style="padding-left:0px;padding-right:0px;">
+                              <div class="panel panel-default fixed-bottom">
+                                         <div class="panel-body" style="text-align:left; " id="dd_no"><b>DD No:</b> </div>
+                                          </div>
+                              
+                              </div>
+                              
+                              <div class="col-md-4 col-sm-4" style="padding-left:0px;padding-right:0px;">
+                               
+                                        <div class="panel panel-default fixed-bottom">
+                                         <div class="panel-body" style="text-align:left; " id="online_no"><b>Online Transaction No: </b></div>
+                                          </div>
+                                         
+                                         </div>
+                                       </div>
+                                      </div>
+                                      
+                    <div class="row">
+                    <div class="col-md-12 col-sm-12" style="margin-bottom:5px;">
+                    
+                      <div class="col-md-4 col-sm-4" style="padding-left:0px;padding-right:0px;">
+                       
+                                <div class="panel panel-default fixed-bottom">
+                                 <div class="panel-body" style="text-align:left; " id="bank_name"><b>Bank Name:</b> </div>
+                                </div>
+                      </div>
+                                
+                                
+                             
+                              
+                              <div class="col-md-4 col-sm-4" style="padding-left:0px;padding-right:0px;">
+                              <div class="panel panel-default fixed-bottom">
+                                  <div class="panel-body" style="text-align:left; " id="dd_date"><b>Date:</b> </div>
+                                   </div>
+                              
+                              </div>
+                              
+                              <div class="col-md-4 col-sm-4" style="padding-left:0px;padding-right:0px;">
+                               
+                                      <div class="panel panel-default fixed-bottom">
+                                       <div class="panel-body" style="text-align:left; " id="amount"><b>Amount: </b></div>
+                                        </div>
+                                         
+                                </div>
+                              </div>
+                             </div>
+
+
+<br><br><br>
+<div class="row" ng-controller="readMessageController as ctrl">
+
+  <div class="col-md-12">
+  <div ng-show = ctrl.results></div>
+  <div ng-show = "ctrl.buttonstate">
+
+      <table class="table table-hover" style="background-color: #fff;border:1px solid black;">
+        
+        <thead>
+        
+          <tr style="border:1px solid black;">
+            <th class="border_class success header_class"><i class="w3-small custom-icon fa fa-venus-mars"></i>Messages</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr style="height:80px;border-radius:40px;margin-bottom:10px;" ng-repeat-start="output in ctrl.outputlist1 | limitTo:100" >
+            
+            <td style="text-align:right;border-bottom:1px solid black;"  ng-style="{ 'text-align' : (output.portal_flag == '2') ? 'left' : 'right' }">{{output.notification_msg}} {{output.created_at}}
+            
+            </td>
+            
+          </tr>
+          <tr ng-repeat-end>
+          
+          </tr>
+        </tbody>
+         
+        </table>
+        </div>
+  </div>
+  
+  
+  
+  <div class="col-md-12 col-sm-12">
+  <div class="panel panel-success" style="margin-bottom:5px;">
+   <div class="panel-body"><span><b> </b></span></div>
+   
+   <table id="uploadtable1" style=" margin: 0 auto;">
+   <thead>
+   <tr>
+   <th>Uploaded files</th>
+   </tr>
+   </thead>
+   <tbody>
+   <tr ng-repeat="output in ctrl.outputlist1" ng-if="output.img_url">
+   
+   <td class="text_class" style="padding-left:15px;padding-top:8px;padding-bottom:8px;border:1px solid black;">{{output.img_url}}</td>
+    <td class="text_class" style="padding-left:15px;padding-top:8px;padding-bottom:8px;border:1px solid black;">
+    <button type="button"  class="btn btn-md btn-primary" ng-click="viewFile4(output.img_url)" title="view" id="button_view4" >View</button>
+    </td>
+    </tr>
+   </tbody>
+   
+   </table>
+    
+</div>
+  
+</div>
+
+					<div class="row">
+				   <div class="col-md-12">
+ 					<textarea  style="display: block;margin-left: auto;margin-right: auto;" ng-model="message"  rows="4" cols="200" placeholder="Type your message here" >
+        			</textarea> 
+        			</div>
+        			</div>
+        			
+	<div class="col-md-12" style="margin-top:20px;margin-bottom:20px;">
+      
+   	<div class="col-md-12" style="text-align:center;">
+   	<button type="button"  ng-click="submitReply()"  id="submit_button" class="btn btn-primary">Submit</button>
+   	<!-- <button id="printbutton" class="btn btn-success"  onClick="window.print();">Download PDF</button> -->
+   	</div>
+   	</div>
+    
+	</div>
+
+	</div>
+  			
+  	    
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./search_files/jquery.min.js"></script>
+    <script src="./search_files/bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="./search_files/holder.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="./search_files/ie10-viewport-bug-workaround.js"></script>
+   	<script src="js/values.js"></script>
+    <script src="js/readMessage.js"></script>
+    <script src="js/JsBarcode.all.min.js"></script>
+    
+    <script>
+    NPno = sessionStorage.getItem("np_num1");
+    $("#neuro_no").append(NPno);
+    function back(){
+    	console.log("hhj");
+        window.location.href="externalSample.html";
+        }
+    function home1(){
+        window.location.href="externalSample.html";
+        }
+    
+  
+    </script>
+   
+    </body>
+</html>

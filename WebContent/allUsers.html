@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://getbootstrap.com/examples/dashboard/ -->
+
+<html lang="en" hola_ext_inject="disabled">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>Sample Tracker</title>
+		<link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+		<link href="bootstrap/bootstrap-combined.min.css" rel="stylesheet">
+		
+		<!-- Bootstrap core CSS -->
+		<link href="./search_files/bootstrap.min.css" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link href="./search_files/search.css" rel="stylesheet">
+
+		<script src="./search_files/ie-emulation-modes-warning.js"></script><style type="text/css"></style>
+		<!-- <script src="http://cdn.jsdelivr.net/alasql/0.2/alasql.min.js"></script>-->
+		<script src="js/alasql.min.js"></script>
+		<script src="bootstrap/angular.js"></script>
+    	<script src="bootstrap/angular-animate.js"></script>
+   	    <script src="bootstrap/ui-bootstrap-tpls.min.js"></script>
+      	<!-- <script src="bootstrap/angular.min.js"></script>-->
+      	<script src="bootstrap/jquery.min.js"></script>
+      	<script src="bootstrap/angular-sanitize.min.js"></script>
+      	<script src="bootstrap/ui-bootstrap-tpls-0.6.0.js"></script>
+      	<script src="bootstrap/angular-cookies.js"></script>
+      	
+      	<script>
+      	
+		     function launchApp(){
+		    	 alert("App Launch");
+		    	//document.reload.href();
+		    	window.location.href = "http://localhost:8080/Sample_Tracker/desktopfile.hta";
+		    	 
+		     }
+		     
+		     function back(){
+		    	 window.location.href = "externalSample.html";
+		    	 
+		     }
+     
+      </script>
+      
+<style>
+       
+.jumbotron {
+padding: 0.5em 0.6em;
+h1 {
+font-size: 2em;
+}
+p {
+font-size: 1.2em;
+.btn {
+padding: 0.5em;
+}
+}
+}
+        
+.modal{
+height:550px;
+}
+        
+#editUserModal,#createUserModal{
+height:440px;
+margin: auto;
+width: 60%;
+border: 3px solid #73AD21;
+padding: 10px;
+}
+		
+#oldNpModal{
+height:300px;
+}
+		
+#confirmNp{
+height:200px;
+}
+		
+#mydiv {  
+position:absolute;
+width:10%;
+height:20%;
+left:46%;
+top:40%;
+z-index:1000;
+opacity: .8;
+}
+
+.ajax-loader {
+position: absolute;
+display: block;     
+}
+
+#snackbar {
+visibility: hidden;
+min-width: 250px;
+margin-left: -125px;
+color: #fff;
+text-align: center;
+border-radius: 2px;
+padding: 16px;
+position: fixed;
+z-index: 1;
+left: 50%;
+bottom: 30px;
+font-size: 17px;
+}
+
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;} 
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;} 
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+</style>
+    
+</head>
+
+    <body ng-app="myApp2" style="padding-top:0px;" class="ng-cloak" ng-controller="ControllerUsers">
+    
+    <div class="navbar navbar-inverse">
+  	<div class="container">
+    <a class="navbar-brand" href="index.html">Lab Sample Tracker</a>
+                    
+    <button class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="mynavbar">
+      <ul class="nav navbar-nav navbar-left">
+        <li><a href="DeleteNPnumber.html"  ><i class="glyphicon glyphicon-trash"></i>DELETE NP NUMBER</a>
+		</li>
+         
+      </ul>
+      
+      <ul class="nav navbar-nav navbar-right">
+      
+       	<li><button type="button" onclick="back()" class="btn btn-sm btn-success "><i class="glyphicon "></i>Home
+      	</button></li>
+      	
+      	<li><button type="button" ng-click="createUser()" class="btn btn-sm btn-success" style="margin-right:5px;" title="createUser" ><i class="glyphicon  glyphicon-plus-sign"></i>Create User
+      	</button></li>
+      	
+      	<li><button type="button" onClick="launchApp()" class="btn btn-sm btn-primary" style="margin-right:5px;" title="AppLaunch" ><i class="glyphicon  glyphicon-plus-sign"></i>AppLaunch
+    	</button></li>
+    	
+      	<li><button type="button"  ng-click="logOutUser()" class="btn btn-sm btn-danger"> <i class="glyphicon glyphicon-off"></i>Logout</button>
+      	</li>
+      	
+      </ul>
+      
+    </div>
+  </div>
+</div>
+        
+		
+        <div class="container-fluid" ng-controller="ControllerUsers as ctrl">
+            <div class="row">
+              
+                <div class="col-sm-9 col-sm-offset-1 col-md-10 col-md-offset-1 main">
+                    <h1 class="page-header">All USERS</h1>
+                    
+                    <!-- <div align="right">
+                    <a href="DeleteNPnumber.html" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-trash"></i>DELETE NP NUMBER</a>
+                    <a href="externalHospital.html" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-info"></i>External Hospitals</a>
+                    <a href="externalSample.html" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-info"></i>External Samples</a>
+                    <button type="button" ng-click="createUser()" class="btn btn-sm btn-success" title="createUser" >
+            		<i class="glyphicon  glyphicon-plus-sign"></i>Create User
+      				</button>
+      				<button type="button" onClick="launchApp()" class="btn btn-sm btn-success" title="AppLaunch" >
+            		<i class="glyphicon  glyphicon-plus-sign"></i>AppLaunch
+      				</button>
+      				</div> -->
+      				
+                    <br>
+                    
+                	<div ng-show = ctrl.results></div>
+                	
+                    <div ng-show = "ctrl.buttonstate">
+                    
+                    	<table align="center" class="table table-striped" border="1">
+                    	
+                    		 <thead>
+                                <tr>  
+                                	<!-- <th>  </th>-->
+                                	<th>S.No</th>
+                                    <th>UserName</th>
+                                   	<!--  <th>Password</th> -->
+                                    <th>Role</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                            	 <tr ng-repeat-start="output in ctrl.outputlist1 | limitTo:100">
+               						<!-- <td>
+                   						<button ng-click="expanded = !expanded;">
+                        				<span ng-bind="expanded ? '-' : '+'"></span>
+                    					</button>
+                					</td>
+									<td ng-bind="output.npNumber"></td>
+									<td ng-bind="output.currentState"></td>-->
+									<td  ng-bind="output.technician_id"></td>
+									<td ng-bind="output.technicianName"></td>
+									<!-- <td ng-bind="output.password"></td> -->
+									<td ng-bind="output.roles"></td>
+									<td ><button type="button" ng-model="edit" data-toggle="modal"  ng-click="editUser(output.technician_id,output.technicianName,output.roles)" class="btn btn-sm btn-info " title="edit" >
+            						<i class="glyphicon  glyphicon-pencil"></i> Edit
+      								</button>&nbsp&nbsp&nbsp
+      								<button type="button" ng-if="(output.roles == 'office_inactive') || (output.roles == 'technician_inactive') ||(output.roles == 'resident_inactive')||(output.roles == 'faculty_inactive')||(output.roles == 'techguru_inactive')||(output.roles == 'admin_inactive')"  ng-click ="deleteUser(output.technician_id,output.roles)"  class="btn btn-sm btn-success" title="delete" >
+            						<i class="glyphicon glyphicon-off"></i> Active
+      								</button>
+      								<button type="button"  ng-if="(output.roles == 'office') || (output.roles == 'technician') ||(output.roles == 'resident')||(output.roles == 'faculty')||(output.roles == 'techguru')||(output.roles == 'admin')||(output.roles == 'Nimhans_surgeon')||(output.roles == 'nimhans_unit')"  ng-click ="deleteUser(output.technician_id,output.roles)"  class="btn btn-sm btn-warning" title="delete" >
+            						<i class="glyphicon glyphicon-off"></i> InActive
+      								</button>
+      								</td>
+            					</tr>
+            					
+                    			<tr ng-repeat-end ng-show="expanded">
+									<td></td>
+									<td colspan="3"></td>
+								</tr>
+								
+								
+							</tbody>
+						</table>
+						</div>
+						
+                </div>
+            </div>
+        </div>
+        
+        <div id="snackbar">Technician deleted</div>
+        <div id="snackbar1">Technician not deleted</div>
+       	<!--  <div id="snackbar2">New Technician Created</div>
+        <div id="snackbar3">Technician Edited</div> -->
+        
+      <!-- ************* EditUser Modal **********-->
+    	<div class="modal fade"  id="editUserModal"  role="dialog" >
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">Edit User</h4>
+        </div>
+        <div class="modal-body">
+            <div class="col-md-12">
+                <form name="editUser" class="form-horizontal" novalidate autocomplete="off" >
+                    <div class="form-group" >
+                   
+                        <label for="uname"><b>Users :</b></label>
+                        <input type="text" style=" height:120%;" class="form-control"  name="user_name" id="edit_user_name">
+                      <br>
+                      <br>
+                       <label for="pass"><b>Password :</b></label>
+                       <input type="password" style=" height:120%;" ng-model="passwordT" class="form-control" autocomplete="false" id="passwordT" placeholder=" enter Password">
+                       <br>
+                      <br>
+                       <label for="pass"><b>Confirm Password :</b></label>
+                       <input type="password" style=" height:120%;" ng-model="cmfpasswordT" class="form-control" id="cmfpasswordT" placeholder="confirm Password">
+                        <div ng-show="invalidPassword"> <font color="red">Password not Matched</font></div>
+                       <br>
+                       <br>
+                       <label for="pass"><b>Role :</b></label>
+                       <!-- <input type="text" style=" height:120%;" ng-model="roleT" class="form-control" id="technician_role">-->
+                        <select ng-model="roleTedit" ng-init=" roleTedit = roleArrEdit[index2]"  id="technician_role" ng-options="y for y in roleArrEdit" class="form-control">
+                      
+                      </select>
+                        <input type="hidden"  id="technician_id">
+                      
+                </div >
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <input type="submit" class="btn btn-success pull-right" ng-click="setEditUser()" value="Save" />
+                    </div>
+                </form>
+                <!-- <div class="clearfix"></div>
+                <div class="modal-footer"></div> -->
+            </div>
+        </div>
+    </div>
+    <!-- *************************EditUser model end************************ -->  
+
+	<!-- ************* CreateUser Modal **********-->
+    <div class="modal fade"  id="createUserModal"  role="dialog" >
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">Create New User</h4>
+        </div>
+        <div class="modal-body">
+            <div class="col-md-12">
+                <form name="editUser" class="form-horizontal" novalidate autocomplete="off" >
+                    <div class="form-group" >
+                   
+                        <label for="uname"><b>Users :</b></label>
+                        <input type="text" style=" height:120%;" class="form-control"  name="user_name" id="create_user_name">
+                      <br>
+                      <br>
+                       <label for="pass"><b>Password :</b></label>
+                       <input type="password" style=" height:120%;" ng-model="passwordT" class="form-control" autocomplete="false" id="password_create" placeholder=" enter Password">
+                       <br>
+                      <br>
+                       <label for="pass"><b>Confirm Password :</b></label>
+                       <input type="password" style=" height:120%;" ng-model="cmfpasswordT" class="form-control" id="cmfpassword_create" placeholder="confirm Password">
+                        <div ng-show="invalidPassword_create"> <font color="red">Password not Matched</font></div>
+                       <br>
+                       <br>
+                       <label for="pass"><b>Role :</b></label>
+                      <!--  <input type="text" style=" height:120%;" ng-model="roleT" class="form-control" id="create_technician_role"> -->
+                      <select ng-model="roleT"  id="create_technician_role" ng-options="x for x in roleArr" class="form-control" ng-change="selectedValue(roleT)">
+                      
+                      </select>
+                      
+                      <br>
+                      <div class="hidden" id="unit_div">
+                       <label for="unit"><b>Unit :</b></label>
+                      <!--  <input type="text" style=" height:120%;" ng-model="roleT" class="form-control" id="create_technician_role"> -->
+                      <select ng-model="unit_name"  id="unit_id" ng-options="item.unit_id as item.unit for item in new_array" class="form-control">
+                      
+                      </select>
+                      </div>
+                        <input type="hidden"  id="technician_id">
+                      
+                </div >
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                        <input type="submit" class="btn btn-success pull-right" ng-click="createUserSave()" value="Create" />
+                    </div>
+                </form>
+                <!-- <div class="clearfix"></div>
+                <div class="modal-footer"></div> -->
+            </div>
+        </div>
+    </div>
+    <!-- *************************CreateUser model end************************ -->          
+	
+        
+ <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./search_files/jquery.min.js"></script>
+    <script src="./search_files/bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="./search_files/holder.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="./search_files/ie10-viewport-bug-workaround.js"></script>
+   	<script src="js/values.js"></script>
+    <!-- <script src="js/user_service.js"></script>-->
+    <script src="js/allusers.js"></script>
+   
+    </body>
+</html>

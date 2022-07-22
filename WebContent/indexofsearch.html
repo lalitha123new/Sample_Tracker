@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://getbootstrap.com/examples/dashboard/ -->
+<html lang="en" hola_ext_inject="disabled">
+
+	<head>
+	
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<title>Sample Tracker</title>
+
+		<!-- Bootstrap core CSS -->
+		<link href="./search_files/bootstrap.min.css" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link href="./search_files/search.css" rel="stylesheet">
+		<link href="css/lightpick.css" rel="stylesheet">
+		<!-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" /> -->
+		<link rel="stylesheet" type="text/css" href="css/daterangepicker.css" />
+
+		<script src="./search_files/ie-emulation-modes-warning.js"></script>
+		<style type="text/css"></style>
+		<script src="bootstrap/angular.js"></script>
+    	<script src="bootstrap/angular-animate.js"></script>
+   	    <script src="bootstrap/ui-bootstrap-tpls.min.js"></script>
+   	    
+  
+  </head>
+						<!-- Search page -->
+    <body ng-app="myApp" class="ng-cloak">
+    
+    
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">Lab Sample Tracker</a>
+                </div>
+            </div>
+        </nav>
+		
+        <div class="container-fluid" ng-controller="Controller as ctrl">
+            <div class="row">
+            
+            
+                <div class="col-sm-3 col-md-2 sidebar">
+                    <ul class="nav nav-sidebar">
+                    <li><a href="index.html">Home</a></li>
+                     <li><a href="#" onClick="pageRefresh()">Refresh</a></li>
+                        <li><a href="#">Dashboard</a></li>
+                        <li><a href="doctor.html">Doctor</a></li>
+                        <li class="active"><a href="indexofsearch.html">Search</a></li>
+                        <li><a href="activityLogs.html">Activity Logs</a></li>
+                        <li><a href="allassets.html">All Assets</a></li>
+                        <li><a href="allTransactions.html">All Transaction</a></li>
+                        <li><a href="allncs.html">All Ncs</a></li>
+                        <li><a href="allcases.html">All Cases</a></li>
+                        <li><a href="allUsers.html">All Users</a></li>
+                    </ul>
+                </div>
+              
+              
+                
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                    <h1 class="page-header">Search</h1>
+                    
+                    
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label for="patientName" class="col-sm-2 control-label">Patient Name</label>                        
+                            <div class="col-sm-4">
+                            
+                            
+                                <input type="text" ng-model="ctrl.search_str_pname" ng-disabled ="ctrl.search_str_np || ctrl.finalImpression || ctrl.biopsy || ctrl.specimen || ctrl.fixative || ctrl.station_id" class="form-control" id="pName" name="patientName" placeholder="Enter Patient Name" autocomplete="off">
+								
+                            
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="npNumber" class="col-sm-2 control-label">NP Number</label>
+                            <div class="col-sm-4">
+                                <input type="text" ng-model = "ctrl.search_str_np" ng-disabled ="ctrl.search_str_pname || ctrl.finalImpression || ctrl.gender || ctrl.doctor_name" class="form-control" id="npNumber" name="npNumber" placeholder="Enter NP Number" autocomplete="off">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="patientName" class="col-sm-2 control-label">Doctor Name</label>                        
+                            <div class="col-sm-4">
+                            
+                            
+                                <input type="text" ng-model="ctrl.doctor_name" ng-disabled ="ctrl.search_str_np || ctrl.finalImpression || ctrl.biopsy || ctrl.specimen || ctrl.fixative || ctrl.station_id" class="form-control" id="doctor_name" name="doctorName" placeholder="Enter Doctor Name" autocomplete="off">
+								
+                            
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="jumbotron" style="text-align:center;margin-top:30px;background-color:#eee;">
+                        <form class="form-horizontal">
+                        
+                        
+                        <div class="row">
+                        
+                        <div class="col-md-3 " style="text-align:center;">
+                        <label>From</label>
+                            <select id="age_select1" class="form-control"   ng-disabled ="ctrl.search_str_np || ctrl.finalImpression || ctrl.biopsy || ctrl.specimen || ctrl.fixative  || ctrl.station_id">
+                          
+							</select>
+							
+                        </div>
+                        
+                        <div class="col-md-3">
+                        <label>To</label>
+							 <select id="age_select2" class="form-control"  ng-disabled ="ctrl.search_str_np || ctrl.finalImpression || ctrl.biopsy || ctrl.specimen || ctrl.fixative  || ctrl.station_id">
+                           
+						</select>
+						</div>
+                        
+                         	<div class="col-md-3" style="text-align:center;">
+                       		<label>Gender</label>
+                            <select id="gender_select" class="form-control" ng-model="ctrl.gender"  ng-disabled ="ctrl.search_str_np || ctrl.finalImpression || ctrl.biopsy || ctrl.specimen || ctrl.fixative  || ctrl.station_id">
+                            <option value=""> Select Gender</option>
+							  <option value="all">All</option>
+							  <option value="male">Male</option>
+							  <option value="female">Female</option>
+							</select>
+                        	</div>
+                        
+                         <div class="col-md-3" style="text-align:center;">
+                       	<label>Date Range</label>
+                         <input  class="form-control" id="datepicker1" placeholder="Select Date" ng-disabled ="ctrl.search_str_np || ctrl.finalImpression || ctrl.biopsy || ctrl.specimen || ctrl.fixative  || ctrl.station_id"></input> 
+                         <!-- <input  class="form-control" id="datepicker2"></input>  --> 
+                        </div>
+                        
+                      
+                        </div>
+                        
+                        
+                        <br>
+                        
+                        <div class="row">
+                        
+                        <div class="col-md-3" style="text-align:center;">
+                          <label>Biopsy Type</label>
+                         <select id="biopsy_type_select" class="form-control" ng-model="ctrl.biopsy" ng-disabled ="ctrl.search_str_pname || ctrl.finalImpression || ctrl.gender || ctrl.doctor_name">
+                         
+                            
+                              <option value=""> Select Biopsy</option>
+                              <option value="Tumor">Tumor</option>
+                              <option value="Muscle">Muscle</option>
+                              <option value="Nerve">Nerve</option>
+                              <option value="Skin">Skin</option>
+                              <option value="Epilepsy">Epilepsy</option>
+                              <option value="Brain Biopsy">Brain Biopsy</option>
+                              <option value="Lip Biopsy">Lip Biopsy</option>
+                              <option value="Liver Biopsy">Liver Biopsy</option>
+                              <option value="Lymph Node">Lymph Node</option>
+                              <option value="Hair">Hair</option>
+                              <option value="Thymus">Thymus</option>
+                              <option value="Other">Other</option>
+                              
+							  
+							</select>  
+                          
+                        </div>
+                        
+                        
+                        <div class="col-md-3" style="text-align:center;">
+                         <label>Specimen</label>
+                         <select id="specimen_select" class="form-control" ng-model="ctrl.specimen" ng-disabled ="ctrl.search_str_pname || ctrl.finalImpression || ctrl.gender || ctrl.doctor_name">
+                            
+                            <option value="">Select Specimen</option>
+                            <option value="Tissue">Tissue</option>
+                            <option value="Block">Block</option>
+                            <option value="Stained Slide">Stained Slide</option>
+                            <option value="Unstained Slide">Unstained Slide</option>
+                            <option value="Frozen">Frozen</option>
+                            <option value="Fluid">Fluid</option>
+                             
+							  
+							</select>   
+                        </div>
+                        
+                        
+                        	<div class="col-md-3">
+							<label>Fixative</label>
+                         	<textarea rows="1" cols="50" id="fixative_select" class="form-control" ng-model="ctrl.fixative" ng-disabled ="ctrl.search_str_pname || ctrl.finalImpression || ctrl.gender || ctrl.doctor_name"></textarea>  
+                        
+						 	</div>
+                        
+							<div class="col-md-3" style="text-align:center;">
+                       		<label>Status</label>
+                         	<select id="station_select" class="form-control" ng-model="ctrl.station_id" ng-disabled ="ctrl.search_str_pname || ctrl.finalImpression || ctrl.gender || ctrl.doctor_name">
+                              <option value=""> Select Status</option>
+                              <option value="1">Receiving</option>
+                              <option value="2">Grossing</option>
+                              <option value="3">Embedding</option>
+                              <option value="4">Sectioning</option>
+                              <option value="5">Staining</option>
+                               <option value="6">Reporting</option>
+                              <option value="7">Typing</option>
+							  <option value="8">Verification</option>
+							  <option value="9">Dispatched</option>
+							  
+							</select>  
+                        	</div>
+                        
+                        
+                        	</div>
+                        	<br>
+                        
+                        
+                        <div class="row">
+                        <div class="col-md-12" style="text-align:center;">
+                        <label>Final Impression</label>
+                         <textarea rows="1" cols="50" id="final_impress" class="form-control" ng-model="ctrl.finalImpression" ng-disabled ="ctrl.search_str_pname || ctrl.search_str_np || ctrl.gender || ctrl.biopsy || ctrl.specimen || ctrl.fixative || ctrl.station_id || ctrl.doctor_name"></textarea>  
+                        </div>
+                        </div>
+                        </form>
+                        </div>
+                        <br>
+                        
+                        
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-7">
+                                <button class="btn btn-primary" id="search_btn_toggle" ng-click="ctrl.searchFunction();" >Search</button>
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+                    
+                    
+                    
+				<div id="patientDT" class="container-fluid hidden" style="padding-top: 10px">
+				<div class="row">
+					<div class="col-md-6"><h1 class="header">Patient Details:</h1></div>
+					<div class="col-md-6"><h2 align="right" ng-if="ctrl.status!='Dispatched'"><b>Waiting At :</b> {{ctrl.status}} </h2><h2 align="right" style="color:green;" ng-if="ctrl.status=='Dispatched'">{{ctrl.status}} </h2></div>
+					<div class="col-md-6"><h2 align="right"><b>Date:</b>  {{ctrl.date_rec}} </h2></div>
+				</div>
+				<div class="row">
+				<div class="col-md-12">
+			
+				<div class="col-md-6 col-sm-1" style="text-align:right;">
+				<button type="button" class="btn btn-primary view_class1" ng-click="displayReport()">View Report</button>
+				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#uploadModal" ng-click="getFiles()">View Uploaded File
+                </button>
+                 </div>
+                 
+                 
+				<div class="col-md-6 col-sm-1 ">
+				<!-- commented -->
+				<!-- <a   class="btn btn-warning view_class1" id="cmd" href="img/Invigilator allotment file  dec-2019.pdf" target="_blank">View PDF</a> -->
+				</div></div>
+				</div>
+				</div>
+				<br>
+				
+				
+					<div class="jumbotron">
+						<div id="mydiv" ng-show="myVar">
+							<img src="img/loader.gif" class="ajax-loader" />
+						</div>
+						<div class="container">
+							<div class="row">
+								<div class="col-sm-6">
+									<h5 align="center">
+										Patient UHID :: <b>{{ctrl.patient.UHID}}</b>
+									</h5>
+									<h5 align="center">
+										Patient Name :: <b>{{ctrl.patient.patientName}}</b>
+									</h5>
+									<h5 align="center">
+										Age :: <b>{{ctrl.patient.patientAge}}</b>
+									</h5>
+									<h5 align="center">
+										Sex :: <b>{{ctrl.patient.patientSex === 0 ? "Male" : Female}}</b>
+									</h5>
+								</div>
+								<div class="col-sm-6">
+									<h5 align="center">
+										Sample Request ID:: <b>{{ctrl.patient.sampleRequestId}}</b>
+									</h5>
+									<h5 align="center">
+										NP Number:: <b>{{ctrl.patient.npBase}}</b>
+									</h5>
+									<h5 align="center">
+										Referring Doctor :: <b>{{ctrl.patient.surgeon}}</b>
+									</h5>
+									<h5 align="center">
+										 Created :: <b>{{ctrl.patient.created}}</b>
+									</h5>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				
+				
+				<div ng-show="ctrl.state">
+                    <h1 class="header">{{ctrl.clickedNp}}  <button class="btn btn-primary" ng-click="ctrl.state=false;ctrl.buttonstate=true"><font size="4"> close</font></button> </h1>
+                    	<table class="table table-striped">
+                    		 <thead>
+                                <tr>  
+                                    <th>Station</th>
+                                    <th>Technician</th>
+                                    <th>Time</th>                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                            	 <tr ng-repeat="output in ctrl.reportOutputlist">
+									<td ng-bind="output.depName"></td>
+									<td ng-bind="output.techName"></td>
+									<td ng-bind="output.time"></td>
+            					</tr>
+							</tbody>
+						</table>
+                	</div>
+                	
+                	
+                	
+                	<div ng-show = ctrl.results>
+                	<h1 class="header">No Results</h1>
+                	</div>
+                	
+                	
+                    <div ng-show = "ctrl.buttonstate" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                    <h1 class="header">Search Results</h1>
+                    	<table class="table table-striped">
+                    		 <thead>
+                                <tr>  
+                                	<!-- <th>  </th>-->
+                                    <th>NP Number</th>
+                                    <th>Patient Name</th>
+                                     <th>Age</th>
+                                     <th>UHID</th>
+                                     <th>Surgeon</th>	
+                                   <!--  <th>Received Date</th>-->
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                            	 <tr ng-repeat-start="output in ctrl.outputlist" ng-click="ctrl.showPatientDetails(output)">
+               						<!-- <td>
+                   						<button ng-click="expanded = !expanded;">
+                        				<span ng-bind="expanded ? '-' : '+'"></span>
+                    					</button>
+                					</td>-->
+									<td ng-bind="output.npBase"></td>
+									<td ng-bind="output.patientName"></td>
+									<td ng-bind="output.patientAge"></td>
+									<td ng-bind="output.UHID"></td>
+									<td ng-bind="output.surgeon"></td>
+									<!-- <td ng-bind=""></td>-->
+									
+            					</tr>
+                    			<tr ng-repeat-end ng-show="expanded">
+									<td></td>
+									<td colspan="3">
+										<table class="table table-bordered">
+											<thead>
+                                                    <tr>  
+                                                        <th>Block Number</th>
+                                                        <th>Status</th>
+                                                        <th>Biopsy Type</th>
+                                                        <th>Last Updated</th>
+                                                        <th> </th>
+                                                    </tr>
+                                            </thead>
+										    <tbody>
+										        <tr ng-repeat="block in output.blocks">
+										            <td><span ng-bind="block.blockNum"></span></td>
+                                   				 	<td><span ng-bind="block.status"></span></td>
+                                   				 	<td><span ng-bind="block.biopsy_type"></span></td>
+                                    				<td><span ng-bind="block.formattedTime"></span></td>
+                                    				<td><button class="btn btn-primary" ng-click = "ctrl.transDetails(block.blockNum);ctrl.buttonstate=false">Details</td>
+										        </tr>
+										    </tbody>
+										</table>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						</div>
+						
+						
+				 <div ng-show = "ctrl.showAssets" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                    <h1 class="header">Assets</h1>
+                    	<table class="table table-striped">
+                    		 <thead>
+                                <tr>  
+                                	<th></th>
+                                    <th>NP Number</th>
+                                    <th>Specimen</th>
+                                    <th>Biopsy</th>
+                                    <th>Fixative</th>
+                                    <th>Waiting At</th>
+                                    <th>Process Status</th>
+                                    <th>Date of Reached</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            	 <tr ng-show="output.type!=0" ng-repeat-start="output in ctrl.outputlist">
+               						<!-- <td>
+                   						<button ng-click="expanded = !expanded;">
+                        				<span ng-bind="expanded ? '-' : '+'"></span>
+                    					</button>
+                					</td>-->
+                					<td>
+                   						<button ng-show="output.special==1" ng-click="ctrl.getSpecialRequest(output); expanded2 = !expanded2">
+                        				<span ng-bind="expanded2 ? '-' : '+'"></span>
+                    					</button>
+                					</td>
+                					
+									<td ng-bind="output.npBase"></td>
+									<td ng-bind="output.specimen"></td>
+									<td ng-bind="output.biopsy"></td>
+									<td ng-bind="output.fixative"></td>
+									<td ng-bind="ctrl.stations[output.nextState-1]"></td>
+									<td ng-bind="output.process_status"></td>
+									<td ng-bind="output.start_time"></td>
+                					
+            					</tr>
+                    			<tr ng-repeat-end ng-show="expanded2 && output.specimen!='Sheet'">
+									<td></td>
+									<td colspan="5">
+										<table class="table table-bordered">
+											<thead>
+                                                    <tr>  
+                                                        <th>Special Stain</th>
+                                                        <th>IHC</th>                            
+                                                        <th>Process All</th>
+                                                        <th>Em</th>
+                                                        <th>Note</th>
+                                                    </tr>
+                                            </thead>
+										    <tbody>
+										        <tr ng-repeat="case in output.specialStains">
+										            <td><span ng-bind="case.special_stain"></span></td>
+                                   				 	<td><span ng-bind="case.ihc"></span></td>
+                                   				 	<td><span ng-bind="case.process_all==1?'Yes':'No'"></span></td>
+                                   				 	<td><span ng-bind="case.em==1?'Yes':'No'"></span></td>
+                                   				 	<td><span ng-bind="case.notes"></span></td>
+										        </tr>
+										    </tbody>
+										</table>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						</div>
+						
+						
+                </div>
+                
+                <!-- Modal -->
+<div id="reportModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+     <div  style="float:right;">
+      <button  class="btn btn-warning" id="download_button">Download</button>
+     
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+         </div>
+        <h4 class="modal-title">Report</h4>
+         <div>
+        <img  id="logo_div" />
+        </div>
+      </div>
+      <div class="modal-body" id="download_div" style="background-color:white;">
+      	
+      <div class="col-md-12">
+      <div id="mydiv" ng-show="myVar1" style="text-align:center;">
+    		<img src="img/loader.gif" class="ajax-loader"/>
+		</div>
+      <div class="col-md-6">
+     <h5>Patient UHID :: <b>{{pat_uhid}}</b></h5>
+	 <h5>Patient Name :: <b>{{pat_name}}</b></h5>
+	 <h5>Age :: <b>{{pat_age}}</b></h5>
+	 <h5>Sex :: <b>{{pat_sex}}</b></h5>
+	 </div>
+	 <div class="col-md-6">
+	 <h5>Sample Request ID:: <b>{{ctrl.patient.sampleRequestId}}</b></h5>
+	 <h5>NP Number:: <b>{{ctrl.patient.npBase}}</b></h5>
+	 <h5>Referring Doctor :: <b>{{ctrl.patient.surgeon}}</b></h5>
+	 <h5>Reported :: <b>{{report_date}}</b></h5>
+	 </div>
+	  </div>
+      
+      <div id="reportDiv"></div>
+      <div>
+      <img  id="doc_sign" />
+      </div>
+    
+         </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- view uploaded file modal -->
+<div class="modal fade " id="uploadModal" role="dialog" ">
+    <div class="modal-dialog modal-lg">
+    
+      <!-- Modal content-->
+    <div class="modal-content">
+       <div class="modal-header">
+           <!--  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button> -->
+            <h4 class="modal-title">Uploaded File</h4>
+        </div>
+        <div class="modal-body">
+         
+               
+             
+                 <iframe id="myFrame" style="display:none" width="100%" height="10%" ></iframe>
+                <form name="assetForm" class="form-horizontal" novalidate >
+                <div class="col-md-12" style="text-align:center;">
+                <table style="border:1px solid black;margin-bottom:20px;table-layout:fixed;width:100%;text-align:center;background-color:white;">
+                
+                <thead style="border:1px solid black;">
+                <tr >
+                <th style="border:1px solid black;text-align:center;width:100px;">List of Files</th>
+                <th style="text-align:center;width:100px;">Actions</th>
+                </tr>
+                </thead>
+                
+                <tbody style="border:1px solid black;width:100px;">
+                <tr ng-repeat="f in file_array ">
+                <td style="border:1px solid black;width:100px;">
+              
+               {{f.upload_path}}
+                
+                </td>
+                <td style="border:1px solid black;">
+                 <button   class="btn btn-sm btn-primary" ng-click="viewFile(f.upload_path)" title="view" id="button_view">
+                
+   				<i class="glyphicon glyphicon-eye-open"></i>
+   				
+   				View 
+				</button>
+				
+				 <!-- <button type="button"  class="btn btn-sm btn-success" ng-click="deleteFile(upload_id)" title="Delete" >
+	   				<i class="glyphicon glyphicon-remove"></i> Delete 
+				</button> -->
+				</td>
+				
+				
+				</tr>
+				
+				</tbody>
+				
+				</table>
+				</div>
+				
+				
+                   
+                    
+                    <div class="form-group" style="text-align:center;margin-top:30px;">
+                        <button type="button" class="btn btn-default" ng-click="close()" >Close</button>
+                        
+                    </div>
+                </form>
+           
+        </div>
+        </div>
+       
+        </div>
+    </div>
+
+
+</div>
+            <!-- end of controller -->
+        <!-- </div> -->
+        
+        
+        
+	
+        
+        
+        <div id="pdfModal1" class="modal fade" role="dialog">
+  		<div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+       
+      </div>
+      <div class="modal-body">
+      
+      <div id="pdfDiv"></div>
+    
+         </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+    
+ <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- <script src="./search_files/jquery.min.js"></script> -->
+     <script src="bootstrap/jquery.min.js"></script>
+    <script src="./search_files/bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="./search_files/holder.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="./search_files/ie10-viewport-bug-workaround.js"></script>
+  	<script src="js/values.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/jspdf.js"></script>
+    <script src="js/html2canvas.min.js"></script>
+    
+    <script src="js/user_service.js"></script>
+    <script src="js/user_controller.js"></script>
+ 
+ <!-- date picker links -->
+ <script src="js/moment.min.js"></script>
+ <script src="js/lightpick.js"></script>
+    
+ <script>
+
+
+var select = '';
+select += '<option val="0">'+"Select Age"+'</option>';
+for (i=1;i<=100;i++){
+    select += '<option val=' + i + '>' + i + '</option>';
+}
+$('#age_select1').html(select);
+$('#age_select2').html(select);
+
+$(document).ready(function() {
+	     	   
+$('#search_btn_toggle').click(function(){
+	    	
+$('html, body').animate({scrollTop:$(document).height()}, 'slow');
+return false;
+});
+
+	});
+
+</script>
+   
+    </body>
+</html>

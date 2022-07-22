@@ -1,0 +1,430 @@
+
+<html lang="en">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta type="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Angularjs with Bootstrap</title>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular-animate.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.9.0/ui-bootstrap-tpls.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/custom.css" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
+    <script src="jquery-1.12.2.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    
+    <style>
+        #asset-box{
+            display:none
+        }
+        #asset-list{
+            display:block
+        }
+        @media (max-width:400px){
+            h1{font-size:20px}
+            #asset-box{display:block}
+            #asset-list{
+                display:none
+            }
+        }
+        .bg-color{background-color:#F28F20;}
+    </style>
+    <!--       // Delete asset
+           $scope.delete = function(index,id,obj){
+               ///$('.loadingDiv').hide();
+                  $(obj).closest('tr').find('td').fadeOut(700);
+                  setTimeout(function(){
+                   $scope.items.splice($scope.items.indexOf(index),1);
+                   $scope.$apply();
+                   },900);
+               Visualforce.remoting.Manager.invokeAction(
+                     'AngularJSDemoController.deleteasset',
+                     id,
+                     function(result, event) {
+                        if (event.status) {
+
+
+                        } else if (event.type === 'exception') {
+                            alert(event.message);
+                        } else {
+                            alert(event.message);
+                        }
+                    }
+                 );
+
+           }
+
+           // Fill Value to Edit Form
+           $scope.edit = function(index){
+               $scope.index = index;
+               var detail = $scope.items[$scope.items.indexOf($scope.index)];
+               ///alert(JSON.stringify(detail));
+               $scope.asset.type =detail.type;
+               $scope.asset.biopsy = detail.biopsy;
+               $scope.asset.Fax =detail.Fax;
+               $scope.asset.Website = detail.Website;
+               $scope.asset.Id = detail.id;
+               $('#updateModal').modal('show');
+           }
+           // Update asset
+            $scope.update = function(){
+                if($scope.asset.type !== undefined &&  $scope.asset.biopsy !== undefined){
+                    var Fax = $scope.asset.Fax !== undefined ? $scope.asset.Fax : 'null';
+                    var Website = $scope.asset.Website !== undefined ? $scope.asset.Website : 'null';
+                    Visualforce.remoting.Manager.invokeAction(
+                         'AngularJSDemoController.updateasset',
+                         $scope.asset.Id,
+                         $scope.asset.type,
+                         $scope.asset.biopsy,
+                         Fax,
+                         Website,
+                         function(result, event) {
+                            if (event.status) {
+                                $scope.items[$scope.items.indexOf($scope.index)].type = $scope.asset.type;
+                                $scope.items[$scope.items.indexOf($scope.index)].biopsy= $scope.asset.biopsy;
+                                $scope.items[$scope.items.indexOf($scope.index)].specimen = $scope.asset.Fax;
+                                $scope.items[$scope.items.indexOf($scope.index)].storage = $scope.asset.Website;
+                                $scope.items[$scope.items.indexOf($scope.index)].fixative = $scope.asset.Website;
+                                $scope.$apply();
+                                $('#updateModal').modal('hide');
+                            } else if (event.type === 'exception') {
+                                alert(event.message);
+                            } else {
+                                alert(event.message);
+                            }
+                        }
+                     );
+                 }else{
+                      // Show Error
+                      var msg ='';
+                      if($scope.asset.type === undefined){
+                          msg +='type is Required! \n';
+                      }
+                      if($scope.asset.biopsy === undefined){
+                          msg +='biopsy is Required! \n';
+                      }
+                      alert(msg);
+                  }
+             }
+        })
+    </script> -->
+</head>
+<body ng-app="myapp">
+<div class="container" ng-controller="MyController">
+    <!-- Loading Window -->
+
+    <script>
+
+        var myapp = angular.module('myapp', []);
+        myapp.controller('MyController',function($scope) {
+
+            this.items = {};
+            this.asset = {};
+            this.asset.type = '';
+            this.asset.biopsy = '';
+            this.asset.storage = '';
+            this.asset.specimen = '';
+            this.asset.fixative = '';
+
+            //Create asset
+            this.create=function(){
+
+                var newasset = {};
+
+                // Add to list
+                newasset.type = $scope.type;
+                newasset.biopsy = $scope.biopsy;
+                newasset.storage = $scope.storage;
+                newasset.specimen = $scope.specimen;
+                newasset.fixative = $scope.fixative;
+                this.items.asset.push(newasset);
+
+                // Reset Insert form Value
+                $scope.type = $scope.biopsy = $scope.storage = $scope.specimen = $scope.fixative = '';
+
+                $scope.$apply();
+                $('tr').eq(1).find('td').toggleClass("bg-color");
+                setTimeout(function () {
+                    $('tr').eq(1).find('td').toggleClass("bg-color");
+                }, 3000)
+                // Back to first tab
+                $('#insertModal').modal('hide');
+            }
+        });
+
+    </script>
+    <div class="loadingDiv" style="display:none">
+        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.75; z-index: 100000;">
+
+        </div>
+    </div>
+
+    <!-- ************* Insert Modal **********-->
+
+    <script>$(function(){
+        $(".dropdown-menu li a").click(function(){
+            $(this).parents('.dropdown').children('.btn').text($(this).text());
+            var text =$(this).parents('.dropdown').children('.btn').val($(this).text());
+
+        });
+    });
+
+    </script>
+    <div class="modal fade" id="insertModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">New Asset</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="col-md-12">
+                        <form class="form-horizontal" ng-controller="MyController as MyCtrl" ng-submit="MyCtrl.create()">
+                            <!--
+                                                        <input type="hidden" ng-model="asset.Id" />-->
+                            <div>
+                                <label for="1">Select list:</label>
+                                <select class="form-control" id="1"  ng-model="MyCtrl.asset.type" >
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="2">Select list:</label>
+                                <select class="form-control" id="2" ng-model="MyCtrl.asset.storage" >
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="3">Select list:</label>
+                                <select class="form-control" id="3" ng-model="MyCtrl.asset.specimen" >
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="4">Select list:</label>
+                                <select class="form-control" id="4" ng-model="MyCtrl.asset.fixative" >
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                </select>
+                            </div>
+                            <div class="form-group" >
+                                <label for="5">Select list:</label>
+                                <select class="form-control" id="5" ng-model="MyCtrl.asset.biopsy">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                                <input type="submit" class="btn btn-success" onclick="MyCtrl.create()" value="Save" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div ng-app="myapp" ng-controller="MyController">
+
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+
+
+    <!--********************* Edit Modal *********************-->
+    <div class="modal fade" id="updateModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">Update</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-12">
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="ddlForwardTo" data-toggle="dropdown">
+                                Select a Forward To
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+                            </ul>
+                        </div>
+                        <form class="form-horizontal">
+                            <input type="hidden" ng-model="asset.Id" />
+
+
+
+                            <div class="form-group">
+                                <label>Asset Type</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Asset Type" ng-model="asset.type" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Biopsy Type</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Biopsy Type" ng-model="asset.biopsy" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Storage</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Storage" ng-model="asset.storage" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Specimen</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Specimen" ng-model="asset.specimen" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Fixative</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Fixative" ng-model="asset.fixative" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <input type="button" class="btn btn-success" ng-click="update()" value="Save" />
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+    <!-- ****************** TABLE *****************  -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Receiving Station
+            </h1><hr/>
+            <form class="form-horizontal">
+                <div class="pull-right">
+                    <button type="button" class="btn btn-sm btn-success" onclick="$('#insertModal').modal('show')">
+                        <i class="glyphicon glyphicon-plus"></i> New
+                    </button>
+                </div>
+                <div class="clearfix"></div>
+
+                <hr/>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div id="asset-box"><!-- asset Box List Start-->
+                            <div class="row"  ng-repeat="asset in items | filter:search">
+                                <div class="col-xs-12">
+                                    <div class="thumbnail">
+                                        <div class="caption">
+                                            <dl>
+                                                <dt>Asset Type</dt>
+                                                <dd>{{asset.type}}</dd>
+                                                <dt>Biopsy Type</dt>
+                                                <dd>{{asset.biposy}}</dd>
+                                                <dt>Storage</dt>
+                                                <dd>{{asset.storage}}</dd>
+                                                <dt>Specimen</dt>
+                                                <dd>{{asset.specimen}}</dd>
+                                                <dt>Fixative</dt>
+                                                <dd>{{asset.fixative}}</dd>
+                                            </dl>
+                                            <!-- WRITE LINKERS TO NEXT STATE-->
+                                            <p>
+                                                <button type="button" class="btn btn-sm btn-primary" title="Update" ng-click="edit(asset)">
+                                                    <i class="glyphicon glyphicon-pencil"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-danger" title="Delete" ng-click="delete(asset,asset.id,$event.target)">
+                                                    <i class="glyphicon glyphicon-trash"></i>
+                                                </button>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- asset Box List End-->
+
+                        <div class="panel panel-primary" id="asset-list"><!-- asset List Start-->
+                            <div class="panel-heading">Assets </div>
+                            <div class="panel-body" style="padding:0px">
+                                <table class="table table-striped table-bordered" style="margin:0">
+                                    <thead>
+                                    <tr>
+                                        <th>Asset Type</th>
+                                        <th>Biopsy Type</th>
+                                        <th>Storage</th>
+                                        <th>Specimen</th>
+                                        <th>Fixative</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="asset in items | filter:search">
+                                        <td>{{asset.type}}</td>
+                                        <td>{{asset.biopsy}}</td>
+                                        <td>{{asset.storage}}</td>
+                                        <td>{{asset.specimen}}</td>
+                                        <td>{{asset.fixative}}</td>
+                                        <td width="100">
+                                            <button type="button" class="btn btn-sm btn-primary" title="Update" ng-click="edit(asset)">
+                                                <i class="glyphicon glyphicon-pencil"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-danger" title="Delete" ng-click="delete(asset,asset.id,$event.target)">
+                                                <i class="glyphicon glyphicon-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div><!-- asset List End -->
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div><!-- Main Row End -->
+</div><!-- Container End -->
+
+<!--
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.9.0/ui-bootstrap-tpls.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+-->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular-animate.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.9.0/ui-bootstrap-tpls.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+
+</body>
+</html>

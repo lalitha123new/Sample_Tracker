@@ -1,0 +1,149 @@
+.my-class1{
+	background-color:blue;
+}
+.my-class2{
+	 text-align:left; 
+	
+}
+
+/* begin code for notification bell*/
+
+
+.notification {
+    display: inline-block;
+    position: relative;
+   
+    background: #3498db;
+     /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      padding: 0.6em;
+    border-radius: 0.2em; */
+    
+    background:white;
+    
+    
+    font-size: 1.8em; */
+    
+    
+}
+
+/* bell inside color */
+.notification::before, 
+.notification::after {
+    color: #2b52ed;
+    text-shadow: 0 1px 3px rgba(236, 56, 56, 0.3);
+    
+   
+   
+}
+
+/* bell content */
+.notification::before {
+    display: block;
+    content: "\f0f3";
+    font-family: "FontAwesome";
+    transform-origin: top center;
+    
+}
+
+.notification::after {
+    font-family: Arial;
+    font-size: 0.3em;
+    font-weight: 700;
+    color:black;
+    position: absolute;
+    top: 5px;
+    /* right: -9px; */
+    padding: 3px 4px;
+    line-height: 100%;
+    border: 1px black;
+    border-radius: 60px;
+    background: red;
+    /* opacity: 0; */
+    content: attr(data_count);
+    opacity: 0;
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+    transition: transform, opacity;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out;
+}
+
+.notification.notify::before {
+    -webkit-animation: ring 1.5s ease;
+    animation: ring 1.5s ease;
+}
+
+.notification.show_count::after {
+    -webkit-transform: scale(1);
+    transform: scale(2);
+    opacity: 1;
+}
+
+@-webkit-keyframes ring {
+    0% {
+        -webkit-transform: rotate(35deg);
+    }
+    12.5% {
+        -webkit-transform: rotate(-30deg);
+    }
+    25% {
+        -webkit-transform: rotate(25deg);
+    }
+    37.5% {
+        -webkit-transform: rotate(-20deg);
+    }
+    50% {
+        -webkit-transform: rotate(15deg);
+    }
+    62.5% {
+        -webkit-transform: rotate(-10deg);
+    }
+    75% {
+        -webkit-transform: rotate(5deg);
+    }
+    100% {
+        -webkit-transform: rotate(0deg);
+    }
+}
+
+@keyframes ring {
+    0% {
+        -webkit-transform: rotate(35deg);
+        transform: rotate(35deg);
+    }
+    12.5% {
+        -webkit-transform: rotate(-30deg);
+        transform: rotate(-30deg);
+    }
+    25% {
+        -webkit-transform: rotate(25deg);
+        transform: rotate(25deg);
+    }
+    37.5% {
+        -webkit-transform: rotate(-20deg);
+        transform: rotate(-20deg);
+    }
+    50% {
+        -webkit-transform: rotate(15deg);
+        transform: rotate(15deg);
+    }
+    62.5% {
+        -webkit-transform: rotate(-10deg);
+        transform: rotate(-10deg);
+    }
+    75% {
+        -webkit-transform: rotate(5deg);
+        transform: rotate(5deg);
+    }
+    100% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+} 
+.disabledbutton {
+ pointer-events: none;
+ }
+.invisible{
+display:none;
+}
+/* end of code for notification bell*/

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    	<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>Sample Tracker</title>
+		
+		<link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+		<link rel="stylesheet" href="css/notification.css">
+		<link href="bootstrap/bootstrap-combined.min.css" rel="stylesheet">
+		<!-- Bootstrap core CSS -->
+		<link href="./search_files/bootstrap.min.css" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link href="./search_files/search.css" rel="stylesheet">
+		
+		<script src="./search_files/ie-emulation-modes-warning.js"></script>
+		<script src="js/alasql.min.js"></script>
+		<script src="bootstrap/angular.js"></script>
+	   	<script src="bootstrap/angular-animate.js"></script>
+	  	<script src="bootstrap/ui-bootstrap-tpls.min.js"></script>
+	   
+	    <script src="bootstrap/jquery.min.js"></script>
+	    <script src="bootstrap/angular-sanitize.min.js"></script>
+	    <script src="bootstrap/ui-bootstrap-tpls-0.6.0.js"></script>
+	    <script src="bootstrap/angular-cookies.js"></script>
+	    
+	    <script>
+	  
+		 function back(){
+			 window.location.href="externalNotificationDisplay.html";
+		 }
+		 function home1(){
+			 window.location.href="ReceivingStation.html";
+		 }
+		 
+		 </script>
+	    
+<style>
+
+body {
+margin: 0 auto;
+/* max-width: 800px; */
+padding: 0 20px;
+}
+
+
+.darker {
+border-color: #ccc;
+background-color: #ddd;
+}
+
+.container::after {
+content: "";
+clear: both;
+display: table;
+}
+
+.container img {
+float: left;
+max-width: 60px;
+width: 100%;
+margin-right: 20px;
+border-radius: 50%;
+}
+
+.container img.right {
+float: right;
+margin-left: 20px;
+margin-right:0;
+}
+
+.time-right {
+float: right;
+color: #aaa;
+}
+
+.time-left {
+float: left;
+color: #999;
+}
+
+
+</style>
+
+</head>
+<!--  this page is to the display the messages related to samples from external hospitals -->
+<body ng-app="myApp2" class="ng-cloak" ng-controller="readMessageController as ctrl">
+
+<div>  
+ <div class="navbar navbar-inverse">
+  	<div class="container">
+    <a class="navbar-brand" href="index.html">Lab Sample Tracker</a>
+                    
+    <button class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="mynavbar">
+      <ul class="nav navbar-nav navbar-right">
+       
+        <li><button type="button" onclick="back()" class="btn btn-sm btn-primary" style="margin-right: 10px;"><i class="glyphicon "></i>Back
+     </button></li> 
+      	 
+      </ul>
+    </div>
+  </div>
+</div>
+		
+			
+				
+<div class="row" style="margin-top:50px;">
+
+<div class="col-md-12">
+<div class="col-md-1"></div>
+<div class="col-md-9" style="text-align:left;">
+<h1 class="page-header" style="margin-top:20px;">Chat Messages</h1>
+</div>
+
+<div class="col-md-2"></div>
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-12">
+<div class="col-md-10"></div>
+<div class="col-md-1" style="text-align:right">
+
+</div>
+<div class="col-md-1" style="text-align:left">
+			
+</div>
+</div>
+</div>
+
+<br>
+
+<div class="row">
+
+  <div class="col-md-12">
+  <div ng-show = ctrl.results></div>
+  <div ng-show = "ctrl.buttonstate">
+
+      <table class="table table-hover" style="background-color: #fff;border:1px solid black;">
+        
+        <thead>
+        
+          <tr style="border:1px solid black;">
+            
+          
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr style="height:80px;border-radius:40px;margin-bottom:10px;" ng-repeat-start="output in ctrl.outputlist1 | limitTo:100" >
+            
+            <td style="text-align:right;border-bottom:1px solid black;" ng-bind="output.notification_msg +','+ output.created_at" ng-style="{ 'text-align' : (output.portal_flag == '2') ? 'left' : 'right' }"><br>
+           
+            
+            </td>
+          </tr>
+          
+          <tr ng-repeat-end>
+          
+          </tr>
+        </tbody>
+         
+        </table>
+        </div>
+  </div>
+</div>
+
+ 
+</div>
+
+
+
+
+
+
+ <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./search_files/jquery.min.js"></script>
+    <script src="./search_files/bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="./search_files/holder.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="./search_files/ie10-viewport-bug-workaround.js"></script>
+   	<script src="js/values.js"></script>
+   <script src="js/readMessageDisplay.js"></script>
+   
+
+</body>
+</html>
